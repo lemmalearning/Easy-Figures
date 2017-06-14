@@ -92,6 +92,7 @@ def problem2(vertices):
 	plt.show()
 
 def main():
+	"""
 	problem2(np.matrix([
 		[550, 450],
 		[455, 519],
@@ -99,6 +100,8 @@ def main():
 		[609, 631],
 		[645, 519]
 	]))
+	"""
+	problem1()
 
 if __name__ == "__main__":
 	main()
