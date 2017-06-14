@@ -2,9 +2,9 @@ import numpy as np
 from random import randint
 import matplotlib
 #matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from matplotlib import patches
-
+import figures
 import time
 
 def problem1(angle=(45*np.pi)/180, rotation=0, translation=(0,0), text=""): # Given a specific angle, generate a right triangle with one angle specified
@@ -91,7 +91,37 @@ def problem2(vertices):
 	#plt.savefig('/Users/ajpersinger/test.svg')
 	plt.show()
 
+def foo(vertices):
+	fig, ax = plt.subplots()
+
+
+	# Define the polygon
+	polygon = plt.Polygon(vertices, fill=False, linewidth=3)
+
+
+	# Create and add polygon
+	ax.add_patch(polygon)
+
+	# To calculate centroid, first calculate area:
+	#	Mean of vertices
+	vertix_mean = np.mean(vertices, axis=0)
+	plt.plot([vertix_mean[0, 0]], [vertix_mean[0, 1]], marker='o', markersize=3, color="red")
+
+	# Plot the vectors from centroid to vertices
+	segs = vertices - vertix_mean
+	#for i in range(0, segs.shape[0]):
+	#	ax.text(vertices[i, 0], vertices[i, 1], '$'+str(i)+'$', fontsize=15)
+
+
+
+	# Modify the plot view to scale, remove axis, and center our shape
+	ax.autoscale_view()
+	plt.axis('off')
+	plt.axis('scaled')
+	plt.show()
+
 def main():
+	#problem1()
 	"""
 	problem2(np.matrix([
 		[550, 450],
@@ -101,8 +131,19 @@ def main():
 		[645, 519]
 	]))
 	"""
-	problem1()
+	#problem1()
 
+	mat = np.matrix([
+		[550, 450],
+		[455, 519],
+		[491, 631],
+		[609, 631],
+		[645, 519]
+	])
+	#foo(mat)
+	t = figures.Figures()
+	t.addPolygon(mat)
+	t.__writeFile__('/Users/ajpersinger/test.svg')
 if __name__ == "__main__":
 	main()
 

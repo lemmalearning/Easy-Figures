@@ -1,24 +1,16 @@
 import matplotlib.pyplot as plt
-
-plt.axes()
-
-circle = plt.Circle((0, 0), radius=0.75, fc='y')
-plt.gca().add_patch(circle)
-plt.axis('off')
-plt.axis('scaled')
-
-#plt.show()
-plt.figure().savefig('/Users/ajpersinger/test.png', transparent=True)
+import numpy as np
 
 
-class Circle():
-	def __init__(radius=1, fill='transparent', center=(0, 0)):
+class Circle:
+	def __init__(self, radius=1, fill='transparent', center=(0, 0)):
 		self.radius = radius
 		self.background = background
 		self.center = center
 
-class Polygon():
+class Polygon:
 	def __init__(self, vertices, fig, ax):
+		print 2
 		# Define the polygon
 		polygon = plt.Polygon(vertices, fill=False, linewidth=3)
 
@@ -34,7 +26,8 @@ class Polygon():
 		# Plot the vectors from centroid to vertices
 		segs = vertices - vertix_mean
 		for i in range(0, segs.shape[0]):
-			ax.text(vertices[i, 0], vertices[i, 1], '$'+i+'$', fontsize=15)
+			ax.text(vertices[i, 0], vertices[i, 1], '$'+str(i)+'$', fontsize=15)
+
 			#plt.plot([vertix_mean[0, 0], vertices[i, 0]], [vertix_mean[0, 1], vertices[i, 1]])
 			#print [vertix_mean[0, 0], vertices[i, 0]], [vertix_mean[0, 1], vertices[i, 1]]
 			#t = plt.text(550, 450, r'$\alpha$', fontsize=20)
