@@ -143,8 +143,17 @@ def main():
 	#foo(mat)
 	t = figures.Figures()
 	t.addPolygon(mat)
-	t.__writeFile__('/Users/ajpersinger/test.svg')
+	print t.__export__()
+	#t.__writeFile__('/Users/ajpersinger/test.svg')
 if __name__ == "__main__":
 	main()
 
 # find centroid, go in direction of vertex by 1.5*the font size and write there. I.e.
+#plt.plot([vertix_mean[0, 0], vertices[i, 0]], [vertix_mean[0, 1], vertices[i, 1]])
+#print [vertix_mean[0, 0], vertices[i, 0]], [vertix_mean[0, 1], vertices[i, 1]]
+#t = plt.text(550, 450, r'$\alpha$', fontsize=20)
+#bb = t.get_window_extent(renderer='SVG')
+#width = bb.width
+#height = bb.height
+#text.set_position((event.xdata, event.ydata))
+#x = (vertix_mean[0, 1] - vertices[i, 1])/(vertix_mean[0, 0] - vertices[i, 0])

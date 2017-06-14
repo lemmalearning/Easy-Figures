@@ -28,11 +28,4 @@ class Polygon:
 		for i in range(0, segs.shape[0]):
 			ax.text(vertices[i, 0], vertices[i, 1], '$'+str(i)+'$', fontsize=15)
 
-			#plt.plot([vertix_mean[0, 0], vertices[i, 0]], [vertix_mean[0, 1], vertices[i, 1]])
-			#print [vertix_mean[0, 0], vertices[i, 0]], [vertix_mean[0, 1], vertices[i, 1]]
-			#t = plt.text(550, 450, r'$\alpha$', fontsize=20)
-			#bb = t.get_window_extent(renderer='SVG')
-			#width = bb.width
-			#height = bb.height
-			#text.set_position((event.xdata, event.ydata))
-			#x = (vertix_mean[0, 1] - vertices[i, 1])/(vertix_mean[0, 0] - vertices[i, 0])
+			
