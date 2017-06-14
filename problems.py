@@ -132,6 +132,9 @@ def main():
 
 	problem1()
 	"""
+	f = figures.Figures()
+	f.addEllipse()
+	f.__writeFile__('/Users/chloesheen/test.svg')
 
 if __name__ == "__main__":
 	main()
