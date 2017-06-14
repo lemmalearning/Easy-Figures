@@ -121,7 +121,6 @@ def foo(vertices):
 	plt.show()
 
 def main():
-	#problem1()
 	"""
 	problem2(np.matrix([
 		[550, 450],
@@ -130,21 +129,21 @@ def main():
 		[609, 631],
 		[645, 519]
 	]))
-	"""
-	#problem1()
 
-	mat = np.matrix([
+	problem1()
+	"""
+
+
+	t = figures.Figures()
+	t.addPolygon(np.matrix([
 		[550, 450],
 		[455, 519],
 		[491, 631],
 		[609, 631],
 		[645, 519]
-	])
-	#foo(mat)
-	t = figures.Figures()
-	t.addPolygon(mat)
-	print t.__export__()
-	#t.__writeFile__('/Users/ajpersinger/test.svg')
+	]))
+	t.__writeFile__('/Users/ajpersinger/test.svg')
+
 if __name__ == "__main__":
 	main()
 

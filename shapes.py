@@ -10,7 +10,6 @@ class Circle:
 
 class Polygon:
 	def __init__(self, vertices, fig, ax):
-		print 2
 		# Define the polygon
 		polygon = plt.Polygon(vertices, fill=False, linewidth=3)
 
@@ -27,5 +26,3 @@ class Polygon:
 		segs = vertices - vertix_mean
 		for i in range(0, segs.shape[0]):
 			ax.text(vertices[i, 0], vertices[i, 1], '$'+str(i)+'$', fontsize=15)
-
-			

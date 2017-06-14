@@ -30,8 +30,6 @@ class Figures:
 		self.format_axis()
 		plt.show()
 
-
-
 	def addPolygon(self, vertices):
-		self.polygon = shapes.Polygon(vertices, self.fig, self.ax)
+		polygon = shapes.Polygon(vertices, self.fig, self.ax)
 		return polygon
