@@ -26,6 +26,10 @@ class Figures:
 		self.format_axis()
 		plt.savefig(file_location)
 
+	def __display__(self):
+		self.format_axis()
+		plt.show()
+
 
 
 	def addPolygon(self, vertices):
