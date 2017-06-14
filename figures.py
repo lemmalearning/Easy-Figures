@@ -33,3 +33,7 @@ class Figures:
 	def addPolygon(self, vertices):
 		polygon = shapes.Polygon(vertices, self.fig, self.ax)
 		return polygon
+
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None):
+		circle = shapes.Circle(self.fig, self.ax, xy, diameter, radius, label)
+		return circle

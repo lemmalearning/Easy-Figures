@@ -134,15 +134,9 @@ def main():
 	"""
 
 
-	t = figures.Figures()
-	t.addPolygon(np.matrix([
-		[550, 450],
-		[455, 519],
-		[491, 631],
-		[609, 631],
-		[645, 519]
-	]))
-	t.__writeFile__('/Users/ajpersinger/test.svg')
+	#t = figures.Figures()
+	#t.addCircle(xy=(1,90), diameter=4, radius=None, label="G")
+	#t.__writeFile__('/Users/chloesheen/test.svg')
 
 if __name__ == "__main__":
 	main()
