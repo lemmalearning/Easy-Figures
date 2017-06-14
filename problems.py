@@ -1,7 +1,7 @@
 import numpy as np
 from random import randint
 import matplotlib
-#matplotlib.use('Agg')
+matplotlib.use('Agg')
 #import matplotlib.pyplot as plt
 from matplotlib import patches
 import figures
@@ -133,20 +133,5 @@ def main():
 	problem1()
 	"""
 
-
-	#t = figures.Figures()
-	#t.addCircle(xy=(1,90), diameter=4, radius=None, label="G")
-	#t.__writeFile__('/Users/chloesheen/test.svg')
-
 if __name__ == "__main__":
 	main()
-
-# find centroid, go in direction of vertex by 1.5*the font size and write there. I.e.
-#plt.plot([vertix_mean[0, 0], vertices[i, 0]], [vertix_mean[0, 1], vertices[i, 1]])
-#print [vertix_mean[0, 0], vertices[i, 0]], [vertix_mean[0, 1], vertices[i, 1]]
-#t = plt.text(550, 450, r'$\alpha$', fontsize=20)
-#bb = t.get_window_extent(renderer='SVG')
-#width = bb.width
-#height = bb.height
-#text.set_position((event.xdata, event.ydata))
-#x = (vertix_mean[0, 1] - vertices[i, 1])/(vertix_mean[0, 0] - vertices[i, 0])
