@@ -1,7 +1,7 @@
 import numpy as np
 from random import randint
 import matplotlib
-#matplotlib.use('Agg')
+matplotlib.use('Agg')
 #import matplotlib.pyplot as plt
 from matplotlib import patches
 import figures
@@ -135,14 +135,16 @@ def main():
 
 
 	t = figures.Figures()
-	t.addPolygon(np.matrix([
+	polygon = t.addPolygon(np.matrix([
 		[550, 450],
 		[455, 519],
 		[491, 631],
 		[609, 631],
 		[645, 519]
 	]))
+	polygon.labelVertices(['a', 'b', 'c', 'd', 'e'])
 	t.__writeFile__('/Users/ajpersinger/test.svg')
+	#t.__display__()
 
 if __name__ == "__main__":
 	main()
@@ -156,3 +158,10 @@ if __name__ == "__main__":
 #height = bb.height
 #text.set_position((event.xdata, event.ydata))
 #x = (vertix_mean[0, 1] - vertices[i, 1])/(vertix_mean[0, 0] - vertices[i, 0])
+
+
+
+
+
+# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
+# The side that's mentioned first is horizontal

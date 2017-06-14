@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -10,19 +12,15 @@ class Circle:
 
 class Polygon:
 	def __init__(self, vertices, fig, ax):
+		self.vertices = vertices
+		self.fig = fig
+		self.ax = ax
 		# Define the polygon
 		polygon = plt.Polygon(vertices, fill=False, linewidth=3)
-
-
 		# Create and add polygon
 		ax.add_patch(polygon)
 
-		# To calculate centroid, first calculate area:
-		#	Mean of vertices
-		vertix_mean = np.mean(vertices, axis=0)
-		plt.plot([vertix_mean[0, 0]], [vertix_mean[0, 1]], marker='o', markersize=3, color="red")
-
-		# Plot the vectors from centroid to vertices
-		segs = vertices - vertix_mean
-		for i in range(0, segs.shape[0]):
-			ax.text(vertices[i, 0], vertices[i, 1], '$'+str(i)+'$', fontsize=15)
+	def labelVertices(self, label_list):
+		self.labels = label_list
+		for i, label in enumerate(self.labels):
+			self.ax.text(self.vertices[i, 0], self.vertices[i, 1], '$'+label+'$', fontsize=15)
