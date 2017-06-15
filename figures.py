@@ -1,10 +1,9 @@
 import shapes
-import StringIO
 import matplotlib
-matplotlib.use('Agg')
+matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
 import numpy as np
-
+from shapes import Polygon, Circle
 
 class Figures:
 	def __init__(self):
@@ -18,6 +17,8 @@ class Figures:
 
 
 	def __export__(self):
+		import StringIO
+
 		self.format_axis()
 		export_str = StringIO.StringIO()
 		self.fig.savefig(export_str, format='svg')
@@ -33,9 +34,9 @@ class Figures:
 		plt.show()
 
 	def addPolygon(self, vertices):
-		polygon = shapes.Polygon(vertices, self.fig, self.ax)
+		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
 		return polygon
 
 	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None):
-		circle = shapes.Circle(self.fig, self.ax, xy, diameter, radius, label)
+		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label)
 		return circle
