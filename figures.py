@@ -10,7 +10,38 @@ class Figures:
 	def __init__(self):
 		self.fig, self.ax = plt.subplots()
 
-	def format_axis(self, xyrange=None, arrows=False, ticks=[], grid=False, function=None):
+	def add_text(self, xy, text, color="black", fontsize=25):
+		raise Exception('Not implemented yet')
+
+	def add_function(self, functions, xyranges, colors='black', linewidth=2):
+		color_dict = {
+			"blue": 'b',
+			"green": 'g',
+			"red": 'r',
+			"cyan": 'c',
+			"magenta": 'm',
+			"yellow": 'y',
+			"black": 'k',
+			"white": 'w'
+		}
+
+		if not isinstance(functions, list):
+			functions = [functions]
+			xyranges = [xyranges]
+			colors = [colors]
+
+		for function, xyrange, color in zip(functions, xyranges, colors):
+			x = np.linspace(xyrange[0][0], xyrange[0][1], 100)
+			y = function(x)
+			self.ax.plot(x, y, color_dict[color])
+
+	def format_axis(self, xyrange=None, arrows=False, ticks=[], grid=False):
+		# TODO:
+		    # Expose color of axis to user
+			# Get rid of margins
+			# Consecutive integers for ticks by default
+			# Don't show numbers for all ticks
+
 		# Modify the plot view to scale, remove axis, and center our shape
 
 		def adjust_spines(ax, spines):
@@ -46,11 +77,6 @@ class Figures:
 			self.ax.spines['right'].set_color('none')
 			self.ax.spines['bottom'].set_position('center')
 			self.ax.spines['top'].set_color('none')
-
-			if function is not None:
-				x = np.linspace(xyrange[0][0], xyrange[0][1], 100)
-				y = function(x)
-				self.ax.plot(x, y)
 
 	def __export__(self):
 		import StringIO
