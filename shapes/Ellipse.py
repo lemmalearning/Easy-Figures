@@ -40,25 +40,25 @@ class Ellipse:
 
         else:
             #cross, label 0300
-            ellipse = patches.Ellipse(xy, width, height, angle=0.0, fill=False, linewidth=3)
+            ellipse = patches.Ellipse(xy, width, height, fill=False, linewidth=3)
 
-            w_p1 = (xy[0]+rwidth, xy[1])
-            w_p2 = (xy[0]-rwidth, xy[1])
-            h_p1 = (xy[0], xy[1]+rheight)
-            h_p2 = (xy[0], xy[1]-rheight)
+            w_p1 = (xy[0]+dwidth, xy[1])
+            w_p2 = (xy[0]-dwidth, xy[1])
+            h_p1 = (xy[0], xy[1]+dheight)
+            h_p2 = (xy[0], xy[1]-dheight)
 
-            plt.plot([xy[0],w_p[0]], [xy[1],w_p[1]], linewidth=2, ls='dashed', color='black')
-            plt.plot([xy[0],h_p[0]], [xy[1],h_p[1]], linewidth=2, ls='dashed', color='black')
+            plt.plot([xy[0],w_p1[0]], [xy[1],w_p1[1]], linewidth=2, ls='dashed', color='black')
+            plt.plot([xy[0],h_p1[0]], [xy[1],h_p1[1]], linewidth=2, ls='dashed', color='black')
 
-            mid_dwidth = (xy[0]+w_p[0])/2.0
-            mid_dheight = (xy[0]+h_p[0])/2.0
+            mid_dwidth = (xy[0]+w_p1[0])/2.0
+            mid_dheight = (xy[0]+h_p1[0])/2.0
 
             textwobj = ax.text(mid_dwidth, xy[1]*1.015, '$'+wlabel+'$', fontsize=25)
             texthobj = ax.text(mid_dheight, xy[1], "$"+hlabel+"$", fontsize=25)
 
             # Find out the pixel measurements of the text's bounding box
             renderer = FigureCanvasAgg(fig).get_renderer()
-            bbox = textobj.get_window_extent(renderer)
+            bbox = textwobj.get_window_extent(renderer)
             # Find out what one horizontal and vertical unit is in pixel
             conversion_matrix = ax.transData.transform([(0,1),(1,0)])-ax.transData.transform((0,0))
             # Multiply the width in pixels by 1/width-conversion
