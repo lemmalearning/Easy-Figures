@@ -84,7 +84,7 @@ class Figures:
 		import StringIO
 
 		export_str = StringIO.StringIO()
-		self.fig.savefig(export_str, format='svg')
+		self.fig.savefig(export_str, format='svg', bbox_inches='tight')
 		export_str.seek(0)  # rewind the data
 		return export_str.buf  # this is svg data
 
