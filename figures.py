@@ -78,6 +78,8 @@ class Figures:
 			self.ax.spines['bottom'].set_position('center')
 			self.ax.spines['top'].set_color('none')
 
+		self.fig.tight_layout()
+
 	def __export__(self):
 		import StringIO
 
