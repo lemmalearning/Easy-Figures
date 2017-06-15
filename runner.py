@@ -60,7 +60,7 @@ def main():
 
 	circ = f.addCircle(xy=(1, 0), label="r", diameter=3)
 	func = lambda x: x**2
-	f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]], arrows=False, ticks=[], grid=False, function=func)
+	#f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]], arrows=False, ticks=[], grid=False, function=func)
 	f.format_axis()
 	f.__writeFile__('/Users/ajpersinger/test.svg')
 
