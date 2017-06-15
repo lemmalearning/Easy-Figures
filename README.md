@@ -24,7 +24,7 @@ The `Figures` lets you add shapes and modify the axes.
     poly.labelVertices(['a','b','c','d','e'])
 	f.__writeFile__('/Users/<USER>/polygon.png')
 
-![Regular Polygon](images/regular_polygon.png "Regular Polygon")
+![Regular Polygon](images/polygon.png "Regular Polygon")
 
 ##### Circle
 
