@@ -27,10 +27,10 @@ class Circle:
 			textobj.set_position((mid_radius-width, xy[1]*1.015))
 
 		else:
-			circle = patches.Circle(xy, radius=diameter, fill=False, linewidth=3)
+			circle = patches.Circle(xy, radius=diameter/2, fill=False, linewidth=3)
 
-			p1 = (xy[0]-diameter, xy[1])
-			p2 = (xy[0]+diameter, xy[1])
+			p1 = (xy[0]-diameter/2, xy[1])
+			p2 = (xy[0]+diameter/2, xy[1])
 			plt.plot([p1[0],p2[0]], [p1[1],p2[1]], linewidth=2, ls='dashed', color='black')
 
 			textobj = ax.text(xy[0], xy[1]*1.015, '$'+label+'$', fontsize=25)
