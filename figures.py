@@ -89,7 +89,7 @@ class Figures:
 		return export_str.buf  # this is svg data
 
 	def __writeFile__(self, file_location):
-		plt.savefig(file_location)
+		plt.savefig(file_location, bbox_inches='tight')
 
 	def __display__(self):
 		plt.show()
