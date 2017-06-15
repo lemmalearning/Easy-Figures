@@ -18,7 +18,8 @@ class Figures:
 		else:
 			self.ax.set_xlim([xyrange[0][0],xyrange[0][1]])
 			self.ax.set_ylim([xyrange[1][0],xyrange[1][1]])
-			plt.figsize=(1, 1)
+			#plt.gca().set_aspect('equal', adjustable='box')
+			plt.axis('equal')
 			if function is not None:
 				x = np.linspace(xyrange[0][0], xyrange[0][1], 100)
 				y = function(x)
