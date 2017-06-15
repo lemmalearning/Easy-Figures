@@ -23,7 +23,8 @@ class Circle:
 			# Multiply the width in pixels by 1/width-conversion
 			width = (bbox.bounds[2]*(1/conversion_matrix[1,0]))/2
 			# Left shift it
-			textobj.set_position((mid_radius-width, xy[1]*1.015))
+			textobj.set_position((mid_radius-width, (xy[1]*1.015 if xy[1]!=0 else xy[1]+0.2)))
+
 
 		else:
 			circle = patches.Circle(xy, radius=diameter/2, fill=False, linewidth=3)
@@ -42,6 +43,6 @@ class Circle:
 			# Multiply the width in pixels by 1/width-conversion
 			width = (bbox.bounds[2]*(1/conversion_matrix[1,0]))/2
 			# Left shift it
-			textobj.set_position((xy[0], xy[1]*1.015))
+			textobj.set_position((xy[0]-width, (xy[1]*1.015 if xy[1]!=0 else xy[1]+0.05)))
 
 		ax.add_patch(circle)
