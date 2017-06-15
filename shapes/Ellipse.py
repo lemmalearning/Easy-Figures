@@ -46,7 +46,7 @@ class Ellipse:
             w_p2 = (xy[0]-dwidth, xy[1])
             h_p1 = (xy[0], xy[1]+dheight)
             h_p2 = (xy[0], xy[1]-dheight)
-
+			
             plt.plot([xy[0],w_p1[0]], [xy[1],w_p1[1]], linewidth=2, ls='dashed', color='black')
             plt.plot([xy[0],h_p1[0]], [xy[1],h_p1[1]], linewidth=2, ls='dashed', color='black')
 

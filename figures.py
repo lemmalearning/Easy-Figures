@@ -31,7 +31,7 @@ class Figures:
 
 	def __export__(self):
 		import StringIO
-
+		
 		export_str = StringIO.StringIO()
 		self.fig.savefig(export_str, format='svg')
 		export_str.seek(0)  # rewind the data
