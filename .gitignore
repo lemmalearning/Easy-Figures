@@ -2,3 +2,5 @@
 .DS_Store
 runner.py
 */*.pyc
+*/*.DS_Store
+images/test.svg
