@@ -4,7 +4,7 @@ matplotlib.use('Agg') # Change renderer so it doesn't use the GUI
 matplotlib.rcParams['mathtext.fontset'] = 'cm' # Change font to Computer Modern (LaTeX font)
 import matplotlib.pyplot as plt
 import numpy as np
-from shapes import Polygon, Circle
+from shapes import Polygon, Circle, Ellipse
 
 class Figures:
 	def __init__(self):
@@ -52,5 +52,5 @@ class Figures:
 		return circle
 
 	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, dwidth=None, dheight=None):
-    	ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, dwidth, dheight)
-        return ellipse
+		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, dwidth, dheight)
+		return ellipse
