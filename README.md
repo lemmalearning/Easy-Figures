@@ -43,6 +43,26 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Circle (Diameter)](images/circle-d.png "Circle (Diameter)")
 
+##### Axis
+
+
+	f = figures.Figures()
+	func = lambda x: x**2
+	f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]], function=func)
+	f.__writeFile__('/Users/<USER>/axis-f.png')
+
+![Axis (with Function)](images/axis-f.png "Axis (with Function)")
+
+
+---
+
+	f = figures.Figures()
+	f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]])
+	f.__writeFile__('/Users/<USER>/axis.png')
+
+![Axis](images/axis.png "Axis")
+
+
 
 # License
 
