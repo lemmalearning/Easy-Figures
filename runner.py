@@ -47,11 +47,21 @@ def angle_builder(angle=(45*np.pi)/180, rotation=0, translation=(0,0), text=""):
 
 def main():
 	f = figures.Figures()
-	#poly = f.addCircle(xy=(5,4),label="Q", diameter=1)
-	circ = f.addCircle(xy=(4,3), label="r", radius=4)
-	#ell = f.addEllipse(xy=(6,12), width=5, height=8, wlabel="r", hlabel="h")
-    #ell2 = f.addEllipse(xy=(6,12), dwidth=5, dheight=8, wlabel="r", hlabel="h")
-	f.format_axis(xyrange=[[-5,5],[-5,5]], arrows=False, ticks=[], grid=False, function=None)
+	"""
+	poly = f.addPolygon(np.matrix([
+		[55, 45],
+		[45, 51],
+		[49, 63],
+		[60, 63],
+		[64, 51]
+	]))
+	poly.labelVertices(['a','b','c','d','e'])
+	"""
+
+	circ = f.addCircle(xy=(3, 0), label="r", radius=3)
+	func = lambda x: x**2
+	#f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]], function=func)
+	f.format_axis()
 	f.__writeFile__('/Users/ajpersinger/test.svg')
 
 	return None
