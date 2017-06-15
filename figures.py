@@ -12,22 +12,46 @@ class Figures:
 
 	def format_axis(self, xyrange=None, arrows=False, ticks=[], grid=False, function=None):
 		# Modify the plot view to scale, remove axis, and center our shape
-		self.ax.autoscale_view()
+
+		def adjust_spines(ax, spines):
+		    for loc, spine in ax.spines.items():
+		        if loc in spines:
+		            spine.set_position(('outward', 10))  # outward by 10 points
+		            spine.set_smart_bounds(True)
+		        else:
+		            spine.set_color('none')  # don't draw spine
+
+		    # turn off ticks where there is no spine
+		    if 'left' in spines:
+		        ax.yaxis.set_ticks_position('left')
+		    else:
+		        # no yaxis ticks
+		        ax.yaxis.set_ticks([])
+
+		    if 'bottom' in spines:
+		        ax.xaxis.set_ticks_position('bottom')
+		    else:
+		        # no xaxis ticks
+		        ax.xaxis.set_ticks([])
+
+
+		#self.ax.autoscale_view()
 		if xyrange == None:
 			plt.axis('off')
+			plt.axis('scaled')
 		else:
-			self.ax.set_xlim([xyrange[0][0],xyrange[0][1]])
-			self.ax.set_ylim([xyrange[1][0],xyrange[1][1]])
-			#plt.gca().set_aspect('equal', adjustable='box')
-			plt.axis('equal')
+			plt.gca().set_aspect('equal', adjustable='box')
+			self.ax.set_xlim(left=xyrange[0][0], right=xyrange[0][1])
+			self.ax.set_ylim(bottom=xyrange[1][0], top=xyrange[1][1])
+			self.ax.spines['left'].set_position('center')
+			self.ax.spines['right'].set_color('none')
+			self.ax.spines['bottom'].set_position('center')
+			self.ax.spines['top'].set_color('none')
+
 			if function is not None:
 				x = np.linspace(xyrange[0][0], xyrange[0][1], 100)
 				y = function(x)
-				plt.plot(x, y)
-
-		plt.axis('scaled')
-
-
+				self.ax.plot(x, y)
 
 	def __export__(self):
 		import StringIO
