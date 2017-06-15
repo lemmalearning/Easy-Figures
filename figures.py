@@ -1,6 +1,7 @@
 import shapes
 import matplotlib
-matplotlib.use('tkagg')
+matplotlib.use('Agg')
+matplotlib.rcParams['mathtext.fontset'] = 'cm' # Change font to Computer Modern (LaTeX font)
 import matplotlib.pyplot as plt
 import numpy as np
 from shapes import Polygon, Circle
