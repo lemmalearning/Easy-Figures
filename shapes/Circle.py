@@ -1,5 +1,4 @@
 import matplotlib
-matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.backends.backend_agg import FigureCanvasAgg
@@ -27,10 +26,10 @@ class Circle:
 			textobj.set_position((mid_radius-width, xy[1]*1.015))
 
 		else:
-			circle = patches.Circle(xy, radius=diameter, fill=False, linewidth=3)
+			circle = patches.Circle(xy, radius=diameter/2, fill=False, linewidth=3)
 
-			p1 = (xy[0]-diameter, xy[1])
-			p2 = (xy[0]+diameter, xy[1])
+			p1 = (xy[0]-diameter/2, xy[1])
+			p2 = (xy[0]+diameter/2, xy[1])
 			plt.plot([p1[0],p2[0]], [p1[1],p2[1]], linewidth=2, ls='dashed', color='black')
 
 			textobj = ax.text(xy[0], xy[1]*1.015, '$'+label+'$', fontsize=25)
@@ -43,6 +42,9 @@ class Circle:
 			# Multiply the width in pixels by 1/width-conversion
 			width = (bbox.bounds[2]*(1/conversion_matrix[1,0]))/2
 			# Left shift it
-			textobj.set_position((xy[0], xy[1]*1.015))
+			textobj.set_position((xy[0]-width, xy[1]*1.015))
 
 		ax.add_patch(circle)
+
+
+# TODO: CM 10 Font, add an option for the midpoint

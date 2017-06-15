@@ -1,7 +1,7 @@
 import numpy as np
 from random import randint
 import matplotlib
-matplotlib.use('tkagg')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import patches
 import figures
@@ -46,10 +46,23 @@ def angle_builder(angle=(45*np.pi)/180, rotation=0, translation=(0,0), text=""):
 	plt.show()
 
 def main():
-	t = figures.Figures()
-	poly = t.addCircle(xy=(5,4),label="Q", diameter=1)
+	f = figures.Figures()
+	"""
+	poly = f.addPolygon(np.matrix([
+		[55, 45],
+		[45, 51],
+		[49, 63],
+		[60, 63],
+		[64, 51]
+	]))
+	poly.labelVertices(['a','b','c','d','e'])
+	"""
 
-	t.__writeFile__('/Users/ajpersinger/test.svg')
+	circ = f.addCircle(xy=(1, 0), label="r", diameter=3)
+	func = lambda x: x**2
+	f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]], arrows=False, ticks=[], grid=False, function=func)
+	f.format_axis()
+	f.__writeFile__('/Users/ajpersinger/test.svg')
 
 	return None
 
