@@ -1,3 +1,4 @@
 *.pyc
 .DS_Store
 runner.py
+*/*.pyc
