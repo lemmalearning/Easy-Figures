@@ -46,13 +46,13 @@ def angle_builder(angle=(45*np.pi)/180, rotation=0, translation=(0,0), text=""):
 	plt.show()
 
 def main():
-	t = figures.Figures()
-	#poly = t.addCircle(xy=(5,4),label="Q", diameter=1)
-    #circ = t.addCircle(xy=(7,10), label="r", radius=4)
-	ell = t.addEllipse(xy=(6,12), width=5, height=8, wlabel="r", hlabel="h")
-    #ell2 = t.addEllipse(xy=(6,12), dwidth=5, dheight=8, wlabel="r", hlabel="h")
-	t.format_axis()
-	t.__writeFile__('/Users/chloesheen/test.svg')
+	f = figures.Figures()
+	#poly = f.addCircle(xy=(5,4),label="Q", diameter=1)
+	circ = f.addCircle(xy=(4,3), label="r", radius=4)
+	#ell = f.addEllipse(xy=(6,12), width=5, height=8, wlabel="r", hlabel="h")
+    #ell2 = f.addEllipse(xy=(6,12), dwidth=5, dheight=8, wlabel="r", hlabel="h")
+	f.format_axis(xyrange=[[-5,5],[-5,5]], arrows=False, ticks=[], grid=False, function=None)
+	f.__writeFile__('/Users/ajpersinger/test.svg')
 
 	return None
 

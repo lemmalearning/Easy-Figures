@@ -12,26 +12,29 @@ class Figures:
 
 	def format_axis(self, xyrange=None, arrows=False, ticks=[], grid=False, function=None):
 		# Modify the plot view to scale, remove axis, and center our shape
-		self.ax.autoscale_view()
+		#self.ax.autoscale_view()
 		if xyrange == None:
 			plt.axis('off')
 		else:
 			self.ax.set_xlim([xyrange[0][0],xyrange[0][1]])
 			self.ax.set_ylim([xyrange[1][0],xyrange[1][1]])
+			self.ax.set_xbound(lower=xyrange[0][0], upper=xyrange[0][1])
+			self.ax.set_ybound(lower=xyrange[1][0], upper=xyrange[1][1])
 			#plt.gca().set_aspect('equal', adjustable='box')
+			self.ax.set_autoscale_on(False)
 			plt.axis('equal')
 			if function is not None:
 				x = np.linspace(xyrange[0][0], xyrange[0][1], 100)
 				y = function(x)
 				plt.plot(x, y)
 
-		plt.axis('scaled')
+		#plt.axis('scaled')
 
 
 
 	def __export__(self):
 		import StringIO
-		
+
 		export_str = StringIO.StringIO()
 		self.fig.savefig(export_str, format='svg')
 		export_str.seek(0)  # rewind the data
