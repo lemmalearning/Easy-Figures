@@ -43,6 +43,37 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Circle (Diameter)](images/circle-d.png "Circle (Diameter)")
 
+##### Axis
+
+	f = figures.Figures()
+	f.format_axis(xyrange=[[-10,10], [-10,10]], grid=True, tick_interval=.25, tick_label_interval=1, color='blue')
+	f.__writeFile__('/Users/<USER>/axis.png')
+
+![Axis](images/axis.png "Axis")
+
+##### Functions
+
+
+	f = figures.Figures()
+	func = lambda x: x**2
+	f.add_function(func, [[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]], colors="blue")
+	f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]])
+	f.__writeFile__('/Users/<USER>/axis-f.png')
+
+![Function](images/func.png "Function")
+
+
+---
+	f = figures.Figures()
+	func1 = lambda x: x**2
+	func2 = lambda x: x**3
+	f.add_function([func1, func2], [[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]],[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]]], colors=["blue", "green"])
+	f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]])
+	f.__writeFile__('/Users/<USER>/func-multi.png')
+
+![Function (Multiple)](images/func-multi.png "Function (Multiple)")
+
+
 
 # License
 
