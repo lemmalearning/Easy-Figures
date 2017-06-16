@@ -34,7 +34,6 @@ def angle_builder(angle=(45*np.pi)/180, rotation=0, translation=(0,0), text=""):
 	# Create and add polygon
 	ax.add_patch(polygon)
 
-
 	# Modify the plot view to scale, remove axis, and center our shape
 	ax.autoscale_view()
 	plt.axis('off')
@@ -49,8 +48,9 @@ def main():
 	t = figures.Figures()
 	#poly = t.addCircle(xy=(5,4),label="Q", diameter=1)
     #circ = t.addCircle(xy=(7,10), label="r", radius=4)
-	ell = t.addEllipse(xy=(6,12), width=5, height=8, wlabel="r", hlabel="h")
-    #ell2 = t.addEllipse(xy=(6,12), dwidth=5, dheight=8, wlabel="r", hlabel="h")
+	#ellr = t.addEllipse(xy=(10,12), width=50, height=70, wlabel="r", hlabel="h") #hlabel ok
+	ellr1 = t.addEllipse(xy=(60030,59004), width=57, height=24, wlabel="r", hlabel="h", is_radius=0) 
+
 	t.format_axis()
 	t.__writeFile__('/Users/chloesheen/test.svg')
 

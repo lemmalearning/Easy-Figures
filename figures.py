@@ -31,7 +31,7 @@ class Figures:
 
 	def __export__(self):
 		import StringIO
-		
+
 		export_str = StringIO.StringIO()
 		self.fig.savefig(export_str, format='svg')
 		export_str.seek(0)  # rewind the data
@@ -51,6 +51,6 @@ class Figures:
 		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label)
 		return circle
 
-	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, dwidth=None, dheight=None):
-		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, dwidth, dheight)
+	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=None):
+		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius)
 		return ellipse
