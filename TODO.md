@@ -4,8 +4,8 @@
 1. Smart text for points
 
 ### Chloe:
-1. Implement correct height/width for text in Ellipse
-1. Add functionality for arbritary text
+1. ~~Implement correct height/width for text in Ellipse~~
+1. Add functionality for arbitrary text
 ### Axel:
 1. Triangle builder using angles and sides
 1. Label vertices for polygons
