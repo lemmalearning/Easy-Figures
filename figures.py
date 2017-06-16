@@ -10,39 +10,24 @@ from shapes import Polygon, Circle, Ellipse
 class Figures:
 	def __init__(self):
 		self.fig, self.ax = plt.subplots()
+		self.tick_interval = .25
+		self.tick_label_interval = 1
 
-	def add_text(self, xy, text, color="black", fontsize=25, alignment='center'):
-		raise Exception('Not implemented yet!')
+	def __export__(self):
+		import StringIO
 
-	def add_function(self, functions, xyranges, colors='black', linewidth=2):
-		color_dict = {
-			"blue": 'b',
-			"green": 'g',
-			"red": 'r',
-			"cyan": 'c',
-			"magenta": 'm',
-			"yellow": 'y',
-			"black": 'k',
-			"white": 'w'
-		}
+		export_str = StringIO.StringIO()
+		self.fig.savefig(export_str, format='svg', bbox_inches='tight')
+		export_str.seek(0)  # rewind the data
+		return export_str.buf  # this is svg data
 
-		if not isinstance(functions, list):
-			functions = [functions]
-			xyranges = [xyranges]
-			colors = [colors]
+	def __writeFile__(self, file_location):
+		plt.savefig(file_location, bbox_inches='tight')
 
-		for function, xyrange, color in zip(functions, xyranges, colors):
-			x = np.linspace(xyrange[0][0], xyrange[0][1], 100)
-			y = function(x)
-			self.ax.plot(x, y, color_dict[color])
+	def __display__(self):
+		plt.show()
 
-	def format_axis(self, xyrange=None, arrows=False, tick_label_interval=1, tick_interval=1, grid=False, arrow=True, color='black'):
-		# TODO:
-		    # Expose color of axis to user
-			# Get rid of margins
-			# Consecutive integers for ticks by default
-			# Don't show numbers for all ticks
-
+	def format_axis(self, xyrange=None, grid=False, arrows=True, color='black'):
 		# Modify the plot view to scale, remove axis, and center our shape
 
 		color_dict = {
@@ -94,38 +79,18 @@ class Figures:
 		if grid:
 			self.ax.grid(color='k', linestyle='dashed', linewidth=.5, alpha=0.5)
 
-		if arrow:
-			# https://3diagramsperpage.wordpress.com/2014/05/25/arrowheads-for-axis-in-matplotlib/
+		if arrows:
 			xmin, xmax = self.ax.get_xlim()
 			ymin, ymax = self.ax.get_ylim()
-			# get width and height of axes object to compute
-			# matching arrowhead length and width
-			dps = self.fig.dpi_scale_trans.inverted()
-			bbox = self.ax.get_window_extent().transformed(dps)
-			width, height = bbox.width, bbox.height
 
-			# manual arrowhead width and length
-			hw = 1./20.*(ymax-ymin)
-			hl = 1./20.*(xmax-xmin)
-			lw = 1. # axis line width
-
-			# compute matching arrowhead length and width
-			yhw = hw/(ymax-ymin)*(xmax-xmin)* height/width
-			yhl = hl/(xmax-xmin)*(ymax-ymin)* width/height
-
-			# draw x and y axis
-			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = lw,
-			         head_width=tick_interval, head_length=tick_interval,
+			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
+			         head_width=self.tick_interval, head_length=self.tick_interval,
 			         length_includes_head=True, clip_on=False,color=color_dict[color])
 
-			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = lw,
-			         head_width=tick_interval, head_length=tick_interval,
+			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
+			         head_width=self.tick_interval, head_length=self.tick_interval,
 					 length_includes_head=True, clip_on=False,color=color_dict[color])
-		# Control ticks
-		self.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
-		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
-		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
-		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
+
 
 		# Control color
 		self.ax.spines['bottom'].set_color(color_dict[color])
@@ -133,19 +98,61 @@ class Figures:
 
 		self.fig.tight_layout()
 
-	def __export__(self):
-		import StringIO
+	def add_point(self, xy, text, color='black'):
+		color_dict = {
+			"blue": 'b',
+			"green": 'g',
+			"red": 'r',
+			"cyan": 'c',
+			"magenta": 'm',
+			"yellow": 'y',
+			"black": 'k',
+			"white": 'w'
+		}
+		if not isinstance(color, list):
+			color = [color]
+			xy = [xy]
+			text = [text]
 
-		export_str = StringIO.StringIO()
-		self.fig.savefig(export_str, format='svg', bbox_inches='tight')
-		export_str.seek(0)  # rewind the data
-		return export_str.buf  # this is svg data
+		for xy, text, color in zip(xy, text, color):
+			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]))
+			self.ax.annotate(text, xy=xy, textcoords='offset points')
 
-	def __writeFile__(self, file_location):
-		plt.savefig(file_location, bbox_inches='tight')
+	def add_text(self, xy, text, color="black", fontsize=25, alignment='center'):
+		raise Exception('Not implemented yet!')
 
-	def __display__(self):
-		plt.show()
+	def add_function(self, functions, xyranges, colors='black', linewidth=2):
+		color_dict = {
+			"blue": 'b',
+			"green": 'g',
+			"red": 'r',
+			"cyan": 'c',
+			"magenta": 'm',
+			"yellow": 'y',
+			"black": 'k',
+			"white": 'w'
+		}
+
+		if not isinstance(functions, list):
+			functions = [functions]
+			xyranges = [xyranges]
+			colors = [colors]
+
+		for function, xyrange, color in zip(functions, xyranges, colors):
+			x = np.linspace(xyrange[0][0], xyrange[0][1], 100)
+			y = function(x)
+			self.ax.plot(x, y, color_dict[color])
+
+
+	def ticks(self, tick_label_interval=1, tick_interval=1):
+		self.tick_interval = tick_interval
+		self.tick_label_interval = tick_label_interval
+		# Control ticks
+		self.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
+		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
+		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
+		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
+
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
