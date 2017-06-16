@@ -3,6 +3,7 @@ import matplotlib
 matplotlib.use('Agg') # Change renderer so it doesn't use the GUI
 matplotlib.rcParams['mathtext.fontset'] = 'cm' # Change font to Computer Modern (LaTeX font)
 import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = [10,10]
 import numpy as np
 from shapes import Polygon, Circle, Ellipse
 
@@ -35,7 +36,7 @@ class Figures:
 			y = function(x)
 			self.ax.plot(x, y, color_dict[color])
 
-	def format_axis(self, xyrange=None, arrows=False, ticks=[], grid=False):
+	def format_axis(self, xyrange=None, arrows=False, tick_label_interval=1, tick_interval=1, grid=False):
 		# TODO:
 		    # Expose color of axis to user
 			# Get rid of margins
@@ -65,7 +66,6 @@ class Figures:
 		        # no xaxis ticks
 		        ax.xaxis.set_ticks([])
 
-		#self.ax.autoscale_view()
 		if xyrange == None:
 			plt.axis('off')
 			plt.axis('scaled')
@@ -76,11 +76,20 @@ class Figures:
 
 			self.ax.spines['right'].set_color('none')
 			self.ax.spines['top'].set_color('none')
-			#self.ax.spines['bottom'].set_position('center')
-			#self.ax.spines['left'].set_position('center')
 
 			self.ax.spines['left'].set_position(('data', 0))
 			self.ax.spines['bottom'].set_position(('data', 0))
+
+		if grid:
+			self.ax.grid(color='k', linestyle='dashed', linewidth=.5, alpha=0.5)
+
+		# Control ticks
+		self.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
+		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
+		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
+		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
+
+
 
 		self.fig.tight_layout()
 
