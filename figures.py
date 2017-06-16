@@ -83,11 +83,11 @@ class Figures:
 			ymin, ymax = self.ax.get_ylim()
 
 			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
-			         head_width=self.tick_interval, head_length=self.tick_interval,
+			         head_width=self.tick_interval/3, head_length=self.tick_interval/3,
 			         length_includes_head=True, clip_on=False,color=color_dict[color])
 
 			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
-			         head_width=self.tick_interval, head_length=self.tick_interval,
+			         head_width=self.tick_interval/3, head_length=self.tick_interval/3,
 					 length_includes_head=True, clip_on=False,color=color_dict[color])
 
 
@@ -161,8 +161,8 @@ class Figures:
 		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label)
 		return circle
 
-	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, dwidth=None, dheight=None):
-		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, dwidth, dheight)
+	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=True):
+		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius)
 		return ellipse
 
 	def addTriangle_angle(self, angle=(45*np.pi)/180, rotation=0):
