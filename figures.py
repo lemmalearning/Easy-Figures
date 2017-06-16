@@ -10,8 +10,8 @@ class Figures:
 	def __init__(self):
 		self.fig, self.ax = plt.subplots()
 
-	def add_text(self, xy, text, color="black", fontsize=25):
-		raise Exception('Not implemented yet')
+	def add_text(self, xy, text, color="black", fontsize=25, alignment='center'):
+		raise Exception('Not implemented yet!')
 
 	def add_function(self, functions, xyranges, colors='black', linewidth=2):
 		color_dict = {
@@ -73,10 +73,14 @@ class Figures:
 			plt.gca().set_aspect('equal', adjustable='box')
 			self.ax.set_xlim(left=xyrange[0][0], right=xyrange[0][1])
 			self.ax.set_ylim(bottom=xyrange[1][0], top=xyrange[1][1])
-			self.ax.spines['left'].set_position('center')
+
 			self.ax.spines['right'].set_color('none')
-			self.ax.spines['bottom'].set_position('center')
 			self.ax.spines['top'].set_color('none')
+			#self.ax.spines['bottom'].set_position('center')
+			#self.ax.spines['left'].set_position('center')
+
+			self.ax.spines['left'].set_position(('data', 0))
+			self.ax.spines['bottom'].set_position(('data', 0))
 
 		self.fig.tight_layout()
 
