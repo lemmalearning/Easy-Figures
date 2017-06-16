@@ -115,7 +115,8 @@ class Figures:
 
 		for xy, text, color in zip(xy, text, color):
 			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]), ms=pointsize)
-			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, textcoords='offset points')
+			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
+
 
 	def addText(self, xy, text, color="black", fontsize=25, alignment='center'):
 		raise Exception('Not implemented yet!')
@@ -138,7 +139,7 @@ class Figures:
 			colors = [colors]
 
 		for function, xyrange, color in zip(functions, xyranges, colors):
-			x = np.linspace(xyrange[0][0], xyrange[0][1], 100)
+			x = np.linspace(xyrange[0][0], xyrange[0][1], 1000)
 			y = function(x)
 			self.ax.plot(x, y, color_dict[color])
 
