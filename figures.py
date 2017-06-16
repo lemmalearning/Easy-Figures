@@ -166,7 +166,7 @@ class Figures:
 		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius)
 		return ellipse
 
-	def addTriangle_angle(self, angle=(45*np.pi)/180, rotation=0):
+	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0):
 		# Define the angles and sides
 		alpha = angle
 		beta = np.pi/2
@@ -177,9 +177,9 @@ class Figures:
 		C = np.sin(gamma)/np.sin(alpha)
 
 		# Define the vertices
-		vertex_A = [0, A]
-		vertex_B = [0, 0]
-		vertex_C = [C, 0]
+		vertex_A = [0+xy[0], A+xy[1]]
+		vertex_B = xy
+		vertex_C = [C+xy[0], 0+xy[1]]
 
 		polygon = plt.Polygon([vertex_A, vertex_B, vertex_C], fill=False, linewidth=3)
 
