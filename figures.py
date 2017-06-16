@@ -21,7 +21,7 @@ class Figures:
 		return export_str.buf  # this is svg data
 
 	def __writeFile__(self, file_location):
-		plt.savefig(file_location, bbox_inches='tight')
+		plt.savefig(file_location)
 
 	def __display__(self):
 		plt.show()
@@ -95,7 +95,7 @@ class Figures:
 		self.ax.spines['bottom'].set_color(color_dict[color])
 		self.ax.spines['left'].set_color(color_dict[color])
 
-		self.fig.tight_layout()
+		self.fig.set_tight_layout(True)
 
 	def addPoint(self, xy, text, pointsize=6, fontsize=12, color='black'):
 		color_dict = {
