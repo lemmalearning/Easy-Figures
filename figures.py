@@ -97,7 +97,28 @@ class Figures:
 
 		self.fig.set_tight_layout(True)
 
-	def addPoint(self, xy, text, pointsize=6, fontsize=12, color='black'):
+	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black'):
+		color_dict = {
+			"blue": 'b',
+			"green": 'g',
+			"red": 'r',
+			"cyan": 'c',
+			"magenta": 'm',
+			"yellow": 'y',
+			"black": 'k',
+			"white": 'w'
+		}
+		if not isinstance(colors, list):
+			colors = [colors]
+			xys = [xys]
+			texts = [texts]
+
+		for xy, text, color in zip(xys, texts, colors):
+			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]), ms=pointsize)
+			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
+
+
+	def addText(self, xy, text, color="black", fontsize=25, alignment='center'):
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
@@ -112,14 +133,10 @@ class Figures:
 			color = [color]
 			xy = [xy]
 			text = [text]
+			alignment = [alignment]
 
-		for xy, text, color in zip(xy, text, color):
-			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]), ms=pointsize)
-			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
-
-
-	def addText(self, xy, text, color="black", fontsize=25, alignment='center'):
-		raise Exception('Not implemented yet!')
+		for xy, text, color, alignment in zip(xy, text, color, alignment):
+			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=alignment)
 
 	def addFunction(self, functions, xyranges, colors='black', linewidth=2):
 		color_dict = {
