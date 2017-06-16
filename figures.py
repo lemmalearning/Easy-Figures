@@ -36,7 +36,7 @@ class Figures:
 			y = function(x)
 			self.ax.plot(x, y, color_dict[color])
 
-	def format_axis(self, xyrange=None, arrows=False, tick_label_interval=1, tick_interval=1, grid=False):
+	def format_axis(self, xyrange=None, arrows=False, tick_label_interval=1, tick_interval=1, grid=False, color='black'):
 		# TODO:
 		    # Expose color of axis to user
 			# Get rid of margins
@@ -44,6 +44,17 @@ class Figures:
 			# Don't show numbers for all ticks
 
 		# Modify the plot view to scale, remove axis, and center our shape
+
+		color_dict = {
+			"blue": 'b',
+			"green": 'g',
+			"red": 'r',
+			"cyan": 'c',
+			"magenta": 'm',
+			"yellow": 'y',
+			"black": 'k',
+			"white": 'w'
+		}
 
 		def adjust_spines(ax, spines):
 		    for loc, spine in ax.spines.items():
@@ -89,7 +100,9 @@ class Figures:
 		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
 		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
 
-
+		# Control color
+		self.ax.spines['bottom'].set_color(color_dict[color])
+		self.ax.spines['left'].set_color(color_dict[color])
 
 		self.fig.tight_layout()
 

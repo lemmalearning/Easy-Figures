@@ -46,7 +46,7 @@ The `Figures` lets you add shapes and modify the axes.
 ##### Axis
 
 	f = figures.Figures()
-	f.format_axis(xyrange=[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]])
+	f.format_axis(xyrange=[[-10,10], [-10,10]], grid=True, tick_interval=.25, tick_label_interval=1, color='blue')
 	f.__writeFile__('/Users/<USER>/axis.png')
 
 ![Axis](images/axis.png "Axis")
