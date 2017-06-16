@@ -36,7 +36,7 @@ class Figures:
 			y = function(x)
 			self.ax.plot(x, y, color_dict[color])
 
-	def format_axis(self, xyrange=None, arrows=False, tick_label_interval=1, tick_interval=1, grid=False, color='black'):
+	def format_axis(self, xyrange=None, arrows=False, tick_label_interval=1, tick_interval=1, grid=False, arrow=True, color='black'):
 		# TODO:
 		    # Expose color of axis to user
 			# Get rid of margins
@@ -94,6 +94,33 @@ class Figures:
 		if grid:
 			self.ax.grid(color='k', linestyle='dashed', linewidth=.5, alpha=0.5)
 
+		if arrow:
+			# https://3diagramsperpage.wordpress.com/2014/05/25/arrowheads-for-axis-in-matplotlib/
+			xmin, xmax = self.ax.get_xlim()
+			ymin, ymax = self.ax.get_ylim()
+			# get width and height of axes object to compute
+			# matching arrowhead length and width
+			dps = self.fig.dpi_scale_trans.inverted()
+			bbox = self.ax.get_window_extent().transformed(dps)
+			width, height = bbox.width, bbox.height
+
+			# manual arrowhead width and length
+			hw = 1./20.*(ymax-ymin)
+			hl = 1./20.*(xmax-xmin)
+			lw = 1. # axis line width
+
+			# compute matching arrowhead length and width
+			yhw = hw/(ymax-ymin)*(xmax-xmin)* height/width
+			yhl = hl/(xmax-xmin)*(ymax-ymin)* width/height
+
+			# draw x and y axis
+			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = lw,
+			         head_width=tick_interval, head_length=tick_interval,
+			         length_includes_head=True, clip_on=False,color=color_dict[color])
+
+			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = lw,
+			         head_width=tick_interval, head_length=tick_interval,
+					 length_includes_head=True, clip_on=False,color=color_dict[color])
 		# Control ticks
 		self.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
 		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
