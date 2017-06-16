@@ -1,11 +1,12 @@
-import shapes
 import matplotlib
-matplotlib.use('Agg') # Change renderer so it doesn't use the GUI
+matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 matplotlib.rcParams['mathtext.fontset'] = 'cm' # Change font to Computer Modern (LaTeX font)
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = [10,10]
-import numpy as np
 from shapes import Polygon, Circle, Ellipse
+
+import numpy as np
+import StringIO
 
 class Figures:
 	def __init__(self):
@@ -14,8 +15,6 @@ class Figures:
 		self.tick_label_interval = 1
 
 	def __export__(self):
-		import StringIO
-
 		export_str = StringIO.StringIO()
 		self.fig.savefig(export_str, format='svg', bbox_inches='tight')
 		export_str.seek(0)  # rewind the data
@@ -98,7 +97,7 @@ class Figures:
 
 		self.fig.tight_layout()
 
-	def add_point(self, xy, text, color='black'):
+	def addPoint(self, xy, text, pointsize=6, fontsize=12, color='black'):
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
@@ -115,13 +114,13 @@ class Figures:
 			text = [text]
 
 		for xy, text, color in zip(xy, text, color):
-			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]))
-			self.ax.annotate(text, xy=xy, textcoords='offset points')
+			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]), ms=pointsize)
+			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, textcoords='offset points')
 
-	def add_text(self, xy, text, color="black", fontsize=25, alignment='center'):
+	def addText(self, xy, text, color="black", fontsize=25, alignment='center'):
 		raise Exception('Not implemented yet!')
 
-	def add_function(self, functions, xyranges, colors='black', linewidth=2):
+	def addFunction(self, functions, xyranges, colors='black', linewidth=2):
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
@@ -144,7 +143,7 @@ class Figures:
 			self.ax.plot(x, y, color_dict[color])
 
 
-	def ticks(self, tick_label_interval=1, tick_interval=1):
+	def addTicks(self, tick_label_interval=1, tick_interval=1):
 		self.tick_interval = tick_interval
 		self.tick_label_interval = tick_label_interval
 		# Control ticks
@@ -165,3 +164,30 @@ class Figures:
 	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, dwidth=None, dheight=None):
 		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, dwidth, dheight)
 		return ellipse
+
+	def addTriangle_angle(self, angle=(45*np.pi)/180, rotation=0):
+		# Define the angles and sides
+		alpha = angle
+		beta = np.pi/2
+		gamma = ((np.pi-beta-alpha))
+
+		A = 1
+		B = np.sin(beta)/np.sin(alpha)
+		C = np.sin(gamma)/np.sin(alpha)
+
+		# Define the vertices
+		vertex_A = [0, A]
+		vertex_B = [0, 0]
+		vertex_C = [C, 0]
+
+		polygon = plt.Polygon([vertex_A, vertex_B, vertex_C], fill=False, linewidth=3)
+
+		# Perform the rotation if at all
+		transformation = matplotlib.transforms.Affine2D().rotate(rotation) + self.ax.transData
+		polygon.set_transform(transformation)
+
+		# Create and add polygon
+		self.ax.add_patch(polygon)
+
+	def addTriangle_side(self):
+		raise Exception('Not implemented yet!')
