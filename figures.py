@@ -13,15 +13,17 @@ class Figures:
 		self.fig, self.ax = plt.subplots()
 		self.tick_interval = .25
 		self.tick_label_interval = 1
+		self.tight_fit = True
+		self.padding = 0
 
 	def __export__(self):
 		export_str = StringIO.StringIO()
-		self.fig.savefig(export_str, format='svg', bbox_inches='tight')
+		self.__writeFile__(export_str, format='svg')
 		export_str.seek(0)  # rewind the data
 		return export_str.buf  # this is svg data
 
-	def __writeFile__(self, file_location):
-		plt.savefig(file_location)
+	def __writeFile__(self, file_location, **kwargs):
+		self.fig.savefig(file_location, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
 
 	def __display__(self):
 		plt.show()
@@ -95,7 +97,30 @@ class Figures:
 		self.ax.spines['bottom'].set_color(color_dict[color])
 		self.ax.spines['left'].set_color(color_dict[color])
 
-		self.fig.set_tight_layout(True)
+
+
+	def setPixelSize(self, width=400, height=None, padding=0):
+		"""Sets the pixel size of the figure.
+
+			If only width is provided, then the figure will try to tight fit to that width
+			If height is also specified, then the size is completely fixed to that size
+		"""
+
+		# a point is 1/72in;  12pt = 16px
+		px2in = lambda p: (p * 0.75 / 72.0)
+
+		self.padding = px2in(padding)
+
+		width_in = px2in(width)
+		height_in = width_in
+
+		if height != None:
+			self.tight_fit = False
+			self.fig.set_tight_layout({ "pad": self.padding })
+			height_in = px2in(height)
+
+		self.fig.set_size_inches((width_in, height_in))
+
 
 	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black'):
 		color_dict = {
@@ -118,7 +143,7 @@ class Figures:
 			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
 
 
-	def addText(self, xy, text, color="black", fontsize=25, alignment='center'):
+	def addText(self, xy, text, color="black", fontsize=12, alignment='center'):
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
@@ -161,7 +186,7 @@ class Figures:
 			self.ax.plot(x, y, color_dict[color])
 
 
-	def addTicks(self, tick_label_interval=1, tick_interval=1):
+	def addTicks(self, tick_label_interval=1, tick_interval=1, fontsize=12):
 		self.tick_interval = tick_interval
 		self.tick_label_interval = tick_label_interval
 		# Control ticks
@@ -169,7 +194,8 @@ class Figures:
 		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
 		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
 		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
-
+		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
+		#self.ax.tick_params(axis='both', which='minor', labelsize=8)
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)

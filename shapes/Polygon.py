@@ -17,5 +17,15 @@ class Polygon:
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
 		# The side that's mentioned first is horizontal
 		self.labels = label_list
+
+		centroid = np.mean(self.vertices, axis=0)
+		print(centroid)
+
 		for i, label in enumerate(self.labels):
-			self.ax.text(self.vertices[i, 0], self.vertices[i, 1], '$'+label+'$', fontsize=15)
+			d = self.vertices[i, :] - centroid
+			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d
+
+			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=12, \
+				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
+				verticalalignment=("top" if d[0, 1] < 0 else "bottom") \
+			)
