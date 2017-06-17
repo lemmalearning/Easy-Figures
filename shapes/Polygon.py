@@ -19,7 +19,6 @@ class Polygon:
 		self.labels = label_list
 
 		centroid = np.mean(self.vertices, axis=0)
-		print(centroid)
 
 		for i, label in enumerate(self.labels):
 			d = self.vertices[i, :] - centroid

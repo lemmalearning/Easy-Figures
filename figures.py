@@ -7,20 +7,48 @@ from shapes import Polygon, Circle, Ellipse
 
 import numpy as np
 import StringIO
+import math
+import re
+
 
 class Figures:
 	def __init__(self):
 		self.fig, self.ax = plt.subplots()
+		self.fig.set_dpi(72)
 		self.tick_interval = .25
 		self.tick_label_interval = 1
 		self.tight_fit = True
 		self.padding = 0
+		self.height = None
 
 	def __export__(self):
 		export_str = StringIO.StringIO()
 		self.__writeFile__(export_str, format='svg')
 		export_str.seek(0)  # rewind the data
-		return export_str.buf  # this is svg data
+		s = export_str.buf  # this is svg data
+
+		# Clipping height to the used area after rendering
+		# https://stackoverflow.com/questions/22667224/matplotlib-get-text-bounding-box-independent-of-backend/22689498
+		# https://stackoverflow.com/questions/28692981/matplotlib-get-resulting-bounding-box-of-bbox-inches-tight
+		#print(self.ax.get_position().bounds) # This gives you percentage wise the xmin, ymin, width, height up to the very edge of the grid lines
+		#print(self.fig.bbox)
+		if self.height == 'auto':
+		 	bb = self.ax.get_tightbbox(self.fig._cachedRenderer) #get_renderer()))
+
+			minY = math.floor(bb.y0)
+			maxY = math.ceil(bb.y1)
+
+			s = re.sub(r'height="[0-9]+pt"', 'height="%dpt"' % (maxY - minY), s)
+
+			viewBoxReg = r'viewBox="([0-9]+ [0-9]+ [0-9]+ [0-9]+)"';
+			viewBox = [int(x) for x in re.search(viewBoxReg, s).group(1).split(' ')]
+			viewBox[1] = viewBox[3] - maxY
+			viewBox[3] = (maxY - minY)
+			s = re.sub(viewBoxReg, 'viewBox="' + ' '.join([str(x) for x in viewBox]) + '"', s)
+
+		return s
+
+
 
 	def __writeFile__(self, file_location, **kwargs):
 		self.fig.savefig(file_location, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
@@ -114,7 +142,12 @@ class Figures:
 		width_in = px2in(width)
 		height_in = width_in
 
-		if height != None:
+		if height == 'auto':
+			self.height = height
+			self.tight_fit = False
+			self.fig.set_tight_layout({ "pad": self.padding })
+			height_in = 2*width_in
+		elif height != None:
 			self.tight_fit = False
 			self.fig.set_tight_layout({ "pad": self.padding })
 			height_in = px2in(height)
