@@ -8,7 +8,6 @@ import numpy as np
 class Ellipse:
 	matplotlib_obj = None
 	def __init__(self, fig, ax, xy=(0,0), width=None, height=None, wlabel="", hlabel="", is_radius=True):
-		print is_radius, hlabel=="" or wlabel==""
 		if is_radius:
 			ellipse = patches.Ellipse(xy, width, height, fill=False, linewidth=3)
 			self.matplotlib_obj = ellipse

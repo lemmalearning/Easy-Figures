@@ -3,7 +3,7 @@ matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 matplotlib.rcParams['mathtext.fontset'] = 'cm' # Change font to Computer Modern (LaTeX font)
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = [10,10]
-from shapes import Polygon, Circle, Ellipse
+from shapes import Polygon, Circle, Ellipse, Arrow
 
 import numpy as np
 import StringIO
@@ -155,7 +155,7 @@ class Figures:
 		self.fig.set_size_inches((width_in, height_in))
 
 
-	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black'):
+	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black', latex=True):
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
@@ -173,8 +173,7 @@ class Figures:
 
 		for xy, text, color in zip(xys, texts, colors):
 			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]), ms=pointsize)
-			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
-
+			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
 
 	def addText(self, xy, text, color="black", fontsize=12, alignment='center'):
 		color_dict = {
@@ -270,3 +269,6 @@ class Figures:
 
 	def addTriangle_side(self):
 		raise Exception('Not implemented yet!')
+
+	def addArrow(self, xy, dxdy, color='black'):
+		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color)

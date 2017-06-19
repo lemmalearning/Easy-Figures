@@ -6,7 +6,7 @@ import numpy as np
 class Polygon:
 	matplotlib_obj = None
 	def __init__(self, vertices, fig, ax):
-		self.vertices = vertices
+		self.vertices = np.matrix(vertices)
 		self.fig = fig
 		self.ax = ax
 		# Define the polygon
