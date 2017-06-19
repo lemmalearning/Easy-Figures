@@ -199,8 +199,6 @@ class Figures:
 		for xy, text, color, valignment, halignment, bbox, latex in zip(xy, text, color, valignment, halignment, bbox, latex):
 			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox)
 
-
-
 	def addFunction(self, functions, xyranges, colors='black', linewidth=2):
 		color_dict = {
 			"blue": 'b',
@@ -262,14 +260,16 @@ class Figures:
 		vertex_B = xy
 		vertex_C = [C+xy[0], 0+xy[1]]
 
-		polygon = plt.Polygon([vertex_A, vertex_B, vertex_C], fill=False, linewidth=3)
+		polygon = Polygon.Polygon([vertex_A, vertex_B, vertex_C], self.fig, self.ax)
 
 		# Perform the rotation if at all
 		transformation = matplotlib.transforms.Affine2D().rotate(rotation) + self.ax.transData
-		polygon.set_transform(transformation)
+		polygon.matplotlib_obj.set_transform(transformation)
 
 		# Create and add polygon
 		self.ax.add_patch(polygon)
+
+		return polygon
 
 	def addTriangle_side(self):
 		raise Exception('Not implemented yet!')
