@@ -242,12 +242,12 @@ class Figures:
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
 		return polygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None, fc=None):
-		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc)
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None, fc='w', ec='k'):
+		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec)
 		return circle
 
-	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=True, fc=None):
-		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius, fc)
+	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=True, fc='w', ec='k'):
+		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius, fc, ec)
 		return ellipse
 
 	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0):
