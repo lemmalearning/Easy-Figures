@@ -118,7 +118,7 @@ class Figures:
 			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
 
 
-	def addText(self, xy, text, color="black", fontsize=25, alignment='center'):
+	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True):
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
@@ -133,10 +133,15 @@ class Figures:
 			color = [color]
 			xy = [xy]
 			text = [text]
-			alignment = [alignment]
+			halignment = [halignment]
+			valignment = [valignment]
+			bbox = [bbox]
+			latex = [latex]
 
-		for xy, text, color, alignment in zip(xy, text, color, alignment):
-			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=alignment)
+		for xy, text, color, valignment, halignment, bbox, latex in zip(xy, text, color, valignment, halignment, bbox, latex):
+			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox)
+
+
 
 	def addFunction(self, functions, xyranges, colors='black', linewidth=2):
 		color_dict = {
