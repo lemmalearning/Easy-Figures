@@ -5,9 +5,11 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Circle:
+	matplotlib_obj = None
 	def __init__(self, fig, ax, xy=(0,0), diameter=None, radius=None, label=""):
 		if radius!=None:
 			circle = patches.Circle(xy, radius=radius, fill=False, linewidth=3)
+			self.matplotlib_obj = circle
 			if label != "":
 				p = (xy[0]+radius, xy[1])
 				plt.plot([xy[0],p[0]], [xy[1],p[1]], linewidth=2, ls='dashed', color='black')
@@ -17,6 +19,7 @@ class Circle:
 
 		else:
 			circle = patches.Circle(xy, radius=diameter/2, fill=False, linewidth=3)
+			self.matplotlib_obj = circle
 			if label != "":
 				p1 = (xy[0]-diameter/2, xy[1])
 				p2 = (xy[0]+diameter/2, xy[1])
