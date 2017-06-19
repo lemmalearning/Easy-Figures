@@ -25,7 +25,7 @@ class Polygon:
 			d = self.vertices[i, :] - centroid
 			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d
 
-			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=12, \
+			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
 				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
 				verticalalignment=("top" if d[0, 1] < 0 else "bottom") \
 			)

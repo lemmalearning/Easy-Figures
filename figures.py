@@ -242,8 +242,8 @@ class Figures:
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
 		return polygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None, fc=None, random=False):
-		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, random)
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None, fc=None):
+		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc)
 		return circle
 
 	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=True, fc=None):
@@ -261,32 +261,16 @@ class Figures:
 		C = np.sin(gamma)/np.sin(alpha)
 
 		# Define the vertices
-		vertex_A = [0+xy[0], A+xy[1]]
-		vertex_B = xy
-		vertex_C = [C+xy[0], 0+xy[1]]
+		vertex_A = [0+xy[0], A+xy[1], 1]
+		vertex_B = [xy[0], xy[1], 1]
+		vertex_C = [C+xy[0], 0+xy[1], 1]
 
-		transformation = np.delete(matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation), (2), axis=1)
-		print np.matrix([vertex_A, vertex_B, vertex_C])
-		print transformation
-		print np.multiply(np.matrix([vertex_A, vertex_B, vertex_C]), transformation)
-		print np.multiply(np.matrix([vertex_A, vertex_B, vertex_C]), transformation)[:2]
-
-		polygon = Polygon.Polygon([vertex_A, vertex_B, vertex_C], self.fig, self.ax)
-		print np.array(polygon)
-
-		# Perform the rotation if at all
-		#polygon.matplotlib_obj.set_transform(transformation)
-		# Create and add polygon
-		#self.ax.add_patch(polygon)
-
-		return polygon
+		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
+		polygon = Polygon.Polygon(np.delete((transformation * np.matrix([vertex_A, vertex_B, vertex_C]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
 
 		return polygon
 
 	def addTriangle_side(self, xy=(0,0), p1=(0,0), p2=(0,0), rotation=0):
-		vtx1 = 
-		vtx2 =
-		vtx3 =
 
 		polygon = Polygon.Polygon([vtx1, vtx2, vtx3], self.fig, self.ax)
 

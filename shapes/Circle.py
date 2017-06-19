@@ -7,14 +7,8 @@ import numpy as np
 
 class Circle:
 	matplotlib_obj = None
-	def __init__(self, fig, ax, xy=(0,0), diameter=None, radius=None, label="", fc=None, random=False):
-		if random:
-				xy = (randint(-100, 100), randint(-100, 100))
-				label = choice('abcdefg')
-				radius = randint(1, 50)
-				fc = choice('rygb')
-
-		elif radius!=None:
+	def __init__(self, fig, ax, xy=(0,0), diameter=None, radius=None, label="", fc=None):
+		if radius!=None:
 			circle = patches.Circle(xy, radius=radius, fc=fc, linewidth=3)
 			self.matplotlib_obj = circle
 			if label != "":
