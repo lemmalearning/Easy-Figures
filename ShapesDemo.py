@@ -8,7 +8,7 @@ import figures
 
 def main():
     f = figures.Figures()
-
+    """
     # Triangle & Polygon
     # Given figure: Two triangles ABO and CDO in a ribbon shape, meeting at point O. AO = 6, BO = 4, CO = 10. NOTE: Figure not drawn to scale.
     # Q: Line segments AB and CD in the figure are parallel. What is the length of AD?
@@ -46,15 +46,15 @@ def main():
     d = randint(5,30)
     majorAxis = d+5
 
-    ell = f.addEllipse(xy=(7,10), width=20, height=50, is_radius=1, fc='white')
-    circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='grey')
+    ell = f.addEllipse(xy=(7,10), width=20, height=50, is_radius=1, fc='white', ec='black')
+    circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='grey', ec='black')
     b = f.addText(xy=(8.5, 28), text=str(d), latex=True, fontsize=20)
 
     plt.axis('off')
     plt.axis('scaled')
 
     # Correct if ans == np.pi*((majorAxis-d)^2)
-    """
+
 
     f.__writeFile__('/Users/chloesheen/test.svg')
 
