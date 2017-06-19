@@ -273,9 +273,8 @@ class Figures:
 
 		polygon = Polygon.Polygon([vertex_A, vertex_B, vertex_C], self.fig, self.ax)
 		print np.array(polygon)
+
 		# Perform the rotation if at all
-
-
 		#polygon.matplotlib_obj.set_transform(transformation)
 		# Create and add polygon
 		#self.ax.add_patch(polygon)
@@ -284,8 +283,15 @@ class Figures:
 
 		return polygon
 
-	def addTriangle_side(self):
-		raise Exception('Not implemented yet!')
+	def addTriangle_side(self, xy=(0,0), p1=(0,0), p2=(0,0), rotation=0):
+		vtx1 = 
+		vtx2 =
+		vtx3 =
+
+		polygon = Polygon.Polygon([vtx1, vtx2, vtx3], self.fig, self.ax)
+
+		return polygon
+		#raise Exception('Not implemented yet!')
 
 	def addArrow(self, xy, dxdy, color='black', head_width=0.15, width=0.015):
 		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, head_width=head_width, width=width)
