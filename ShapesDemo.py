@@ -45,8 +45,8 @@ def main():
     d = randint(5,30)
     majorAxis = d+5
 
-    ell = f.addEllipse(xy=(7,10), width=20, height=50, is_radius=1, fc='white')
-    circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='grey')
+    ell = f.addEllipse(xy=(7,10), width=20, height=50, is_radius=1, fc='white', ec='k')
+    circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='grey', ec='k')
     b = f.addText(xy=(8.5, 28), text=str(d), latex=True, fontsize=20)
 
     plt.axis('off')
@@ -54,7 +54,7 @@ def main():
 
     # Correct if ans == np.pi*((majorAxis-d)^2)
 
-
+    
     f.__writeFile__('/Users/chloesheen/test.svg')
 
     return None
