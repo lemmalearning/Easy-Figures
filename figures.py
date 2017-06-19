@@ -205,8 +205,6 @@ class Figures:
 		for xy, text, color, valignment, halignment, bbox, latex in zip(xy, text, color, valignment, halignment, bbox, latex):
 			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox)
 
-
-
 	def addFunction(self, functions, xyranges, colors='black', linewidth=2):
 		color_dict = {
 			"blue": 'b',
@@ -244,12 +242,12 @@ class Figures:
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
 		return polygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None):
-		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label)
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None, fc=None):
+		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc)
 		return circle
 
-	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=True):
-		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius)
+	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=True, fc=None):
+		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius, fc)
 		return ellipse
 
 	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0):
@@ -272,8 +270,12 @@ class Figures:
 
 		return polygon
 
-	def addTriangle_side(self):
-		raise Exception('Not implemented yet!')
+	def addTriangle_side(self, xy=(0,0), p1=(0,0), p2=(0,0), rotation=0):
+
+		polygon = Polygon.Polygon([vtx1, vtx2, vtx3], self.fig, self.ax)
+
+		return polygon
+		#raise Exception('Not implemented yet!')
 
 	def addArrow(self, xy, dxdy, color='black', head_width=0.1, width=0.35):
 		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, head_width=head_width, width=width)

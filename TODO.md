@@ -5,7 +5,10 @@
 
 ### Chloe:
 1. ~~Implement correct height/width for text in Ellipse~~
-1. Add functionality for arbitrary text
+1. ~~Add functionality for arbitrary text~~
+1. ~~Build sample questions demonstrating all available Figures~~
+1. Random generation of Figures
+
 ### Axel:
 1. Triangle builder using ~~angles~~ and sides
 1. Label vertices for polygons
