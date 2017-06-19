@@ -21,6 +21,7 @@ class Polygon:
 
 		centroid = np.mean(self.vertices, axis=0)
 
+		
 		for i, label in enumerate(self.labels):
 			d = self.vertices[i, :] - centroid
 			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d

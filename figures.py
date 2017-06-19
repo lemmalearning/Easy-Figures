@@ -56,7 +56,7 @@ class Figures:
 	def __display__(self):
 		plt.show()
 
-	def format_axis(self, xyrange=None, grid=False, arrows=True, color='black'):
+	def axisFormat(self, hide_axis=False, xyrange=None, grid=False, arrows=True, color='black', minor_grid=False):
 		# Modify the plot view to scale, remove axis, and center our shape
 
 		color_dict = {
@@ -105,8 +105,14 @@ class Figures:
 			self.ax.spines['left'].set_position(('data', 0))
 			self.ax.spines['bottom'].set_position(('data', 0))
 
+		if hide_axis:
+			plt.axis('off')
+			return
+
 		if grid:
-			self.ax.grid(color='k', linestyle='dashed', linewidth=.5, alpha=0.5)
+			self.ax.grid(which='major', color='k', linestyle='dashed', linewidth=.5, alpha=0.5)
+			if minor_grid:
+				self.ax.grid(which='minor', color='k', linestyle='dashed', linewidth=.3, alpha=0.25)
 
 		if arrows:
 			xmin, xmax = self.ax.get_xlim()
@@ -221,7 +227,7 @@ class Figures:
 			self.ax.plot(x, y, color_dict[color])
 
 
-	def addTicks(self, tick_label_interval=1, tick_interval=1, fontsize=12):
+	def axisFormatTicks(self, tick_label_interval=1, tick_interval=1, fontsize=8):
 		self.tick_interval = tick_interval
 		self.tick_label_interval = tick_label_interval
 		# Control ticks
@@ -230,7 +236,7 @@ class Figures:
 		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
 		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
 		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
-		#self.ax.tick_params(axis='both', which='minor', labelsize=8)
+		#self.ax.tick_params(axis='both', which='minor', labelsize=3)
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
@@ -259,12 +265,18 @@ class Figures:
 		vertex_B = xy
 		vertex_C = [C+xy[0], 0+xy[1]]
 
+		transformation = np.delete(matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation), (2), axis=1)
+		print np.matrix([vertex_A, vertex_B, vertex_C])
+		print transformation
+		print np.multiply(np.matrix([vertex_A, vertex_B, vertex_C]), transformation)
+		print np.multiply(np.matrix([vertex_A, vertex_B, vertex_C]), transformation)[:2]
+
 		polygon = Polygon.Polygon([vertex_A, vertex_B, vertex_C], self.fig, self.ax)
-
+		print np.array(polygon)
 		# Perform the rotation if at all
-		transformation = matplotlib.transforms.Affine2D().rotate(rotation) + self.ax.transData
-		polygon.matplotlib_obj.set_transform(transformation)
 
+
+		#polygon.matplotlib_obj.set_transform(transformation)
 		# Create and add polygon
 		#self.ax.add_patch(polygon)
 
@@ -275,5 +287,5 @@ class Figures:
 	def addTriangle_side(self):
 		raise Exception('Not implemented yet!')
 
-	def addArrow(self, xy, dxdy, color='black'):
-		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color)
+	def addArrow(self, xy, dxdy, color='black', head_width=0.15, width=0.015):
+		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, head_width=head_width, width=width)
