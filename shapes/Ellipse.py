@@ -21,7 +21,6 @@ class Ellipse:
 
 			mid_rwidth = (xy[0]+w_p[0])/2.0
 			mid_rheight = (xy[1]+h_p[1])/2.0
-
 			if wlabel!=None or hlabel!=None:
 				textwobj = ax.text(mid_rwidth, xy[1]*1.025, '$'+wlabel+'$', fontsize=25)
 				texthobj = ax.text(xy[0]*1.025, mid_rheight, '$'+hlabel+'$', fontsize=25)
