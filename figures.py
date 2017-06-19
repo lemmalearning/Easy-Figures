@@ -1,6 +1,7 @@
 import matplotlib
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
-matplotlib.rcParams['mathtext.fontset'] = 'cm' # Change font to Computer Modern (LaTeX font)
+matplotlib.rcParams['mathtext.fontset'] = 'cm'
+#matplotlib.rcParams['font.family'] = 'cm' # Change font to Computer Modern (LaTeX font)
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = [10,10]
 from shapes import Polygon, Circle, Ellipse, Arrow
@@ -238,7 +239,6 @@ class Figures:
 		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
 		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
 		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
-		#self.ax.tick_params(axis='both', which='minor', labelsize=3)
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
