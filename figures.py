@@ -263,24 +263,12 @@ class Figures:
 		C = np.sin(gamma)/np.sin(alpha)
 
 		# Define the vertices
-		vertex_A = [0+xy[0], A+xy[1]]
-		vertex_B = xy
-		vertex_C = [C+xy[0], 0+xy[1]]
+		vertex_A = [0+xy[0], A+xy[1], 1]
+		vertex_B = [xy[0], xy[1], 1]
+		vertex_C = [C+xy[0], 0+xy[1], 1]
 
-		transformation = np.delete(matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation), (2), axis=1)
-		print np.matrix([vertex_A, vertex_B, vertex_C])
-		print transformation
-		print np.multiply(np.matrix([vertex_A, vertex_B, vertex_C]), transformation)
-		print np.multiply(np.matrix([vertex_A, vertex_B, vertex_C]), transformation)[:2]
-
-		polygon = Polygon.Polygon([vertex_A, vertex_B, vertex_C], self.fig, self.ax)
-		print np.array(polygon)
-		# Perform the rotation if at all
-
-
-		#polygon.matplotlib_obj.set_transform(transformation)
-		# Create and add polygon
-		#self.ax.add_patch(polygon)
+		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
+		polygon = Polygon.Polygon(np.delete((transformation * np.matrix([vertex_A, vertex_B, vertex_C]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
 
 		return polygon
 
