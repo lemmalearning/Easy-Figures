@@ -6,10 +6,11 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Ellipse:
+	matplotlib_obj = None
 	def __init__(self, fig, ax, xy=(0,0), width=None, height=None, wlabel="", hlabel="", is_radius=True):
-		print is_radius, hlabel=="" or wlabel==""
 		if is_radius:
 			ellipse = patches.Ellipse(xy, width, height, fill=False, linewidth=3)
+			self.matplotlib_obj = ellipse
 			if hlabel != "" and wlabel != "":
 				w_p = (xy[0]+(width/2.0), xy[1])
 				h_p = (xy[0], xy[1]+(height/2.0))
@@ -28,6 +29,7 @@ class Ellipse:
 
 		else:
 			ellipse = patches.Ellipse(xy, width, height, fill=False, linewidth=3)
+			self.matplotlib_obj = ellipse
 			if hlabel != "" and wlabel != "":
 				w_p1 = (xy[0]+(width/2.0), xy[1])
 				w_p2 = (xy[0]-(width/2.0), xy[1])

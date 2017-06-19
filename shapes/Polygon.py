@@ -4,14 +4,15 @@ import matplotlib.patches as patches
 import numpy as np
 
 class Polygon:
+	matplotlib_obj = None
 	def __init__(self, vertices, fig, ax):
-		self.vertices = vertices
+		self.vertices = np.matrix(vertices)
 		self.fig = fig
 		self.ax = ax
 		# Define the polygon
-		polygon = plt.Polygon(vertices, fill=False, linewidth=3)
+		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=3)
 		# Create and add polygon
-		ax.add_patch(polygon)
+		ax.add_patch(self.matplotlib_obj)
 
 	def labelVertices(self, label_list):
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
