@@ -275,5 +275,5 @@ class Figures:
 	def addTriangle_side(self):
 		raise Exception('Not implemented yet!')
 
-	def addArrow(self, xy, dxdy, color='black', head_width=0.15, width=0.015):
+	def addArrow(self, xy, dxdy, color='black', head_width=0.1, width=0.35):
 		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, head_width=head_width, width=width)

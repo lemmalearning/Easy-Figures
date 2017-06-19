@@ -7,7 +7,7 @@ import numpy as np
 
 class Arrow:
 	matplotlib_obj = None
-	def __init__(self, ax, fig, xy, dxdy, color='black', head_width=0.15, width=0.015):
+	def __init__(self, ax, fig, xy, dxdy, color='black', head_width=0.1, width=0.35):
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
