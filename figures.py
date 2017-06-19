@@ -7,21 +7,51 @@ from shapes import Polygon, Circle, Ellipse
 
 import numpy as np
 import StringIO
+import math
+import re
+
 
 class Figures:
 	def __init__(self):
 		self.fig, self.ax = plt.subplots()
+		self.fig.set_dpi(72)
 		self.tick_interval = .25
 		self.tick_label_interval = 1
+		self.tight_fit = True
+		self.padding = 0
+		self.height = None
 
 	def __export__(self):
 		export_str = StringIO.StringIO()
-		self.fig.savefig(export_str, format='svg', bbox_inches='tight')
+		self.__writeFile__(export_str, format='svg')
 		export_str.seek(0)  # rewind the data
-		return export_str.buf  # this is svg data
+		s = export_str.buf  # this is svg data
 
-	def __writeFile__(self, file_location):
-		plt.savefig(file_location)
+		# Clipping height to the used area after rendering
+		# https://stackoverflow.com/questions/22667224/matplotlib-get-text-bounding-box-independent-of-backend/22689498
+		# https://stackoverflow.com/questions/28692981/matplotlib-get-resulting-bounding-box-of-bbox-inches-tight
+		#print(self.ax.get_position().bounds) # This gives you percentage wise the xmin, ymin, width, height up to the very edge of the grid lines
+		#print(self.fig.bbox)
+		if self.height == 'auto':
+		 	bb = self.ax.get_tightbbox(self.fig._cachedRenderer) #get_renderer()))
+
+			minY = math.floor(bb.y0)
+			maxY = math.ceil(bb.y1)
+
+			s = re.sub(r'height="[0-9]+pt"', 'height="%dpt"' % (maxY - minY), s)
+
+			viewBoxReg = r'viewBox="([0-9]+ [0-9]+ [0-9]+ [0-9]+)"';
+			viewBox = [int(x) for x in re.search(viewBoxReg, s).group(1).split(' ')]
+			viewBox[1] = viewBox[3] - maxY
+			viewBox[3] = (maxY - minY)
+			s = re.sub(viewBoxReg, 'viewBox="' + ' '.join([str(x) for x in viewBox]) + '"', s)
+
+		return s
+
+
+
+	def __writeFile__(self, file_location, **kwargs):
+		self.fig.savefig(file_location, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
 
 	def __display__(self):
 		plt.show()
@@ -95,7 +125,35 @@ class Figures:
 		self.ax.spines['bottom'].set_color(color_dict[color])
 		self.ax.spines['left'].set_color(color_dict[color])
 
-		self.fig.set_tight_layout(True)
+
+
+	def setPixelSize(self, width=400, height=None, padding=0):
+		"""Sets the pixel size of the figure.
+
+			If only width is provided, then the figure will try to tight fit to that width
+			If height is also specified, then the size is completely fixed to that size
+		"""
+
+		# a point is 1/72in;  12pt = 16px
+		px2in = lambda p: (p * 0.75 / 72.0)
+
+		self.padding = px2in(padding)
+
+		width_in = px2in(width)
+		height_in = width_in
+
+		if height == 'auto':
+			self.height = height
+			self.tight_fit = False
+			self.fig.set_tight_layout({ "pad": self.padding })
+			height_in = 2*width_in
+		elif height != None:
+			self.tight_fit = False
+			self.fig.set_tight_layout({ "pad": self.padding })
+			height_in = px2in(height)
+
+		self.fig.set_size_inches((width_in, height_in))
+
 
 	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black'):
 		color_dict = {
@@ -117,8 +175,8 @@ class Figures:
 			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]), ms=pointsize)
 			self.ax.annotate(text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
 
-
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True):
+
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
@@ -166,7 +224,7 @@ class Figures:
 			self.ax.plot(x, y, color_dict[color])
 
 
-	def addTicks(self, tick_label_interval=1, tick_interval=1):
+	def addTicks(self, tick_label_interval=1, tick_interval=1, fontsize=12):
 		self.tick_interval = tick_interval
 		self.tick_label_interval = tick_label_interval
 		# Control ticks
@@ -174,7 +232,8 @@ class Figures:
 		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
 		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
 		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
-
+		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
+		#self.ax.tick_params(axis='both', which='minor', labelsize=8)
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
@@ -188,7 +247,7 @@ class Figures:
 		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius)
 		return ellipse
 
-	def addTriangle_angle(self, angle=(45*np.pi)/180, rotation=0):
+	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0):
 		# Define the angles and sides
 		alpha = angle
 		beta = np.pi/2
@@ -199,9 +258,9 @@ class Figures:
 		C = np.sin(gamma)/np.sin(alpha)
 
 		# Define the vertices
-		vertex_A = [0, A]
-		vertex_B = [0, 0]
-		vertex_C = [C, 0]
+		vertex_A = [0+xy[0], A+xy[1]]
+		vertex_B = xy
+		vertex_C = [C+xy[0], 0+xy[1]]
 
 		polygon = plt.Polygon([vertex_A, vertex_B, vertex_C], fill=False, linewidth=3)
 
