@@ -18,4 +18,4 @@ class Arrow:
 			"black": 'k',
 			"white": 'w'
 		}
-		self.matplotlib_obj = ax.arrow(xy[0], xy[1], dxdy[0], dxdy[1], head_width=0.15, head_length=0.3, fc=color_dict[color], ec=color_dict[color])
+		self.matplotlib_obj = ax.arrow(xy[0], xy[1], dxdy[0], dxdy[1], length_includes_head=True, head_width=0.15, head_length=0.3, fc=color_dict[color], ec=color_dict[color])
