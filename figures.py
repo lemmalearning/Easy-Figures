@@ -255,8 +255,8 @@ class Figures:
 		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec)
 		return circle
 
-	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, radius=True, fc='w', ec='k'):
-		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, radius, fc, ec)
+	def addEllipse(self, xy=(0,0), semimajor=None, semiminor=None, fc='w', ec='k', angle=0.0):
+		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, semimajor, semiminor, fc, ec, angle)
 		return ellipse
 
 	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0, length=1):

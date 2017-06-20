@@ -11,7 +11,7 @@ class Circle:
 		if radius!=None:
 			circle = patches.Circle(xy, radius=radius, fc=fc, ec=ec, linewidth=3)
 			self.matplotlib_obj = circle
-			if label != "":
+			if label != "": 
 				p = (xy[0]+radius, xy[1])
 				plt.plot([xy[0],p[0]], [xy[1],p[1]], linewidth=2, ls='dashed', color='black')
 
