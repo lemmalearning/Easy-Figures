@@ -16,10 +16,19 @@ class Ellipse:
 
 			ax.add_patch(ellipse)
 
-	def ellipseLabels(self, xy=(0,0), semimajor=None, semiminor=None, xlabel=None, ylabel=None, isRadius=True):
+	def ellipseLabels(self, xy=(0,0), semimajor=None, semiminor=None, xlabel=None, ylabel=None, isRadius=True, angle=0.0):
 		if isRadius:
-			w_p = (xy[0]+semimajor, xy[1])
-			h_p = (xy[0], xy[1]+semiminor)
+			w_p = [xy[0]+semimajor, xy[1]]
+			h_p = [xy[0], xy[1]+semiminor]
+
+			p1 = w_p[0] - xy[0]
+			q1 = w_p[1] - xy[1]
+
+			p2 = p1*np.cos(angle) - q1*np.sin(angle)
+			q2 = p1*np.sin(angle) + q1*np.cos(angle)
+
+			w_p[0] = p2 + xy[0]
+			w_p[1] = q2 + xy[1]
 
 			plt.plot([xy[0],w_p[0]], [xy[1],w_p[1]], linewidth=2, ls='dashed', color='black')
 			plt.plot([xy[0],h_p[0]], [xy[1],h_p[1]], linewidth=2, ls='dashed', color='black')
