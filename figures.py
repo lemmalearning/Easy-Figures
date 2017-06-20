@@ -1,9 +1,11 @@
 import matplotlib
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
-matplotlib.rcParams['mathtext.fontset'] = 'cm'
-#matplotlib.rcParams['font.family'] = 'cm' # Change font to Computer Modern (LaTeX font)
+matplotlib.rcParams['font.family'] = 'cmr10' # Change font to Computer Modern (LaTeX font)
 import matplotlib.pyplot as plt
+#plt.rcParams.update({'text.usetex': True})
 plt.rcParams["figure.figsize"] = [10,10]
+#matplotlib.rcParams['font.family'] = 'serif'
+#matplotlib.rcParams['font.sans-serif'] = ['cm']
 from shapes import Polygon, Circle, Ellipse, Arrow
 
 import numpy as np
@@ -17,7 +19,7 @@ class Figures:
 	def __init__(self):
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
-		self.tickInterval = .25
+		self.tickInterval = 0
 		self.tickLabelInterval = 1
 		self.tight_fit = True
 		self.padding = 0
@@ -121,11 +123,11 @@ class Figures:
 			ymin, ymax = self.ax.get_ylim()
 
 			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
-			         head_width=0.25, head_length=0.25,
+			         head_width=0.1875, head_length=.3,
 			         length_includes_head=True, clip_on=False,color=colorDict[color])
 
 			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
-			         head_width=.25, head_length=.25,
+			         head_width=.1875, head_length=.3,
 					 length_includes_head=True, clip_on=False,color=colorDict[color])
 
 
@@ -237,7 +239,7 @@ class Figures:
 			self.ax.plot(x, y, colorDict[color])
 
 
-	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=8):
+	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False):
 		self.tickInterval = tickInterval
 		self.tickLabelInterval = tickLabelInterval
 		# Control ticks
@@ -246,6 +248,23 @@ class Figures:
 		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tickInterval))
 		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tickInterval))
 		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
+
+		if origin:
+			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
+			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.ax.get_xticks().tolist()]
+			self.ax.set_yticklabels(ylabels)
+			self.ax.set_xticklabels(xlabels)
+		else:
+			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
+			xlabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_xticks().tolist()]
+			ylabels[-2] = "y"
+			xlabels[-2] = "x"
+			ylabels[1] = "-y"
+			xlabels[1] = "-x"
+			self.ax.set_yticklabels(ylabels)
+			self.ax.set_xticklabels(xlabels)
+
+
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
