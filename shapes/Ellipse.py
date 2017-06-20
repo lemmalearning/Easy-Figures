@@ -7,14 +7,14 @@ import numpy as np
 
 class Ellipse:
 	def __init__(self, fig, ax, xy=(0,0), semimajor=None, semiminor=None, fc=None, ec=None, angle=0.0):
-			self.fig = fig
-			self.ax = ax
-			semimajor = semimajor*2.0
-			semiminor = semiminor*2.0
+		self.fig = fig
+		self.ax = ax
+		semimajor = semimajor*2.0
+		semiminor = semiminor*2.0
 
-			ellipse = patches.Ellipse(xy, semimajor, semiminor, linewidth=3, fc=fc, ec=ec, angle=angle)
+		ellipse = patches.Ellipse(xy, semimajor, semiminor, linewidth=3, fc=fc, ec=ec, angle=angle)
 
-			ax.add_patch(ellipse)
+		ax.add_patch(ellipse)
 
 	def ellipseLabels(self, xy=(0,0), semimajor=None, semiminor=None, xlabel=None, ylabel=None, isRadius=True, angle=0.0):
 		if isRadius:
