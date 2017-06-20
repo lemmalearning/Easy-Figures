@@ -14,10 +14,10 @@ class Polygon:
 		# Create and add polygon
 		ax.add_patch(self.matplotlib_obj)
 
-	def labelVertices(self, label_list):
+	def labelVertices(self, labelList):
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
 		# The side that's mentioned first is horizontal
-		self.labels = label_list
+		self.labels = labelList
 
 		centroid = np.mean(self.vertices, axis=0)
 
