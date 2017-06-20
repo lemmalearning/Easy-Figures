@@ -10,14 +10,15 @@ import numpy as np
 import StringIO
 import math
 import re
+from sympy.utilities.lambdify import lambdify
 
 
 class Figures:
 	def __init__(self):
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
-		self.tick_interval = .25
-		self.tick_label_interval = 1
+		self.tickInterval = .25
+		self.tickLabelInterval = 1
 		self.tight_fit = True
 		self.padding = 0
 		self.height = None
@@ -51,16 +52,16 @@ class Figures:
 
 
 
-	def __writeFile__(self, file_location, **kwargs):
-		self.fig.savefig(file_location, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
+	def __writeFile__(self, fileLocation, **kwargs):
+		self.fig.savefig(fileLocation, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
 
 	def __display__(self):
 		plt.show()
 
-	def axisFormat(self, hide_axis=False, xyrange=None, grid=False, arrows=True, color='black', minor_grid=False):
+	def axisFormat(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
 		# Modify the plot view to scale, remove axis, and center our shape
 
-		color_dict = {
+		colorDict = {
 			"blue": 'b',
 			"green": 'g',
 			"red": 'r',
@@ -106,13 +107,13 @@ class Figures:
 			self.ax.spines['left'].set_position(('data', 0))
 			self.ax.spines['bottom'].set_position(('data', 0))
 
-		if hide_axis:
+		if hideAxis:
 			plt.axis('off')
 			return
 
 		if grid:
 			self.ax.grid(which='major', color='k', linestyle='dashed', linewidth=.5, alpha=0.5)
-			if minor_grid:
+			if minorGrid:
 				self.ax.grid(which='minor', color='k', linestyle='dashed', linewidth=.3, alpha=0.25)
 
 		if arrows:
@@ -120,17 +121,17 @@ class Figures:
 			ymin, ymax = self.ax.get_ylim()
 
 			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
-			         head_width=self.tick_interval/3, head_length=self.tick_interval/3,
-			         length_includes_head=True, clip_on=False,color=color_dict[color])
+			         head_width=0.25, head_length=0.25,
+			         length_includes_head=True, clip_on=False,color=colorDict[color])
 
 			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
-			         head_width=self.tick_interval/3, head_length=self.tick_interval/3,
-					 length_includes_head=True, clip_on=False,color=color_dict[color])
+			         head_width=.25, head_length=.25,
+					 length_includes_head=True, clip_on=False,color=colorDict[color])
 
 
 		# Control color
-		self.ax.spines['bottom'].set_color(color_dict[color])
-		self.ax.spines['left'].set_color(color_dict[color])
+		self.ax.spines['bottom'].set_color(colorDict[color])
+		self.ax.spines['left'].set_color(colorDict[color])
 
 
 
@@ -163,7 +164,7 @@ class Figures:
 
 
 	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black', latex=True):
-		color_dict = {
+		colorDict = {
 			"blue": 'b',
 			"green": 'g',
 			"red": 'r',
@@ -179,11 +180,11 @@ class Figures:
 			texts = [texts]
 
 		for xy, text, color in zip(xys, texts, colors):
-			plt.plot(xy[0], xy[1], 'o{}'.format(color_dict[color]), ms=pointsize)
+			plt.plot(xy[0], xy[1], 'o{}'.format(colorDict[color]), ms=pointsize)
 			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
 
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True):
-		color_dict = {
+		colorDict = {
 			"blue": 'b',
 			"green": 'g',
 			"red": 'r',
@@ -205,8 +206,8 @@ class Figures:
 		for xy, text, color, valignment, halignment, bbox, latex in zip(xy, text, color, valignment, halignment, bbox, latex):
 			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox)
 
-	def addFunction(self, functions, xyranges, colors='black', linewidth=2):
-		color_dict = {
+	def addFunction(self, functions, xyranges, colors='black', linewidth=2, variable=None):
+		colorDict = {
 			"blue": 'b',
 			"green": 'g',
 			"red": 'r',
@@ -219,23 +220,31 @@ class Figures:
 
 		if not isinstance(functions, list):
 			functions = [functions]
-			xyranges = [xyranges]
-			colors = [colors]
 
+		if not isinstance(colors, list):
+			xyranges = [xyranges] * len(functions)
+			colors = [colors] * len(functions)
+
+		if variable is not None:
+			if not isinstance(variable, list):
+				variable = [variable] * len(functions)
+			for f, v in zip(functions, variable):
+				#f = lambdastr(v, f)
+				f = lambdify(v, f(v))
 		for function, xyrange, color in zip(functions, xyranges, colors):
-			x = np.linspace(xyrange[0][0], xyrange[0][1], 1000)
+			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
-			self.ax.plot(x, y, color_dict[color])
+			self.ax.plot(x, y, colorDict[color])
 
 
-	def axisFormatTicks(self, tick_label_interval=1, tick_interval=1, fontsize=8):
-		self.tick_interval = tick_interval
-		self.tick_label_interval = tick_label_interval
+	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=8):
+		self.tickInterval = tickInterval
+		self.tickLabelInterval = tickLabelInterval
 		# Control ticks
-		self.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
-		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tick_label_interval))
-		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
-		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tick_interval))
+		self.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tickLabelInterval))
+		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tickLabelInterval))
+		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tickInterval))
+		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tickInterval))
 		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
 
 	def addPolygon(self, vertices):
@@ -246,27 +255,27 @@ class Figures:
 		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec)
 		return circle
 
-	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=True, fc='w', ec='k'):
-		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, is_radius, fc, ec)
+	def addEllipse(self, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, radius=True, fc='w', ec='k'):
+		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, width, height, wlabel, hlabel, radius, fc, ec)
 		return ellipse
 
-	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0):
+	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0, length=1):
 		# Define the angles and sides
 		alpha = angle
 		beta = np.pi/2
-		gamma = ((np.pi-beta-alpha))
+		gamma = np.pi-beta-alpha
 
-		A = 1
-		B = np.sin(beta)/np.sin(alpha)
-		C = np.sin(gamma)/np.sin(alpha)
+		A = length
+		B = np.sin(beta)*length/np.sin(alpha)
+		C = np.sin(gamma)*length/np.sin(alpha)
 
 		# Define the vertices
-		vertex_A = [0+xy[0], A+xy[1], 1]
-		vertex_B = [xy[0], xy[1], 1]
-		vertex_C = [C+xy[0], 0+xy[1], 1]
+		vertexA = [0+xy[0], A+xy[1], 1]
+		vertexB = [xy[0], xy[1], 1]
+		vertexC = [C+xy[0], 0+xy[1], 1]
 
 		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-		polygon = Polygon.Polygon(np.delete((transformation * np.matrix([vertex_A, vertex_B, vertex_C]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
+		polygon = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
 
 		return polygon
 
@@ -277,5 +286,5 @@ class Figures:
 		return polygon
 		#raise Exception('Not implemented yet!')
 
-	def addArrow(self, xy, dxdy, color='black', head_width=0.1, width=0.35):
-		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, head_width=head_width, width=width)
+	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
+		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, headWidth=headWidth, width=width)

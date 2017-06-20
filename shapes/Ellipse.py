@@ -6,8 +6,8 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Ellipse:
-	def __init__(self, fig, ax, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, is_radius=True, fc=None, ec=None):
-		if is_radius:
+	def __init__(self, fig, ax, xy=(0,0), width=None, height=None, wlabel=None, hlabel=None, radius=True, fc=None, ec=None):
+		if radius:
 			ellipse = patches.Ellipse(xy, width, height, linewidth=3, fc=fc, ec=ec)
 
 			w_p = (xy[0]+(width/2.0), xy[1])

@@ -7,7 +7,7 @@ import numpy as np
 
 class Arrow:
 	matplotlib_obj = None
-	def __init__(self, ax, fig, xy, dxdy, color='black', head_width=0.1, width=0.35):
+	def __init__(self, ax, fig, xy, dxdy, color='black', headWidth=0.1, width=0.35):
 		color_dict = {
 			"blue": 'b',
 			"green": 'g',
@@ -18,4 +18,4 @@ class Arrow:
 			"black": 'k',
 			"white": 'w'
 		}
-		self.matplotlib_obj = ax.arrow(xy[0], xy[1], dxdy[0], dxdy[1], length_includes_head=True, width=width, head_width=head_width, head_length=2*head_width, fc=color_dict[color], ec=color_dict[color])
+		self.matplotlib_obj = ax.arrow(xy[0], xy[1], dxdy[0], dxdy[1], length_includes_head=True, width=width, head_width=headWidth, head_length=2*headWidth, fc=color_dict[color], ec=color_dict[color])
