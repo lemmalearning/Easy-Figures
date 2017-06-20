@@ -270,13 +270,16 @@ class Figures:
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
 		return polygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label=None, fc='w', ec='k'):
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='w', ec='k'):
 		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec)
 		return circle
 
-	def addEllipse(self, xy=(0,0), semimajor=None, semiminor=None, fc='w', ec='k', angle=0.0):
-		ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, semimajor, semiminor, fc, ec, angle)
-		return ellipse
+	def addEllipse(self, xy=(0,0), r=(1,1), fc='w', ec='k', angle=0.0):
+		if isinstance(r, int):
+			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec)
+		else:
+			ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, r, fc, ec, angle)
+			return ellipse
 
 	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0, length=1):
 		# Define the angles and sides
