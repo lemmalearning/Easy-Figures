@@ -10,7 +10,7 @@ class Polygon:
 		self.fig = fig
 		self.ax = ax
 		# Define the polygon
-		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=3)
+		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=2)
 		# Create and add polygon
 		ax.add_patch(self.matplotlib_obj)
 

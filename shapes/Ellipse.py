@@ -6,20 +6,21 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Ellipse:
-	def __init__(self, fig, ax, xy=(0,0), r=(1,1), fc=None, ec=None, angle=0.0):
-			self.r = r
-			self.angle=angle
-			self.xy = xy
-			semimajor = r[0]
-			semiminor = r[1]
-			self.fig = fig
-			self.ax = ax
-			semimajor = semimajor*2.0
-			semiminor = semiminor*2.0
+	def __init__(self, fig, ax, xy=(0,0), r=(1,1), fc=None, ec=None, angle=0.0, lw=2):
+		self.r = r
+		self.angle=angle
+		self.lw=lw
+		self.xy = xy
+		semimajor = r[0]
+		semiminor = r[1]
+		self.fig = fig
+		self.ax = ax
+		semimajor = semimajor*2.0
+		semiminor = semiminor*2.0
 
-			ellipse = patches.Ellipse(xy, semimajor, semiminor, linewidth=3, fc=fc, ec=ec, angle=angle)
+		ellipse = patches.Ellipse(xy, semimajor, semiminor, linewidth=3, fc=fc, ec=ec, angle=angle, lw=lw)
 
-			ax.add_patch(ellipse)
+		ax.add_patch(ellipse)
 
 	def ellipseLabels(self, xlabel=None, ylabel=None, isRadius=True):
 		semimajor = self.r[0]
@@ -28,6 +29,7 @@ class Ellipse:
 			w_p = [self.xy[0]+semimajor, self.xy[1]]
 			h_p = [self.xy[0], self.xy[1]+semiminor]
 
+			# Rotating points
 			p1 = w_p[0] - self.xy[0]
 			q1 = w_p[1] - self.xy[1]
 
@@ -36,6 +38,8 @@ class Ellipse:
 
 			w_p[0] = p2 + self.xy[0]
 			w_p[1] = q2 + self.xy[1]
+			h_p[0] = p1 - self.xy[0]
+			h_p[1] = q1 - self.xy[1]
 
 			plt.plot([self.xy[0],w_p[0]], [self.xy[1],w_p[1]], linewidth=2, ls='dashed', color='black')
 			plt.plot([self.xy[0],h_p[0]], [self.xy[1],h_p[1]], linewidth=2, ls='dashed', color='black')

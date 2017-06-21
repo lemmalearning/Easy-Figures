@@ -12,7 +12,7 @@ import numpy as np
 import StringIO
 import math
 import re
-from sympy.utilities.lambdify import lambdify
+#from sympy.utilities.lambdify import lambdify
 
 
 class Figures:
@@ -274,11 +274,11 @@ class Figures:
 		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec)
 		return circle
 
-	def addEllipse(self, xy=(0,0), r=(1,1), fc='w', ec='k', angle=0.0):
+	def addEllipse(self, xy=(0,0), r=(1,1), fc='w', ec='k', angle=0.0, lw=2):
 		if isinstance(r, int):
 			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec)
 		else:
-			ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, r, fc, ec, angle)
+			ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, r, fc, ec, angle, lw)
 			return ellipse
 
 	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0, length=1):
