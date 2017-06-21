@@ -259,8 +259,8 @@ class Figures:
 			xlabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_xticks().tolist()]
 			ylabels[-2] = "y"
 			xlabels[-2] = "x"
-			ylabels[1] = "-y"
-			xlabels[1] = "-x"
+			ylabels[1] = ""
+			xlabels[1] = ""
 			self.ax.set_yticklabels(ylabels)
 			self.ax.set_xticklabels(xlabels)
 
