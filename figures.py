@@ -62,18 +62,6 @@ class Figures:
 
 	def axisFormat(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
 		# Modify the plot view to scale, remove axis, and center our shape
-
-		colorDict = {
-			"blue": 'b',
-			"green": 'g',
-			"red": 'r',
-			"cyan": 'c',
-			"magenta": 'm',
-			"yellow": 'y',
-			"black": 'k',
-			"white": 'w'
-		}
-
 		def adjust_spines(ax, spines):
 		    for loc, spine in ax.spines.items():
 		        if loc in spines:
@@ -100,8 +88,8 @@ class Figures:
 			plt.axis('scaled')
 		else:
 			plt.gca().set_aspect('equal', adjustable='box')
-			self.ax.set_xlim(left=xyrange[0][0], right=xyrange[0][1])
-			self.ax.set_ylim(bottom=xyrange[1][0], top=xyrange[1][1])
+			self.ax.set_xlim(left=xyrange[0][0]+0.1, right=xyrange[0][1]-.1)
+			self.ax.set_ylim(bottom=xyrange[1][0]+0.1, top=xyrange[1][1]-.1)
 
 			self.ax.spines['right'].set_color('none')
 			self.ax.spines['top'].set_color('none')
@@ -113,10 +101,10 @@ class Figures:
 			plt.axis('off')
 			return
 
-		if grid:
-			self.ax.grid(which='major', color='k', linestyle='dashed', linewidth=.5, alpha=0.5)
-			if minorGrid:
-				self.ax.grid(which='minor', color='k', linestyle='dashed', linewidth=.3, alpha=0.25)
+		if grid is not False:
+			self.ax.grid(which='major', color='k' if grid == True else grid, linestyle='dashed', linewidth=.5, alpha=0.5)
+			if minorGrid is not False:
+				self.ax.grid(which='minor', color='k' if minorGrid == True else minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
 
 		if arrows:
 			xmin, xmax = self.ax.get_xlim()
@@ -124,16 +112,16 @@ class Figures:
 
 			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
 			         head_width=0.1875, head_length=.3,
-			         length_includes_head=True, clip_on=False,color=colorDict[color])
+			         length_includes_head=True, clip_on=False,color=color)
 
 			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
 			         head_width=.1875, head_length=.3,
-					 length_includes_head=True, clip_on=False,color=colorDict[color])
+					 length_includes_head=True, clip_on=False,color=color)
 
 
 		# Control color
-		self.ax.spines['bottom'].set_color(colorDict[color])
-		self.ax.spines['left'].set_color(colorDict[color])
+		self.ax.spines['bottom'].set_color(color)
+		self.ax.spines['left'].set_color(color)
 
 
 
@@ -166,36 +154,16 @@ class Figures:
 
 
 	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black', latex=True):
-		colorDict = {
-			"blue": 'b',
-			"green": 'g',
-			"red": 'r',
-			"cyan": 'c',
-			"magenta": 'm',
-			"yellow": 'y',
-			"black": 'k',
-			"white": 'w'
-		}
 		if not isinstance(colors, list):
 			colors = [colors]
 			xys = [xys]
 			texts = [texts]
 
 		for xy, text, color in zip(xys, texts, colors):
-			plt.plot(xy[0], xy[1], 'o{}'.format(colorDict[color]), ms=pointsize)
+			plt.plot(xy[0], xy[1], 'o{}'.format(color), ms=pointsize)
 			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
 
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True):
-		colorDict = {
-			"blue": 'b',
-			"green": 'g',
-			"red": 'r',
-			"cyan": 'c',
-			"magenta": 'm',
-			"yellow": 'y',
-			"black": 'k',
-			"white": 'w'
-		}
 		if not isinstance(color, list):
 			color = [color]
 			xy = [xy]
@@ -206,20 +174,9 @@ class Figures:
 			latex = [latex]
 
 		for xy, text, color, valignment, halignment, bbox, latex in zip(xy, text, color, valignment, halignment, bbox, latex):
-			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox)
+			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox, color=color)
 
 	def addFunction(self, functions, xyranges, colors='black', linewidth=2, variable=None):
-		colorDict = {
-			"blue": 'b',
-			"green": 'g',
-			"red": 'r',
-			"cyan": 'c',
-			"magenta": 'm',
-			"yellow": 'y',
-			"black": 'k',
-			"white": 'w'
-		}
-
 		if not isinstance(functions, list):
 			functions = [functions]
 
@@ -236,10 +193,10 @@ class Figures:
 		for function, xyrange, color in zip(functions, xyranges, colors):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
-			self.ax.plot(x, y, colorDict[color])
+			self.ax.plot(x, y, color)
 
 
-	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False):
+	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
 		self.tickLabelInterval = tickLabelInterval
 		# Control ticks
@@ -249,22 +206,24 @@ class Figures:
 		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tickInterval))
 		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
 
+		if top:
+			self.ax.xaxis.set_label_position('top')
+
 		if origin:
 			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
 			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.ax.get_xticks().tolist()]
 			self.ax.set_yticklabels(ylabels)
 			self.ax.set_xticklabels(xlabels)
 		else:
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
 			xlabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_xticks().tolist()]
-			ylabels[-2] = "y"
-			xlabels[-2] = "x"
-			ylabels[1] = ""
-			xlabels[1] = ""
-			self.ax.set_yticklabels(ylabels)
 			self.ax.set_xticklabels(xlabels)
+			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
+			self.ax.set_yticklabels(ylabels)
 
-
+			for label in self.ax.xaxis.get_ticklabels():
+				label.set_bbox(dict(facecolor='white', edgecolor='none'))
+			for label in self.ax.yaxis.get_ticklabels():
+				label.set_bbox(dict(facecolor='white', edgecolor='none'))
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
