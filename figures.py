@@ -221,9 +221,9 @@ class Figures:
 			self.ax.set_yticklabels(ylabels)
 
 			for label in self.ax.xaxis.get_ticklabels():
-				label.set_bbox(dict(facecolor='white', edgecolor='none'))
+				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 			for label in self.ax.yaxis.get_ticklabels():
-				label.set_bbox(dict(facecolor='white', edgecolor='none'))
+				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
