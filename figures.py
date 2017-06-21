@@ -274,7 +274,7 @@ class Figures:
 		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec)
 		return circle
 
-	def addEllipse(self, xy=(0,0), r=(1,1), fc='w', ec='k', angle=0.0, lw=1):
+	def addEllipse(self, xy=(0,0), r=(1,1), fc='w', ec='k', angle=0.0, lw=2):
 		if isinstance(r, int):
 			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec)
 		else:
