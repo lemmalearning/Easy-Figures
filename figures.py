@@ -12,7 +12,7 @@ import numpy as np
 import StringIO
 import math
 import re
-#from sympy.utilities.lambdify import lambdify
+from sympy.utilities.lambdify import lambdify
 
 
 class Figures:
@@ -61,6 +61,7 @@ class Figures:
 		plt.show()
 
 	def axisFormat(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
+		self.xyrange = xyrange
 		# Modify the plot view to scale, remove axis, and center our shape
 		def adjust_spines(ax, spines):
 		    for loc, spine in ax.spines.items():
@@ -88,8 +89,8 @@ class Figures:
 			plt.axis('scaled')
 		else:
 			plt.gca().set_aspect('equal', adjustable='box')
-			self.ax.set_xlim(left=xyrange[0][0]+0.1, right=xyrange[0][1]-.1)
-			self.ax.set_ylim(bottom=xyrange[1][0]+0.1, top=xyrange[1][1]-.1)
+			self.ax.set_xlim(left=xyrange[0][0]+.1, right=xyrange[0][1]-.1)
+			self.ax.set_ylim(bottom=xyrange[1][0]+.1, top=xyrange[1][1]-.1)
 
 			self.ax.spines['right'].set_color('none')
 			self.ax.spines['top'].set_color('none')
@@ -176,7 +177,9 @@ class Figures:
 		for xy, text, color, valignment, halignment, bbox, latex in zip(xy, text, color, valignment, halignment, bbox, latex):
 			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox, color=color)
 
-	def addFunction(self, functions, xyranges, colors='black', linewidth=2, variable=None):
+	def addFunction(self, functions, xyranges=None, colors='black', linewidth=2, variable=None):
+		if xyranges is None:
+			xyranges = self.xyrange
 		if not isinstance(functions, list):
 			functions = [functions]
 
@@ -187,10 +190,9 @@ class Figures:
 		if variable is not None:
 			if not isinstance(variable, list):
 				variable = [variable] * len(functions)
-			for f, v in zip(functions, variable):
-				#f = lambdastr(v, f)
-				f = lambdify(v, f(v))
-		for function, xyrange, color in zip(functions, xyranges, colors):
+			function_lam = [lambdify(v, f, "numpy") for f, v in zip(functions, variable)]
+
+		for function, xyrange, color in zip(function_lam, xyranges, colors):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
 			self.ax.plot(x, y, color)
