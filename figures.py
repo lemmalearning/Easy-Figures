@@ -13,7 +13,7 @@ from sympy.utilities.lambdify import lambdify
 
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10]):
+	def __init__(self, xyrange=None, ratio=[10,10], width=400):
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickInterval = 0
@@ -23,6 +23,9 @@ class Figures:
 		self.height = None
 		self.xyrange = xyrange
 		self.drawOrder = []
+		self.width = 400
+
+		self.setPixelSize(400, height='auto')
 		#plt.figure(figsize=ratio)
 
 
@@ -203,11 +206,8 @@ class Figures:
 		vertexB = [z[-1],0]
 		vertexC = [x,y]
 
-		#transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
 		triangle = Polygon.Polygon(np.delete((transformation * np.matrix([[0,0], [z[-1],0], [x,y]]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
-		#triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
 
-		#triangle = Polygon.Polygon([(0,0), (z[-1],0), (x,y)], self.fig, self.ax)
 		return triangle
 
 	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
