@@ -199,11 +199,8 @@ class Figures:
 		z = np.array([a,b,c])
 
 		vertexA = [0+xy[0],0,1]
-		print vertexA
 		vertexB = [z[-1],0+xy[0],1]
-		print vertexB
 		vertexC = [x,y,1]
-		print vertexC
 
 		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
 		triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
