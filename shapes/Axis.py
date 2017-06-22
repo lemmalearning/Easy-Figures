@@ -6,7 +6,24 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Axis:
+	"""
+	Creates an Axis object which contains ticks, spine arrows, and grids.
+
+	__init__ - Creates the object and sets the various class variables
+	Ticks - Creates the class variables required for drawing tick marks
+	__draw__ - Draws the axis and tick marks according to class variables
+	"""
 	def __init__(self, fig, ax, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
+		"""
+		fig - fig object from matplotlib
+		ax - ax object from matplotlib
+		hideAxis=False - By default show the axis, but have an option to hide the spines
+		xyrange=None - By default inherit the xyrange of the axis from the Figures definition, but take a custom one if a custom spine range is required
+		grid=False - By default do not show the grid, 
+		arrows=True -
+		color='black' -
+		minorGrid=False -
+		"""
 		self.fig 		= fig
 		self.ax 		= ax
 		self.hideAxis 	= hideAxis

@@ -54,8 +54,8 @@ class Ellipse:
 			midMajor = (self.xy[0]+(p+temp_x))/2.0
 			midMinor = (self.xy[1]+(s+temp_y))/2.0
 
-			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=25)
-			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=25)
+			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=25, usetex=True)
+			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=25, usetex=True)
 
 			"""
 			# Find out the pixel measurements of the text's bounding box
@@ -107,8 +107,8 @@ class Ellipse:
 			midMajor = (self.xy[0]+(p+temp_x))/2.0
 			midMinor = (self.xy[1]+(s+temp_y))/2.0
 
-			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=25)
-			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=25)
+			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=25, usetex=True)
+			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=25, usetex=True)
 
 
 			"""

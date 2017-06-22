@@ -13,7 +13,7 @@ from sympy.utilities.lambdify import lambdify
 
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10]):
+	def __init__(self, xyrange=None, ratio=[10,10], width=400):
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickInterval = 0
@@ -23,6 +23,9 @@ class Figures:
 		self.height = None
 		self.xyrange = xyrange
 		self.drawOrder = []
+		self.width = 400
+
+		self.setPixelSize(400, height='auto')
 		#plt.figure(figsize=ratio)
 
 
