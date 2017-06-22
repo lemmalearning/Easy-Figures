@@ -202,7 +202,7 @@ class Figures:
 		z = np.array([a,b,c])
 
 		vertexA = [0+xy[0],0,1]
-		verexB = [z[-1],0+xy[0],1]
+		vertexB = [z[-1],0+xy[0],1]
 		vertexC = [x,y,1]
 
 		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
