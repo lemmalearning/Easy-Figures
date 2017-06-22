@@ -187,9 +187,8 @@ class Figures:
 		self.drawOrder.append(polygon)
 		return polygon
 
-	def addTriangle_side(self, xy=(0,0), a=0, b=0, c=0, rotation=0, length=1):
+	def addTriangle_side(self, xy=(0,0), a=0, b=0, c=0, rotation=0.0, length=1):
 		# Angles
-		return
 		alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
 		beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
 		gamma = (np.pi)-alpha-beta
@@ -199,15 +198,17 @@ class Figures:
 		y = x * np.tan(alpha)
 		z = np.array([a,b,c])
 
-		vertexA = [0,0]
-		vertexB = [z[-1],0]
-		vertexC = [x,y]
+		vertexA = [0+xy[0],0,1]
+		print vertexA
+		vertexB = [z[-1],0+xy[0],1]
+		print vertexB
+		vertexC = [x,y,1]
+		print vertexC
 
-		#transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-		triangle = Polygon.Polygon(np.delete((transformation * np.matrix([[0,0], [z[-1],0], [x,y]]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
-		#triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
+		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
+		triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
 
-		#triangle = Polygon.Polygon([(0,0), (z[-1],0), (x,y)], self.fig, self.ax)
+		self.drawOrder.append(triangle)
 		return triangle
 
 	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
