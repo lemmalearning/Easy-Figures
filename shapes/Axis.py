@@ -18,8 +18,8 @@ class Axis:
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
 		hideAxis=False - By default show the axis, but have an option to hide the spines
-		xyrange=None -
-		grid=False -
+		xyrange=None - By default inherit the xyrange of the axis from the Figures definition, but take a custom one if a custom spine range is required
+		grid=False - By default do not show the grid, 
 		arrows=True -
 		color='black' -
 		minorGrid=False -
