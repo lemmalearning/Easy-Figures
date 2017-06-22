@@ -2,11 +2,8 @@ import matplotlib
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 matplotlib.rcParams['font.family'] = 'cmr10' # Change font to Computer Modern (LaTeX font)
 import matplotlib.pyplot as plt
-#plt.rcParams.update({'text.usetex': True})
 plt.rcParams["figure.figsize"] = [10,10]
-#matplotlib.rcParams['font.family'] = 'serif'
-#matplotlib.rcParams['font.sans-serif'] = ['cm']
-from shapes import Polygon, Circle, Ellipse, Arrow
+from shapes import Polygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
 
 import numpy as np
 import StringIO
@@ -16,7 +13,7 @@ from sympy.utilities.lambdify import lambdify
 
 
 class Figures:
-	def __init__(self, xyrange=None):
+	def __init__(self, xyrange=None, ratio=[10,10]):
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickInterval = 0
@@ -25,8 +22,9 @@ class Figures:
 		self.padding = 0
 		self.height = None
 		self.xyrange = xyrange
-		self.unit2px = self.ax.transData.transform([(0,1),(1,0)])-self.ax.transData.transform((0,0))
-		self.px2unit = 1/self.unit2px
+		self.drawOrder = []
+		#plt.figure(figsize=ratio)
+
 
 	def __export__(self):
 		export_str = StringIO.StringIO()
@@ -55,79 +53,21 @@ class Figures:
 
 		return s
 
-
-
 	def __writeFile__(self, fileLocation, **kwargs):
 		self.fig.savefig(fileLocation, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
 
 	def __display__(self):
 		plt.show()
 
-	def axisFormat(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
-		if xyrange is not None:
-			self.xyrange = xyrange
-		# Modify the plot view to scale, remove axis, and center our shape
-		def adjust_spines(ax, spines):
-		    for loc, spine in ax.spines.items():
-		        if loc in spines:
-		            spine.set_position(('outward', 10))  # outward by 10 points
-		            spine.set_smart_bounds(True)
-		        else:
-		            spine.set_color('none')  # don't draw spine
+	def __draw_shapes__(self, order=None):
+		for i, shape in enumerate(self.drawOrder if order is None else order):
+			shape.__draw__(zorder=i)
 
-		    # turn off ticks where there is no spine
-		    if 'left' in spines:
-		        ax.yaxis.set_ticks_position('left')
-		    else:
-		        # no yaxis ticks
-		        ax.yaxis.set_ticks([])
-
-		    if 'bottom' in spines:
-		        ax.xaxis.set_ticks_position('bottom')
-		    else:
-		        # no xaxis ticks
-		        ax.xaxis.set_ticks([])
-
-		if xyrange == None:
-			plt.axis('off')
-			plt.axis('scaled')
-		else:
-			plt.gca().set_aspect('equal', adjustable='box')
-
-			self.ax.set_xlim(left=xyrange[0][0]+.1 if xyrange[0][0]!=0 else xyrange[0][0], right=xyrange[0][1]-.1)
-			self.ax.set_ylim(bottom=xyrange[1][0]+.1 if xyrange[0][0]!=0 else xyrange[1][0], top=xyrange[1][1]-.1)
-
-			self.ax.spines['right'].set_color('none')
-			self.ax.spines['top'].set_color('none')
-
-			self.ax.spines['left'].set_position(('data', 0))
-			self.ax.spines['bottom'].set_position(('data', 0))
-
-		if hideAxis:
-			plt.axis('off')
-			return
-
-		if grid is not False:
-			self.ax.grid(which='major', color='k' if grid == True else grid, linestyle='dashed', linewidth=.5, alpha=0.5)
-			if minorGrid is not False:
-				self.ax.grid(which='minor', color='k' if minorGrid == True else minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
-
-		if arrows:
-			xmin, xmax = self.ax.get_xlim()
-			ymin, ymax = self.ax.get_ylim()
-
-			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
-			         head_width=0.1875, head_length=.3,
-			         length_includes_head=True, clip_on=False,color=color)
-
-			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
-			         head_width=.1875, head_length=.3,
-					 length_includes_head=True, clip_on=False,color=color)
-
-
-		# Control color
-		self.ax.spines['bottom'].set_color(color)
-		self.ax.spines['left'].set_color(color)
+	def addAxis(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
+		xyrange=self.xyrange if xyrange is None else xyrange
+		axis = Axis.Axis(self.fig, self.ax, hideAxis, xyrange, grid, arrows, color, minorGrid)
+		self.drawOrder.append(axis)
+		return axis
 
 
 
@@ -162,47 +102,20 @@ class Figures:
 
 
 	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black', latex=True):
-		if not isinstance(colors, list):
-			colors = [colors]
-			xys = [xys]
-			texts = [texts]
-
-		for xy, text, color in zip(xys, texts, colors):
-			plt.plot(xy[0], xy[1], 'o{}'.format(color), ms=pointsize)
-			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment='center', textcoords='offset points')
+		p = Point.Point(self.fig, self.ax, xys, texts, pointsize, fontsize, colors, latex)
+		self.drawOrder.append(p)
+		return p
 
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True):
-		if not isinstance(color, list):
-			color = [color]
-			xy = [xy]
-			text = [text]
-			halignment = [halignment]
-			valignment = [valignment]
-			bbox = [bbox]
-			latex = [latex]
-
-		for xy, text, color, valignment, halignment, bbox, latex in zip(xy, text, color, valignment, halignment, bbox, latex):
-			self.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox, color=color)
+		t = Text.Text(self.fig, self.ax,xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True)
+		self.drawOrder.append(t)
+		return t
 
 	def addFunction(self, functions, xyranges=None, colors='black', linewidth=2, variable=None):
-		if xyranges is None:
-			xyranges = self.xyrange
-		if not isinstance(functions, list):
-			functions = [functions]
-
-		if not isinstance(colors, list):
-			xyranges = [xyranges] * len(functions)
-			colors = [colors] * len(functions)
-
-		if variable is not None:
-			if not isinstance(variable, list):
-				variable = [variable] * len(functions)
-			function_lam = [lambdify(v, f, "numpy") for f, v in zip(functions, variable)]
-
-		for function, xyrange, color in zip(function_lam if variable is not None else functions, xyranges, colors):
-			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
-			y = function(x)
-			plt.plot(x, y, color, zorder=1)
+		xyranges= self.xyrange if xyranges == None else xyranges
+		f = Function.Function(self.fig, self.ax, functions, xyranges, colors, linewidth, variable)
+		self.drawOrder.append(f)
+		return f
 
 
 	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
@@ -238,17 +151,20 @@ class Figures:
 
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
+		self.drawOrder.append(polygon)
 		return polygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='w', ec='k'):
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k'):
 		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec)
+		self.drawOrder.append(circle)
 		return circle
 
-	def addEllipse(self, xy=(0,0), r=(1,1), fc='w', ec='k', angle=0.0, lw=2):
+	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2):
 		if isinstance(r, int):
 			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec)
 		else:
 			ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, r, fc, ec, angle, lw)
+			self.drawOrder.append(ellipse)
 			return ellipse
 
 	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0, length=1):
@@ -268,16 +184,16 @@ class Figures:
 
 		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
 		polygon = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
-
+		self.drawOrder.append(polygon)
 		return polygon
 
 	def addTriangle_side(self, xy=(0,0), p1=(0,0), p2=(0,0), rotation=0):
-
 		polygon = Polygon.Polygon([vtx1, vtx2, vtx3], self.fig, self.ax)
-
+		self.drawOrder.append(polygon)
 		return polygon
 		#raise Exception('Not implemented yet!')
 
 	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
 		arrow = Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, headWidth=headWidth, width=width)
+		self.drawOrder.append(arrow)
 		return arrow

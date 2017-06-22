@@ -7,7 +7,7 @@ import numpy as np
 
 class Circle:
 	matplotlib_obj = None
-	def __init__(self, fig, ax, xy=(0,0), diameter=None, radius=None, label="", fc='w', ec='k'):
+	def __init__(self, fig, ax, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k'):
 		self.ax = ax
 		self.fig = fig
 		if radius!=None:
