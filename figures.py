@@ -89,8 +89,9 @@ class Figures:
 			plt.axis('scaled')
 		else:
 			plt.gca().set_aspect('equal', adjustable='box')
-			self.ax.set_xlim(left=xyrange[0][0]+.1, right=xyrange[0][1]-.1)
-			self.ax.set_ylim(bottom=xyrange[1][0]+.1, top=xyrange[1][1]-.1)
+
+			self.ax.set_xlim(left=xyrange[0][0]+.1 if xyrange[0][0]!=0 else xyrange[0][0], right=xyrange[0][1]-.1)
+			self.ax.set_ylim(bottom=xyrange[1][0]+.1 if xyrange[0][0]!=0 else xyrange[1][0], top=xyrange[1][1]-.1)
 
 			self.ax.spines['right'].set_color('none')
 			self.ax.spines['top'].set_color('none')
@@ -192,7 +193,7 @@ class Figures:
 				variable = [variable] * len(functions)
 			function_lam = [lambdify(v, f, "numpy") for f, v in zip(functions, variable)]
 
-		for function, xyrange, color in zip(function_lam, xyranges, colors):
+		for function, xyrange, color in zip(function_lam if variable is not None else functions, xyranges, colors):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
 			self.ax.plot(x, y, color)
