@@ -12,7 +12,6 @@ class Polygon:
 		# Define the polygon
 		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=2)
 		# Create and add polygon
-		ax.add_patch(self.matplotlib_obj)
 
 	def labelVertices(self, labelList):
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
@@ -29,3 +28,7 @@ class Polygon:
 				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
 				verticalalignment=("top" if d[0, 1] < 0 else "bottom") \
 			)
+
+	def __draw__(self, zorder=1):
+		p = self.ax.add_patch(self.matplotlib_obj)
+		p.set(zorder=zorder)

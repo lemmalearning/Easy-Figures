@@ -19,8 +19,7 @@ class Ellipse:
 		semiminor = semiminor*2.0
 
 		ellipse = patches.Ellipse(xy, semimajor, semiminor, linewidth=3, fc=fc, ec=ec, angle=angle, lw=lw)
-
-		ax.add_patch(ellipse)
+		self.matplotlib_obj = ellipse
 
 	def ellipseLabels(self, xlabel=None, ylabel=None, isRadius=True):
 		semimajor = self.r[0]
@@ -93,3 +92,8 @@ class Ellipse:
 			# Left shift it
 			textxobj.set_position((midMajor-xwidth, (self.xy[1]+0.2)))
 			textyobj.set_position((self.xy[0]+0.2, midMinor-yheight))
+
+
+	def __draw__(self, zorder=1):
+		e = self.ax.add_patch(self.matplotlib_obj)
+		e.set(zorder=zorder)

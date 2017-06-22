@@ -16,7 +16,7 @@ from sympy.utilities.lambdify import lambdify
 
 
 class Figures:
-	def __init__(self):
+	def __init__(self, xyrange=None):
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickInterval = 0
@@ -24,6 +24,9 @@ class Figures:
 		self.tight_fit = True
 		self.padding = 0
 		self.height = None
+		self.xyrange = xyrange
+		self.unit2px = self.ax.transData.transform([(0,1),(1,0)])-self.ax.transData.transform((0,0))
+		self.px2unit = 1/self.unit2px
 
 	def __export__(self):
 		export_str = StringIO.StringIO()
@@ -61,7 +64,8 @@ class Figures:
 		plt.show()
 
 	def axisFormat(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
-		self.xyrange = xyrange
+		if xyrange is not None:
+			self.xyrange = xyrange
 		# Modify the plot view to scale, remove axis, and center our shape
 		def adjust_spines(ax, spines):
 		    for loc, spine in ax.spines.items():
@@ -134,6 +138,8 @@ class Figures:
 			If height is also specified, then the size is completely fixed to that size
 		"""
 
+		self.width = width
+
 		# a point is 1/72in;  12pt = 16px
 		px2in = lambda p: (p * 0.75 / 72.0)
 
@@ -196,7 +202,7 @@ class Figures:
 		for function, xyrange, color in zip(function_lam if variable is not None else functions, xyranges, colors):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
-			self.ax.plot(x, y, color)
+			plt.plot(x, y, color, zorder=1)
 
 
 	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
@@ -209,8 +215,10 @@ class Figures:
 		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tickInterval))
 		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
 
+
 		if top:
 			self.ax.xaxis.set_label_position('top')
+
 
 		if origin:
 			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
@@ -271,4 +279,5 @@ class Figures:
 		#raise Exception('Not implemented yet!')
 
 	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
-		return Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, headWidth=headWidth, width=width)
+		arrow = Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, headWidth=headWidth, width=width)
+		return arrow
