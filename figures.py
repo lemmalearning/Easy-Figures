@@ -15,8 +15,8 @@ from sympy.utilities.lambdify import lambdify
 
 class Figures:
 	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto'):
-		self.fig, self.ax = plt.subplots(figsize=(20, 10))
-		self.ax.set_aspect(3, anchor='C')
+		self.fig, self.ax = plt.subplots()
+		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
 		self.tickInterval = 0
 		self.tickLabelInterval = 1
@@ -27,7 +27,8 @@ class Figures:
 		self.drawOrder = []
 		self.width = width
 		self.height = height
-
+		self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
+		self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
 		self.setPixelSize(width, height=height)
 		#plt.figure(figsize=ratio)
 
@@ -65,12 +66,17 @@ class Figures:
 		plt.show()
 
 	def __draw_shapes__(self, order=None):
+		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
+			self.addAxis(hideAxis=True)
+
+			#plt.axis('scaled')
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True):
+	def addAxis(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True, pixelSize=400):
 		xyrange=self.xyrange if xyrange is None else xyrange
-		axis = Axis.Axis(self.fig, self.ax, hideAxis, xyrange, grid, arrows, color, minorGrid, label)
+		pixelSize = self.width
+		axis = Axis.Axis(self.fig, self.ax, hideAxis, xyrange, grid, arrows, color, minorGrid, label, pixelSize)
 		self.drawOrder.append(axis)
 
 		return axis
@@ -121,12 +127,14 @@ class Figures:
 		return f
 
 	def addPolygon(self, vertices):
-		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
+		pixelSize=self.width
+		polygon = Polygon.Polygon(vertices, self.fig, self.ax, pixelSize)
 		self.drawOrder.append(polygon)
 		return polygon
 
 	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k'):
-		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec)
+		pixelSize=self.width
+		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec, pixelSize)
 		self.drawOrder.append(circle)
 		return circle
 
@@ -134,11 +142,12 @@ class Figures:
 		if isinstance(r, int):
 			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec)
 		else:
-			ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, r, fc, ec, angle, lw)
+			pixelSize=self.width
+			ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, r, fc, ec, angle, lw, pixelSize)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, alabel=None, blabel=None, clabel=None, isSide=True, angle=0.0, rotation=0.0, length=1):
+	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1):
 		if isSide:
 			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
 			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
@@ -154,7 +163,7 @@ class Figures:
 			vertexC = [x,y,1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
+			triangle = Polygon.Polygon(self.fig, self.ax, np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
@@ -172,9 +181,9 @@ class Figures:
 			vertexA = [0+xy[0], A+xy[1], 1]
 			vertexB = [xy[0], xy[1], 1]
 			vertexC = [C+xy[0], 0+xy[1], 1]
-			
+
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
+			triangle = Polygon.Polygon(self.fig, self.ax, np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 

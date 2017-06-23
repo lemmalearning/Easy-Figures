@@ -7,7 +7,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Ellipse:
-	def __init__(self, fig, ax, xy=[0,0], r=(1,1), fc=None, ec='none', angle=0.0, lw=2):
+	def __init__(self, fig, ax, xy=[0,0], r=(1,1), fc=None, ec='none', angle=0.0, lw=2, pixelSize=400):
 		self.r = r
 		self.angle=angle
 		self.lw=lw
@@ -16,6 +16,7 @@ class Ellipse:
 		semiminor = r[1]
 		self.fig = fig
 		self.ax = ax
+		self.pixelSize = pixelSize
 		semimajor = semimajor*2.0
 		semiminor = semiminor*2.0
 
@@ -54,8 +55,8 @@ class Ellipse:
 			midMajor = (self.xy[0]+(p+temp_x))/2.0
 			midMinor = (self.xy[1]+(s+temp_y))/2.0
 
-			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=25)
-			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=25)
+			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=.0625*self.pixelSize)
+			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=.0625*self.pixelSize)
 
 			"""
 			# Find out the pixel measurements of the text's bounding box
@@ -107,8 +108,8 @@ class Ellipse:
 			midMajor = (self.xy[0]+(p+temp_x))/2.0
 			midMinor = (self.xy[1]+(s+temp_y))/2.0
 
-			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=25)
-			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=25)
+			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=.0625*self.pixelSize)
+			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=.0625*self.pixelSize)
 
 
 			"""
