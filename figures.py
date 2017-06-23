@@ -121,38 +121,6 @@ class Figures:
 		self.drawOrder.append(f)
 		return f
 
-
-	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
-		self.tickInterval = tickInterval
-		self.tickLabelInterval = tickLabelInterval
-		# Control ticks
-		self.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tickLabelInterval))
-		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(tickLabelInterval))
-		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tickInterval))
-		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(tickInterval))
-		self.ax.tick_params(axis='both', which='major', labelsize=fontsize)
-
-
-		if top:
-			self.ax.xaxis.set_label_position('top')
-
-
-		if origin:
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
-			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.ax.get_xticks().tolist()]
-			self.ax.set_yticklabels(ylabels)
-			self.ax.set_xticklabels(xlabels)
-		else:
-			xlabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_xticks().tolist()]
-			self.ax.set_xticklabels(xlabels)
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
-			self.ax.set_yticklabels(ylabels)
-
-			for label in self.ax.xaxis.get_ticklabels():
-				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
-			for label in self.ax.yaxis.get_ticklabels():
-				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
-
 	def addPolygon(self, vertices):
 		polygon = Polygon.Polygon(vertices, self.fig, self.ax)
 		self.drawOrder.append(polygon)
