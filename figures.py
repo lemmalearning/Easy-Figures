@@ -128,7 +128,7 @@ class Figures:
 
 	def addPolygon(self, vertices):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, self.fig, self.ax, pixelSize)
+		polygon = Polygon.Polygon(self.fig, self.ax, vertices, pixelSize=self.width, figure=self)
 		self.drawOrder.append(polygon)
 		return polygon
 

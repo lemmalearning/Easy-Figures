@@ -11,9 +11,9 @@ class Function:
 		if not isinstance(functions, list):
 			functions = [functions]
 
-		if not isinstance(colors, list):
+		if not isinstance(color, list):
 			xyranges = [xyranges] * len(functions)
-			colors = [colors] * len(functions)
+			color = [color] * len(functions)
 
 		if variable is not None:
 			if not isinstance(variable, list):
@@ -28,7 +28,7 @@ class Function:
 
 
 	def __draw__(self, zorder=1):
-		for function, xyrange, color in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.colors):
+		for function, xyrange, color in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.color):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
 			plt.plot(x, y, color, zorder=zorder)

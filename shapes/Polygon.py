@@ -43,17 +43,34 @@ class Polygon:
 	def labelVertices(self, labelList):
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
 		# The side that's mentioned first is horizontal
-		self.vertexLabels = labelList
+		self.labels = labelList
 
 		centroid = np.mean(self.vertices, axis=0)
 
-		for i, label in enumerate(self.vertexLabels):
+		for i, label in enumerate(self.labels):
 			d = self.vertices[i, :] - centroid
 			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d
 
-			self.figure.addText(v[0, 0], v[0, 1], '$'+label+'$', fontsize=.0625*self.pixelSize, \
-				halignment=("right" if d[0,0] < 0 else "left"), \
-				valignment=("top" if d[0, 1] < 0 else "bottom")
+			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
+				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
+				verticalalignment=("top" if d[0, 1] < 0 else "bottom") \
+			)
+
+	def labelAngles(self, labelList):
+		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
+		# The side that's mentioned first is horizontal
+		self.labels = labelList
+
+		centroid = np.mean(self.vertices, axis=0)
+
+		for i, label in enumerate(self.labels):
+			d = self.vertices[i, :] - centroid
+			v = self.vertices[i, :] - .1*np.linalg.norm(d)*d
+			print label, d, v
+
+			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=8, \
+				horizontalalignment=("left" if d[0,0] < 0 else "right"), \
+				verticalalignment=("bottom" if d[0, 1] < 0 else "top") \
 			)
 
 	def __draw__(self, zorder=1):
