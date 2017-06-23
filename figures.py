@@ -153,10 +153,6 @@ class Figures:
 			vertexB = [z[-1],0+xy[0],1]
 			vertexC = [x,y,1]
 
-			self.addText(((xy[0]+z[-1])/2.0, (0+xy[0])/2.0), text=alabel, fontsize=15, latex=True)
-			self.addText((((z[-1]+x)/2.0)*1.15, (xy[0]+y)/2.0), text=blabel, fontsize=15, latex=True)
-			self.addText((((x+xy[0])/2.0)*0.85, (y)/2.0), text=clabel, fontsize=15, latex=True)
-
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
 			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
 			self.drawOrder.append(triangle)
@@ -176,33 +172,11 @@ class Figures:
 			vertexA = [0+xy[0], A+xy[1], 1]
 			vertexB = [xy[0], xy[1], 1]
 			vertexC = [C+xy[0], 0+xy[1], 1]
-
-			self.addText(xy[0], A+xy[1], '$'+alabel+'$', fontsize=25)
-			self.addText(xy[0], xy[1], '$'+blabel+'$', fontsize=25)
-			self.addText(C+xy[0], xy[1], '$'+clabel+'$', fontsize=25)
-
+			
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
 			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
 			self.drawOrder.append(triangle)
 			return triangle
-	"""
-	def labelVertices(self, labelList):
-		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
-		# The side that's mentioned first is horizontal
-		self.labels = labelList
-
-		centroid = np.mean(self.vertices, axis=0)
-
-		for i, label in enumerate(self.labels):
-			d = self.vertices[i, :] - centroid
-			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d
-
-			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
-				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
-				verticalalignment=("top" if d[0, 1] < 0 else "bottom")
-			)
-
-	"""
 
 	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
 		arrow = Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, headWidth=headWidth, width=width)
