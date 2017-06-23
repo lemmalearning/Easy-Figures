@@ -29,7 +29,6 @@ class Figures:
 		self.setPixelSize(width, height='auto')
 		#plt.figure(figsize=ratio)
 
-
 	def __export__(self):
 		export_str = StringIO.StringIO()
 		self.__writeFile__(export_str, format='svg')
@@ -137,46 +136,71 @@ class Figures:
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0, length=1):
-		# Define the angles and sides
-		alpha = angle
-		beta = np.pi/2
-		gamma = np.pi-beta-alpha
+	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, alabel=None, blabel=None, clabel=None, isSide=True, angle=0.0, rotation=0.0, length=1):
+		if isSide:
+			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
+			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
+			gamma = (np.pi)-alpha-beta
 
-		A = length
-		B = np.sin(beta)*length/np.sin(alpha)
-		C = np.sin(gamma)*length/np.sin(alpha)
+			# Points
+			x = (c*np.tan(beta))/(np.tan(alpha)+np.tan(beta))
+			y = x * np.tan(alpha)
+			z = np.array([a,b,c])
 
-		# Define the vertices
-		vertexA = [0+xy[0], A+xy[1], 1]
-		vertexB = [xy[0], xy[1], 1]
-		vertexC = [C+xy[0], 0+xy[1], 1]
+			vertexA = [0+xy[0],0,1]
+			vertexB = [z[-1],0+xy[0],1]
+			vertexC = [x,y,1]
 
-		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-		polygon = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
-		self.drawOrder.append(polygon)
-		return polygon
+			self.addText(((xy[0]+z[-1])/2.0, (0+xy[0])/2.0), text=alabel, fontsize=15, latex=True)
+			self.addText((((z[-1]+x)/2.0)*1.15, (xy[0]+y)/2.0), text=blabel, fontsize=15, latex=True)
+			self.addText((((x+xy[0])/2.0)*0.85, (y)/2.0), text=clabel, fontsize=15, latex=True)
 
-	def addTriangle_side(self, xy=(0,0), a=0, b=0, c=0, rotation=0.0, length=1):
-		# Angles
-		alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
-		beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
-		gamma = (np.pi)-alpha-beta
+			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
+			self.drawOrder.append(triangle)
+			return triangle
 
-		# Points
-		x = (c*np.tan(beta))/(np.tan(alpha)+np.tan(beta))
-		y = x * np.tan(alpha)
-		z = np.array([a,b,c])
+		else:
+			# Define the angles and sides
+			alpha = angle
+			beta = np.pi/2
+			gamma = np.pi-beta-alpha
 
-		vertexA = [0+xy[0],0,1]
-		vertexB = [z[-1],0+xy[0],1]
-		vertexC = [x,y,1]
+			A = length
+			B = np.sin(beta)*length/np.sin(alpha)
+			C = np.sin(gamma)*length/np.sin(alpha)
 
-		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-		triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
+			# Define the vertices
+			vertexA = [0+xy[0], A+xy[1], 1]
+			vertexB = [xy[0], xy[1], 1]
+			vertexC = [C+xy[0], 0+xy[1], 1]
 
-		self.drawOrder.append(triangle)
-		return triangle
+			self.addText(xy[0], A+xy[1], '$'+alabel+'$', fontsize=25)
+			self.addText(xy[0], xy[1], '$'+blabel+'$', fontsize=25)
+			self.addText(C+xy[0], xy[1], '$'+clabel+'$', fontsize=25)
+
+			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
+			self.drawOrder.append(triangle)
+			return triangle
+	"""
+	def labelVertices(self, labelList):
+		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
+		# The side that's mentioned first is horizontal
+		self.labels = labelList
+
+		centroid = np.mean(self.vertices, axis=0)
+
+		for i, label in enumerate(self.labels):
+			d = self.vertices[i, :] - centroid
+			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d
+
+			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
+				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
+				verticalalignment=("top" if d[0, 1] < 0 else "bottom")
+			)
+
+	"""
 
 	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
 		arrow = Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, headWidth=headWidth, width=width)

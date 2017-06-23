@@ -27,7 +27,6 @@ class Function:
 		self.variable = variable
 
 
-
 	def __draw__(self, zorder=1):
 		for function, xyrange, color in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.colors):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
