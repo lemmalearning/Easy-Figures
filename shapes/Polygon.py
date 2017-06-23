@@ -5,12 +5,13 @@ import numpy as np
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, vertices, fig, ax):
+	def __init__(self, vertices, fig, ax, pixelSize=400):
 		self.vertices = np.matrix(vertices)
 		self.fig = fig
 		self.ax = ax
 		# Define the polygon
 		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=2)
+		self.pixelSize = pixelSize
 		# Create and add polygon
 
 	def labelVertices(self, labelList):
@@ -24,7 +25,7 @@ class Polygon:
 			d = self.vertices[i, :] - centroid
 			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d
 
-			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
+			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=.0625*self.pixelSize, \
 				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
 				verticalalignment=("top" if d[0, 1] < 0 else "bottom")
 			)

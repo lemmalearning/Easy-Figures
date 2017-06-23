@@ -14,7 +14,7 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, fig, ax, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True):
+	def __init__(self, fig, ax, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True, pixelSize=400):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
@@ -34,6 +34,7 @@ class Axis:
 		self.color 		= color
 		self.minorGrid 	= minorGrid
 		self.label		= label
+		self.pixelSize = pixelSize
 
 	def Ticks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
@@ -94,15 +95,19 @@ class Axis:
 
 
 		if self.arrows:
+			#xyrange/pixelrange = unitsperpixel * pixels = units
+			UNITS_PER_PIXEL_x = (0-self.xyrange[0][0]) + (self.xyrange[0][1])/self.pixelSize
+			UNITS_PER_PIXEL_y = (0-self.xyrange[1][0]) + (self.xyrange[1][1])/self.pixelSize
+			
 			xmin, xmax = self.ax.get_xlim()
 			ymin, ymax = self.ax.get_ylim()
 
 			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
-			         head_width=0.1875, head_length=.3,
+			         head_width=UNITS_PER_PIXEL_x*.05/1.6, head_length=UNITS_PER_PIXEL_x*.05,
 			         length_includes_head=True, clip_on=False,color=self.color)
 
 			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
-			         head_width=.1875, head_length=.3,
+			         head_width=UNITS_PER_PIXEL_y*.05/1.6, head_length=UNITS_PER_PIXEL_y*.05,
 					 length_includes_head=True, clip_on=False,color=self.color)
 
 		# Control color
@@ -110,8 +115,9 @@ class Axis:
 		self.ax.spines['left'].set_color(self.color)
 
 		if self.label:
-			Text.Text(self.fig, self.ax, ((self.xyrange[0][1])-0.09, -0.09),'x', latex=True, fontsize=12).__draw__()
-			Text.Text(self.fig, self.ax, (-0.3, (self.xyrange[1][1])-0.1), 'y', latex=True, fontsize=12).__draw__()
+			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
+			Text.Text(self.fig, self.ax, ((self.xyrange[0][1])-0.09, -0.09),'x', latex=True, fontsize=.03*self.pixelSize).__draw__()
+			Text.Text(self.fig, self.ax, (-0.3, (self.xyrange[1][1])-0.1), 'y', latex=True, fontsize=.03*self.pixelSize).__draw__()
 
 		####### DRAW LABELS #######
 		# Control ticks

@@ -7,9 +7,10 @@ import numpy as np
 
 class Circle:
 	matplotlib_obj = None
-	def __init__(self, fig, ax, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k'):
+	def __init__(self, fig, ax, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', pixelSize=400):
 		self.ax = ax
 		self.fig = fig
+		self.pixelSize = pixelSize
 		if radius!=None:
 			circle = patches.Circle(xy, radius=radius, fc=fc, ec=ec, linewidth=3)
 			self.matplotlib_obj = circle
@@ -18,7 +19,7 @@ class Circle:
 				plt.plot([xy[0],p[0]], [xy[1],p[1]], linewidth=2, ls='dashed', color='black')
 
 				mid_radius = (xy[0]+p[0])/2.0
-				textobj = ax.text(mid_radius, xy[1]*1.015, '$'+label+'$', fontsize=25, horizontalalignment='center')
+				textobj = ax.text(mid_radius, xy[1]*1.015, '$'+label+'$', fontsize=.0625*self.pixelSize, horizontalalignment='center')
 
 
 		else:
@@ -29,7 +30,7 @@ class Circle:
 				p2 = (xy[0]+diameter/2, xy[1])
 				plt.plot([p1[0],p2[0]], [p1[1],p2[1]], linewidth=2, ls='dashed', color='black')
 
-				textobj = ax.text(xy[0], xy[1]*1.015, '$'+label+'$', fontsize=25, horizontalalignment='center')
+				textobj = ax.text(xy[0], xy[1]*1.015, '$'+label+'$', fontsize=.0625*self.pixelSize, horizontalalignment='center')
 
 
 	def __draw__(self, zorder=1):
