@@ -26,8 +26,7 @@ class Polygon:
 
 			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
 				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
-				verticalalignment=("top" if d[0, 1] < 0 else "bottom"), \
-				usetex=True
+				verticalalignment=("top" if d[0, 1] < 0 else "bottom")
 			)
 
 	def __draw__(self, zorder=1):
