@@ -4,6 +4,7 @@ import matplotlib.patches as patches
 from random import randint, choice
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
+import Text
 
 class Axis:
 	"""
@@ -13,13 +14,13 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, fig, ax, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
+	def __init__(self, fig, ax, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
 		hideAxis=False - By default show the axis, but have an option to hide the spines
 		xyrange=None - By default inherit the xyrange of the axis from the Figures definition, but take a custom one if a custom spine range is required
-		grid=False - By default do not show the grid, 
+		grid=False - By default do not show the grid,
 		arrows=True -
 		color='black' -
 		minorGrid=False -
@@ -32,6 +33,7 @@ class Axis:
 		self.arrows 	= arrows
 		self.color 		= color
 		self.minorGrid 	= minorGrid
+		self.label		= label
 
 	def Ticks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
@@ -106,6 +108,10 @@ class Axis:
 		# Control color
 		self.ax.spines['bottom'].set_color(self.color)
 		self.ax.spines['left'].set_color(self.color)
+
+		if self.label:
+			Text.Text(self.fig, self.ax, ((self.xyrange[0][1])-0.09, -0.09),'x', latex=True, fontsize=12).__draw__()
+			Text.Text(self.fig, self.ax, (-0.3, (self.xyrange[1][1])-0.1), 'y', latex=True, fontsize=12).__draw__()
 
 		####### DRAW LABELS #######
 		# Control ticks

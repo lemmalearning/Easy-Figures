@@ -67,13 +67,12 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
+	def addAxis(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True):
 		xyrange=self.xyrange if xyrange is None else xyrange
-		axis = Axis.Axis(self.fig, self.ax, hideAxis, xyrange, grid, arrows, color, minorGrid)
+		axis = Axis.Axis(self.fig, self.ax, hideAxis, xyrange, grid, arrows, color, minorGrid, label)
 		self.drawOrder.append(axis)
+
 		return axis
-
-
 
 	def setPixelSize(self, width=400, height=None, padding=0):
 		"""Sets the pixel size of the figure.
@@ -103,7 +102,6 @@ class Figures:
 			height_in = px2in(height)
 
 		self.fig.set_size_inches((width_in, height_in))
-
 
 	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black', latex=True):
 		p = Point.Point(self.fig, self.ax, xys, texts, pointsize, fontsize, colors, latex)
