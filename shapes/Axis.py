@@ -96,18 +96,18 @@ class Axis:
 
 		if self.arrows:
 			#xyrange/pixelrange = unitsperpixel * pixels = units
-			UNITS_PER_PIXEL_x = (0-self.xyrange[0][0]) + (self.xyrange[0][1])/self.pixelSize
-			UNITS_PER_PIXEL_y = (0-self.xyrange[1][0]) + (self.xyrange[1][1])/self.pixelSize
-			
+			UNITS_PER_PIXEL_x = ((0-self.xyrange[0][0]) + (self.xyrange[0][1]))/self.pixelSize
+			UNITS_PER_PIXEL_y = ((0-self.xyrange[1][0]) + (self.xyrange[1][1]))/self.pixelSize
+
 			xmin, xmax = self.ax.get_xlim()
 			ymin, ymax = self.ax.get_ylim()
 
 			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
-			         head_width=UNITS_PER_PIXEL_x*.05/1.6, head_length=UNITS_PER_PIXEL_x*.05,
+			         head_width=UNITS_PER_PIXEL_x*.05/1.6, head_length=UNITS_PER_PIXEL_x*5,
 			         length_includes_head=True, clip_on=False,color=self.color)
 
 			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
-			         head_width=UNITS_PER_PIXEL_y*.05/1.6, head_length=UNITS_PER_PIXEL_y*.05,
+			         head_width=UNITS_PER_PIXEL_y*.05/1.6, head_length=UNITS_PER_PIXEL_y*5,
 					 length_includes_head=True, clip_on=False,color=self.color)
 
 		# Control color

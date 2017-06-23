@@ -27,10 +27,10 @@ class Figures:
 		self.drawOrder = []
 		self.width = width
 		self.height = height
-
+		self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
+		self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
 		self.setPixelSize(width, height=height)
 		#plt.figure(figsize=ratio)
-
 
 	def __export__(self):
 		export_str = StringIO.StringIO()
@@ -67,15 +67,6 @@ class Figures:
 
 	def __draw_shapes__(self, order=None):
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
-			#self.ax.set_xlim(left=self.xyrange[0][0]+.1 if self.xyrange[0][0]!=0 else self.xyrange[0][0], right=self.xyrange[0][1]-.1)
-			#self.ax.set_ylim(bottom=self.xyrange[1][0]+.1 if self.xyrange[0][0]!=0 else self.xyrange[1][0], top=self.xyrange[1][1]-.1)
-			#plt.gca().set_aspect('equal', adjustable='box')
-			#self.ax.spines['right'].set_color('none')
-			#self.ax.spines['top'].set_color('none')
-			#self.ax.spines['left'].set_position(('data', 0))
-			#self.ax.spines['bottom'].set_position(('data', 0))
-			#plt.axis('off')
-			#plt.axis('scaled')
 			self.addAxis(hideAxis=True)
 
 			#plt.axis('scaled')
@@ -156,46 +147,63 @@ class Figures:
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addTriangle_angle(self, xy=(0,0), angle=(45*np.pi)/180, rotation=0, length=1):
-		# Define the angles and sides
-		alpha = angle
-		beta = np.pi/2
-		gamma = np.pi-beta-alpha
+	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1):
+		if isSide:
+			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
+			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
+			gamma = (np.pi)-alpha-beta
 
-		A = length
-		B = np.sin(beta)*length/np.sin(alpha)
-		C = np.sin(gamma)*length/np.sin(alpha)
+			# Points
+			x = (c*np.tan(beta))/(np.tan(alpha)+np.tan(beta))
+			y = x * np.tan(alpha)
+			z = np.array([a,b,c])
 
-		# Define the vertices
-		vertexA = [0+xy[0], A+xy[1], 1]
-		vertexB = [xy[0], xy[1], 1]
-		vertexC = [C+xy[0], 0+xy[1], 1]
+			vertexA = [0+xy[0],0,1]
+			vertexB = [z[-1],0+xy[0],1]
+			vertexC = [x,y,1]
 
-		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-		polygon = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
-		self.drawOrder.append(polygon)
-		return polygon
+			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
+			triangle = Polygon.Polygon(self.fig, self.ax, np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
+			self.drawOrder.append(triangle)
+			return triangle
 
-	def addTriangle_side(self, xy=(0,0), a=0, b=0, c=0, rotation=0.0, length=1):
-		# Angles
-		alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
-		beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
-		gamma = (np.pi)-alpha-beta
+		else:
+			# Define the angles and sides
+			alpha = angle
+			beta = np.pi/2
+			gamma = np.pi-beta-alpha
 
-		# Points
-		x = (c*np.tan(beta))/(np.tan(alpha)+np.tan(beta))
-		y = x * np.tan(alpha)
-		z = np.array([a,b,c])
+			A = length
+			B = np.sin(beta)*length/np.sin(alpha)
+			C = np.sin(gamma)*length/np.sin(alpha)
 
-		vertexA = [0+xy[0],0,1]
-		vertexB = [z[-1],0+xy[0],1]
-		vertexC = [x,y,1]
+			# Define the vertices
+			vertexA = [0+xy[0], A+xy[1], 1]
+			vertexB = [xy[0], xy[1], 1]
+			vertexC = [C+xy[0], 0+xy[1], 1]
 
-		transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-		triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), self.fig, self.ax)
+			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
+			triangle = Polygon.Polygon(self.fig, self.ax, np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
+			self.drawOrder.append(triangle)
+			return triangle
+	"""
+	def labelVertices(self, labelList):
+		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
+		# The side that's mentioned first is horizontal
+		self.labels = labelList
 
-		self.drawOrder.append(triangle)
-		return triangle
+		centroid = np.mean(self.vertices, axis=0)
+
+		for i, label in enumerate(self.labels):
+			d = self.vertices[i, :] - centroid
+			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d
+
+			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
+				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
+				verticalalignment=("top" if d[0, 1] < 0 else "bottom")
+			)
+
+	"""
 
 	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
 		arrow = Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, headWidth=headWidth, width=width)
