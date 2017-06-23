@@ -67,13 +67,15 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False):
+	def addAxis(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True):
 		xyrange=self.xyrange if xyrange is None else xyrange
 		axis = Axis.Axis(self.fig, self.ax, hideAxis, xyrange, grid, arrows, color, minorGrid)
 		self.drawOrder.append(axis)
+
+		if label:
+			self.addText(xy=((xyrange[0][1])-0.09, -0.09), text='x', latex=True, fontsize=11)
+			self.addText(xy=(-0.3, (xyrange[1][1])-0.08), text='y', latex=True, fontsize=11)
 		return axis
-
-
 
 	def setPixelSize(self, width=400, height=None, padding=0):
 		"""Sets the pixel size of the figure.
@@ -104,7 +106,6 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
-
 	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black', latex=True):
 		p = Point.Point(self.fig, self.ax, xys, texts, pointsize, fontsize, colors, latex)
 		self.drawOrder.append(p)
@@ -120,7 +121,6 @@ class Figures:
 		f = Function.Function(self.fig, self.ax, functions, xyranges, colors, linewidth, variable)
 		self.drawOrder.append(f)
 		return f
-
 
 	def axisFormatTicks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
