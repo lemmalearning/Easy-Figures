@@ -22,9 +22,9 @@ class Polygon:
 
 		centroid = np.mean(self.vertices, axis=0)
 
-		for i, vertix in enumerate(vertices_pairs[:-1]):
-			x = (vertix[0] + vertices_pairs[i+1][0])/2
-			y = (vertix[1] + vertices_pairs[i+1][1])/2
+		for i, vertex in enumerate(vertices_pairs[:-1]):
+			x = (vertex[0] + vertices_pairs[i+1][0])/2
+			y = (vertex[1] + vertices_pairs[i+1][1])/2
 			d = np.matrix([x,y]) - centroid
 
 			x = x+self.figure.UNITS_PER_PIXEL_x*5 if d[0,0] > 1 else x-self.figure.UNITS_PER_PIXEL_x*5
