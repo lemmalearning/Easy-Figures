@@ -23,9 +23,9 @@ class Figures:
 		self.height = None
 		self.xyrange = xyrange
 		self.drawOrder = []
-		self.width = 400
+		self.width = width
 
-		self.setPixelSize(400, height='auto')
+		self.setPixelSize(width, height='auto')
 		#plt.figure(figsize=ratio)
 
 
@@ -110,7 +110,7 @@ class Figures:
 		return p
 
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True):
-		t = Text.Text(self.fig, self.ax,xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True)
+		t = Text.Text(self.fig, self.ax,xy, text, color, fontsize, halignment, valignment, bbox, latex)
 		self.drawOrder.append(t)
 		return t
 
