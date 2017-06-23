@@ -3,7 +3,7 @@ matplotlib.rcParams['font.family'] = 'cmr10' # Change font to Computer Modern (L
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = [10,10]
+#plt.rcParams["figure.figsize"] = 10,10
 from shapes import Polygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
 
 import numpy as np
@@ -14,8 +14,9 @@ from sympy.utilities.lambdify import lambdify
 
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10], width=400):
-		self.fig, self.ax = plt.subplots()
+	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto'):
+		self.fig, self.ax = plt.subplots(figsize=(20, 10))
+		self.ax.set_aspect(3, anchor='C')
 		self.fig.set_dpi(72)
 		self.tickInterval = 0
 		self.tickLabelInterval = 1
@@ -25,8 +26,9 @@ class Figures:
 		self.xyrange = xyrange
 		self.drawOrder = []
 		self.width = width
+		self.height = height
 
-		self.setPixelSize(width, height='auto')
+		self.setPixelSize(width, height=height)
 		#plt.figure(figsize=ratio)
 
 	def __export__(self):
