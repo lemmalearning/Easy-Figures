@@ -4,3 +4,4 @@ runner.py
 */*.pyc
 */*.DS_Store
 images/test.svg
+ShapesDemo.py

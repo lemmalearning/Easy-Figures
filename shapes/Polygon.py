@@ -10,14 +10,13 @@ class Polygon:
 		self.fig = fig
 		self.ax = ax
 		# Define the polygon
-		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=3)
+		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=2)
 		# Create and add polygon
-		ax.add_patch(self.matplotlib_obj)
 
-	def labelVertices(self, label_list):
+	def labelVertices(self, labelList):
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
 		# The side that's mentioned first is horizontal
-		self.labels = label_list
+		self.labels = labelList
 
 		centroid = np.mean(self.vertices, axis=0)
 
@@ -27,5 +26,9 @@ class Polygon:
 
 			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
 				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
-				verticalalignment=("top" if d[0, 1] < 0 else "bottom") \
+				verticalalignment=("top" if d[0, 1] < 0 else "bottom")
 			)
+
+	def __draw__(self, zorder=1):
+		p = self.ax.add_patch(self.matplotlib_obj)
+		p.set(zorder=zorder)

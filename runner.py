@@ -49,7 +49,7 @@ def main():
 	#poly = t.addCircle(xy=(5,4),label="Q", diameter=1)
     #circ = t.addCircle(xy=(7,10), label="r", radius=4)
 	#ellr = t.addEllipse(xy=(10,12), width=50, height=70, wlabel="r", hlabel="h") #hlabel ok
-	ellr1 = t.addEllipse(xy=(60030,59004), width=57, height=24, wlabel="r", hlabel="h", is_radius=0) 
+	ellr1 = t.addEllipse(xy=(60030,59004), width=57, height=24, wlabel="r", hlabel="h", is_radius=0)
 
 	t.format_axis()
 	t.__writeFile__('/Users/chloesheen/test.svg')
