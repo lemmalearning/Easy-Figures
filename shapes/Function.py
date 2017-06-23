@@ -7,7 +7,7 @@ import numpy as np
 
 class Function:
 	matplotlib_obj = None
-	def __init__(self, fig, ax, functions, xyranges=None, colors='black', linewidth=2, variable=None):
+	def __init__(self, fig, ax, functions, xyranges=None, color='black', linewidth=2, variable=None):
 		if not isinstance(functions, list):
 			functions = [functions]
 
@@ -23,7 +23,7 @@ class Function:
 		self.functions = functions
 		self.function_lam = function_lam if variable is not None else None
 		self.xyranges = xyranges
-		self.colors = colors
+		self.color = color
 		self.variable = variable
 
 

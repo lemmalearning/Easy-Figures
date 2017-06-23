@@ -103,8 +103,8 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
-	def addPoint(self, xys, texts, pointsize=6, fontsize=12, colors='black', latex=True):
-		p = Point.Point(self.fig, self.ax, xys, texts, pointsize, fontsize, colors, latex)
+	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True):
+		p = Point.Point(self.fig, self.ax, xys, texts, pointsize, fontsize, color, latex)
 		self.drawOrder.append(p)
 		return p
 
@@ -113,9 +113,9 @@ class Figures:
 		self.drawOrder.append(t)
 		return t
 
-	def addFunction(self, functions, xyranges=None, colors='black', linewidth=2, variable=None):
+	def addFunction(self, functions, xyranges=None, color='black', linewidth=2, variable=None):
 		xyranges= self.xyrange if xyranges == None else xyranges
-		f = Function.Function(self.fig, self.ax, functions, xyranges, colors, linewidth, variable)
+		f = Function.Function(self.fig, self.ax, functions, xyranges, color, linewidth, variable)
 		self.drawOrder.append(f)
 		return f
 
