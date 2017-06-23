@@ -25,7 +25,7 @@ class Point:
 
 	def __draw__(self, zorder=1):
 		for xy, text, color in zip(self.xys, self.texts, self.color):
-			plt.plot(xy[0], xy[1], 'o{}'.format(color), ms=self.pointsize, zorder=zorder)
+			plt.plot(xy[0], xy[1], 'o', color=color, ms=self.pointsize, zorder=zorder)
 			self.ax.annotate("$"+text+"$" if self.latex else text, xytext=xy, xy=xy,
 			fontsize=self.fontsize, horizontalalignment='center',
 			textcoords='offset points', zorder=zorder)
