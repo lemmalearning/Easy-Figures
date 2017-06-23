@@ -1,6 +1,7 @@
 import matplotlib
-matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 matplotlib.rcParams['font.family'] = 'cmr10' # Change font to Computer Modern (LaTeX font)
+matplotlib.rcParams['mathtext.fontset'] = 'cm'
+matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = [10,10]
 from shapes import Polygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
