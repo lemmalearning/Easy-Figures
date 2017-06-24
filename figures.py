@@ -12,6 +12,9 @@ import math
 import re
 from sympy.utilities.lambdify import lambdify
 
+from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
+
+
 
 class Figures:
 	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto'):
@@ -29,14 +32,37 @@ class Figures:
 		self.height = height
 		self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
 		self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
+		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
+		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
+
 		self.setPixelSize(width, height=height)
 		#plt.figure(figsize=ratio)
 
+		self.__init_canvas__()
+
+
+	def __init_canvas__(self):
+		# Adapted from https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_svg.py : print_svg
+		self.canvas = FigureCanvas(self.fig)
+		self.export_str = StringIO.StringIO()
+
+		self.fig.set_dpi(72.0)
+		width, height = self.fig.get_size_inches()
+		w, h = width*72, height*72
+
+		self.renderer = RendererSVG(w, h, self.export_str, None, 72)
+
+
+
 	def __export__(self):
-		export_str = StringIO.StringIO()
-		self.__writeFile__(export_str, format='svg')
-		export_str.seek(0)  # rewind the data
-		s = export_str.buf  # this is svg data
+
+		# Adapted from https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_svg.py : print_svg
+		self.fig.draw(self.renderer)
+		self.renderer.finalize()
+
+		#self.__writeFile__(self.export_str, format='svg')
+		self.export_str.seek(0)  # rewind the data
+		s = self.export_str.buf  # this is svg data
 
 		# Clipping height to the used area after rendering
 		# https://stackoverflow.com/questions/22667224/matplotlib-get-text-bounding-box-independent-of-backend/22689498
@@ -59,11 +85,25 @@ class Figures:
 
 		return s
 
-	def __writeFile__(self, fileLocation, **kwargs):
-		self.fig.savefig(fileLocation, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
+	#def __writeFile__(self, fileLocation, **kwargs):
+	#	self.fig.savefig(fileLocation, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
 
 	def __display__(self):
 		plt.show()
+
+	def measureText(self, text, units=False):
+		"""Given a matplotlib Text object, returns a tuple of its width and height (in pts)"""
+
+		prop = text._fontproperties
+		width, height, descent, svg_elements, used_chars = self.renderer.mathtext_parser.parse(text.get_text(), 72, prop)
+
+		if units:
+			width *= self.UNITS_PER_PT_x
+			height *= self.UNITS_PER_PT_y
+
+		return (width, height)
+
+
 
 	def __draw_shapes__(self, order=None):
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
@@ -83,6 +123,8 @@ class Figures:
 
 	def setPixelSize(self, width=400, height=None, padding=0):
 		"""Sets the pixel size of the figure.
+
+			Warning: Do NOT call this outside of the constructor
 
 			If only width is provided, then the figure will try to tight fit to that width
 			If height is also specified, then the size is completely fixed to that size
