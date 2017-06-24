@@ -12,14 +12,19 @@ class Polygon:
 		self.figure = figure
 		# Create and add polygon
 
-	def labelSides(self, labelList, triangle=False):
-		if triangle:
-			temp1 = labelList[1]
-			temp2 = labelList[2]
-			temp3 = labelList[0]
-			labelList[2] = temp1
-			labelList[0] = temp2
-			labelList[1] = temp3
+
+	def labelOppositeSides(self, labelList):
+		# Number of sides - 1/2  + current index mod number of sides = new index
+		numSides = len(self.vertices.tolist())
+		const = (numSides-1)/2
+		newLabels = range(numSides)
+		for i, label in enumerate(labelList):
+			idx = (const + i) % numSides
+			newLabels[idx] = label
+		self.labelSides(newLabels)
+
+	def labelSides(self, labelList):
+
 		self.sideLabels = labelList
 		vertices_pairs = sorted(self.vertices.tolist(), key=lambda element: (element[0], element[1]))
 		vertices_pairs=self.vertices.tolist() + [self.vertices.tolist()[0]]
