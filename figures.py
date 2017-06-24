@@ -32,10 +32,11 @@ class Figures:
 		self.height = height
 
 		# TODO: Move to __export__
-		self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
-		self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
-		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
-		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
+		if xyrange is not None:
+			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
+			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
+			self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
+			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
 		self.setPixelSize(width, height=height)
 		#plt.figure(figsize=ratio)

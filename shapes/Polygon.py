@@ -47,7 +47,7 @@ class Polygon:
 			dx, dy = d[0, 0], d[0, 1]
 			vx, vy = v[0, 0], v[0, 1]
 
-			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=10)
+			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=.03*self.figure.width)
 			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
 			w, h = self.figure.measureText(txt, True)
@@ -102,17 +102,17 @@ class Polygon:
 			if not inner:
 				d = -d
 
+			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=.025*self.figure.width if not inner else .015*self.figure.width)
+			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+
+			w, h = self.figure.measureText(txt, True)
 			# TODO: We need to figure out a better amount of padding to use
-			p = 0.6/np.sin(angle) if inner else 0.1
+			p = 0.6*2.65*h/np.sin(angle) if inner else 0.1
+			# small triangles .25?
 			v = self.vertices[i, :] + p*d
 
 			dx, dy = d[0, 0], d[0, 1]
 			vx, vy = v[0, 0], v[0, 1]
-
-			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=10)
-			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
-
-			w, h = self.figure.measureText(txt, True)
 
 			# Next we essentially adjust the text to be anchored on a point anchored along the direction line that divides the rectangle into two equal length areas
 			# Center text on the direction line : this assumes that the text is usually anchored on the bottom left point
