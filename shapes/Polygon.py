@@ -15,30 +15,62 @@ class Polygon:
 		self.figure = figure
 		# Create and add polygon
 
-	def labelSides(self, labelList):
+	def labelSides(self, labelList, triangle=False):
+		if triangle:
+			temp1 = labelList[1]
+			temp2 = labelList[2]
+			temp3 = labelList[0]
+			labelList[2] = temp1
+			labelList[0] = temp2
+			labelList[1] = temp3
 		self.sideLabels = labelList
 		vertices_pairs = sorted(self.vertices.tolist(), key=lambda element: (element[0], element[1]))
 		vertices_pairs=self.vertices.tolist() + [self.vertices.tolist()[0]]
+		midpoint_vertices=[]
+		for i, vertex in enumerate(vertices_pairs[:-1]):
+			x = (vertex[0] + vertices_pairs[i+1][0])/2
+			y = (vertex[1] + vertices_pairs[i+1][1])/2
+			midpoint_vertices.append([x,y])
+		midpoint_vertices = np.matrix(midpoint_vertices)
 
-		centroid = np.mean(self.vertices, axis=0)
 
-		for i, vertix in enumerate(vertices_pairs[:-1]):
-			x = (vertix[0] + vertices_pairs[i+1][0])/2
-			y = (vertix[1] + vertices_pairs[i+1][1])/2
-			d = np.matrix([x,y]) - centroid
+		centroid = np.mean(midpoint_vertices, axis=0)
 
-			x = x+self.figure.UNITS_PER_PIXEL_x*5 if d[0,0] > 1 else x-self.figure.UNITS_PER_PIXEL_x*5
-			y = y+self.figure.UNITS_PER_PIXEL_y*5 if d[0, 1] > 1 else y-self.figure.UNITS_PER_PIXEL_y*5
+		for i, label in enumerate(labelList):
+			ac = self.vertices[(i+1) % self.vertices.shape[0], :] - self.vertices[i, :]
+			d = np.matrix([ac[0,1], -ac[0,0]])
+			# TODO: We need to figure out a better amount of padding to use
+			p = 0.1
+			v = midpoint_vertices[i, :] + p*d
 
-			hA = "right" if d[0,0] < 0 else "top"
-			vA = "top" if d[0, 1] < 0 else "center"
-			if d[0,0] > 0 and d[0, 1] > 0:
-				x +=self.figure.UNITS_PER_PIXEL_x*5
-				y +=self.figure.UNITS_PER_PIXEL_y*5
-				vA = "right"
+			dx, dy = d[0, 0], d[0, 1]
+			vx, vy = v[0, 0], v[0, 1]
 
-			self.figure.addText((x,y), self.sideLabels[i], fontsize=.0625*self.pixelSize, latex=True,
-				halignment=hA,valignment=vA)
+			txt = self.ax.text(0, 0, '$'+label+'$', fontsize=10)
+			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+
+			w, h = self.figure.measureText(txt, True)
+
+			# Next we essentially adjust the text to be anchored on a point anchored along the direction line that divides the rectangle into two equal length areas
+			# Center text on the direction line : this assumes that the text is usually anchored on the bottom left point
+			if abs(dy) > abs(dx): # run greater than rise : intersects top and bottom lines of rectangle
+				vx -= w / 2.0
+				delx = ((dx / dy) * h) / 2.0
+				if dy < 0:
+					vx -= delx
+					vy -= h
+				else:
+					vx += delx
+			else:
+				vy -= h / 2.0
+				dely = ((dy / dx) * w) / 2.0
+				if dx < 0:
+					vy -= dely
+					vx -= w
+				else:
+					vy += dely
+
+			txt.set_position((vx, vy))
 
 
 	def bisector(self, i):
@@ -52,9 +84,12 @@ class Polygon:
 	def labelVertices(self, labelList, inner=False):
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
 		# The side that's mentioned first is horizontal
-		self.labels = labelList
+		if inner:
+			self.angleLabels = labelList
+		else:
+			self.verticesLabels = labelList
 
-		for i, label in enumerate(self.labels):
+		for i, label in enumerate(labelList):
 			a = (self.vertices[i-1, :] - self.vertices[i, :])
 			b = self.vertices[(i+1) % self.vertices.shape[0], :] - self.vertices[i, :]
 			dotted = b.dot(a.transpose())[0,0]
