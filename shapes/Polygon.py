@@ -57,19 +57,25 @@ class Polygon:
 		self.labels = labelList
 
 		for i, label in enumerate(self.labels):
+			a = (self.vertices[i-1, :] - self.vertices[i, :])
+			b = self.vertices[(i+1) % self.vertices.shape[0], :] - self.vertices[i, :]
+			dotted = b.dot(a.transpose())[0,0]
+			magnitude = np.hypot(a[0, 0], a[0, 1]) * np.hypot(b[0, 0], b[0, 1])
+			angle = np.arccos(float(dotted)/magnitude)
 
 			d = self.bisector(i)
 			if not inner:
 				d = -d
 
 			# TODO: We need to figure out a better amount of padding to use
-			p = 0.4 if inner else 0.1
-			v = self.vertices[i, :] + p*np.linalg.norm(d)*d
+			p = 0.6/np.sin(angle) if inner else 0.1
+			v = self.vertices[i, :] + p*d
 
 			dx, dy = d[0, 0], d[0, 1]
 			vx, vy = v[0, 0], v[0, 1]
 
 			txt = self.ax.text(0, 0, '$'+label+'$', fontsize=10)
+			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
 			w, h = self.figure.measureText(txt, True)
 
@@ -98,22 +104,6 @@ class Polygon:
 	def labelAngles(self, labelList):
 		self.labelVertices(labelList, True)
 
-	def labelAnglesOld(self, labelList):
-		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
-		# The side that's mentioned first is horizontal
-		self.labels = labelList
-
-		centroid = np.mean(self.vertices, axis=0)
-
-		for i, label in enumerate(self.labels):
-			d = self.vertices[i, :] - centroid
-			v = self.vertices[i, :] - .1*np.linalg.norm(d)*d
-			print label, d, v
-
-			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=8, \
-				horizontalalignment=("left" if d[0,0] < 0 else "right"), \
-				verticalalignment=("bottom" if d[0, 1] < 0 else "top") \
-			)
 
 	def __draw__(self, zorder=1):
 		p = self.ax.add_patch(self.matplotlib_obj)
