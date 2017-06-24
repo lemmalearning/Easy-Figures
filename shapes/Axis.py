@@ -95,8 +95,8 @@ class Axis:
 			UNITS_PER_PIXEL_x = ((0-self.figure.xyrange[0][0]) + (self.figure.xyrange[0][1]))/self.figure.width
 			UNITS_PER_PIXEL_y = ((0-self.figure.xyrange[1][0]) + (self.figure.xyrange[1][1]))/self.figure.width
 
-			xmin, xmax = self.ax.get_xlim()
-			ymin, ymax = self.ax.get_ylim()
+			xmin, xmax = self.figure.ax.get_xlim()
+			ymin, ymax = self.figure.ax.get_ylim()
 
 			self.figure.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
 			         head_width=UNITS_PER_PIXEL_x*.05/1.6, head_length=UNITS_PER_PIXEL_x*5,
@@ -112,8 +112,8 @@ class Axis:
 
 		if self.label:
 			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			Text.Text(self.figure.fig, self.figure.ax, ((self.figure.xyrange[0][1])-0.09, -0.09),'x', latex=True, fontsize=.03*self.figure.width).__draw__()
-			Text.Text(self.figure.fig, self.figure.ax, (-0.3, (self.figure.xyrange[1][1])-0.1), 'y', latex=True, fontsize=.03*self.figure.width).__draw__()
+			Text.Text(((self.figure.xyrange[0][1])-0.09, -0.09),'x', latex=True, fontsize=.03*self.figure.width, figure=self.figure).__draw__()
+			Text.Text((-0.3, (self.figure.xyrange[1][1])-0.1), 'y', latex=True, fontsize=.03*self.figure.width, figure=self.figure).__draw__()
 
 		####### DRAW LABELS #######
 		# Control ticks
@@ -128,13 +128,13 @@ class Axis:
 			self.figure.ax.xaxis.set_label_position('top')
 
 		if self.origin:
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
-			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.ax.get_xticks().tolist()]
+			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
+			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks().tolist()]
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)
 		else:
-			xlabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_xticks().tolist()]
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
+			xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
+			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)
 
