@@ -30,6 +30,8 @@ class Figures:
 		self.drawOrder = []
 		self.width = width
 		self.height = height
+
+		# TODO: Move to __export__
 		self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
 		self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
 		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
@@ -56,6 +58,27 @@ class Figures:
 
 	def __export__(self):
 
+		self.fig.patch.set_facecolor('white')
+		self.fig._cachedRenderer = self.renderer
+
+		# draw
+		self.__draw_shapes__()
+
+		# We will perform the tight layout ourselves
+		self.fig.set_tight_layout(False)
+		self.fig.tight_layout(pad=0) # TODO: Give the author control other padding on all sides
+
+		# compute pixel/pt/unit conversations based on axis limits and known padding
+		# print(self.ax.get_xlim())
+		# print(self.ax.get_ylim())
+		# TODO
+
+		# post draw
+		# do all drawing that depends on unit metrics
+		# TODO
+
+
+		# Do the actual drawing onto the svg
 		# Adapted from https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_svg.py : print_svg
 		self.fig.draw(self.renderer)
 		self.renderer.finalize()
@@ -85,8 +108,12 @@ class Figures:
 
 		return s
 
-	#def __writeFile__(self, fileLocation, **kwargs):
-	#	self.fig.savefig(fileLocation, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
+	def __writeFile__(self, fileLocation, **kwargs):
+		s = self.__export__()
+		f = open(fileLocation, "w+")
+		f.write(s)
+		f.flush()
+		f.close()
 
 	def __display__(self):
 		plt.show()
@@ -143,11 +170,11 @@ class Figures:
 		if height == 'auto':
 			self.height = height
 			self.tight_fit = False
-			self.fig.set_tight_layout({ "pad": self.padding })
+			#self.fig.set_tight_layout({ "pad": 1.08 })
 			height_in = 2*width_in
 		elif height != None:
 			self.tight_fit = False
-			self.fig.set_tight_layout({ "pad": self.padding })
+			#self.fig.set_tight_layout({ "pad": self.padding })
 			height_in = px2in(height)
 
 		self.fig.set_size_inches((width_in, height_in))

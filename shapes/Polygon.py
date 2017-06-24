@@ -44,7 +44,9 @@ class Polygon:
 	def bisector(self, i):
 		"""For a vertex, get the vector of the angle bisector (pointing inwards)"""
 		ab = self.vertices[i-1, :] - self.vertices[i, :]
+		ab = ab / np.linalg.norm(ab)
 		ac = self.vertices[(i+1) % self.vertices.shape[0], :] - self.vertices[i, :]
+		ac = ac / np.linalg.norm(ac)
 		bisec = (ab + ac) / 2.0 # This points inward
 		bisec = bisec / np.linalg.norm(bisec)
 		return bisec
