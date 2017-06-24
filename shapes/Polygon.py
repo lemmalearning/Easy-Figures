@@ -5,13 +5,10 @@ import numpy as np
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, fig, ax, vertices, pixelSize=400, figure=None):
+	def __init__(self, vertices, figure=None):
 		self.vertices = np.matrix(vertices)
-		self.fig = fig
-		self.ax = ax
 		# Define the polygon
 		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=2)
-		self.pixelSize = pixelSize
 		self.figure = figure
 		# Create and add polygon
 
@@ -37,7 +34,7 @@ class Polygon:
 				y +=self.figure.UNITS_PER_PIXEL_y*5
 				vA = "right"
 
-			self.figure.addText((x,y), self.sideLabels[i], fontsize=.0625*self.pixelSize, latex=True,
+			self.figure.addText((x,y), self.sideLabels[i], fontsize=.0625*self.figure.width, latex=True,
 				halignment=hA,valignment=vA)
 
 
@@ -67,7 +64,7 @@ class Polygon:
 			dx, dy = d[0, 0], d[0, 1]
 			vx, vy = v[0, 0], v[0, 1]
 
-			txt = self.ax.text(0, 0, '$'+label+'$', fontsize=10)
+			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=10)
 
 			w, h = self.figure.measureText(txt, True)
 
@@ -108,11 +105,11 @@ class Polygon:
 			v = self.vertices[i, :] - .1*np.linalg.norm(d)*d
 			print label, d, v
 
-			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=8, \
+			self.figure.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=8, \
 				horizontalalignment=("left" if d[0,0] < 0 else "right"), \
 				verticalalignment=("bottom" if d[0, 1] < 0 else "top") \
 			)
 
 	def __draw__(self, zorder=1):
-		p = self.ax.add_patch(self.matplotlib_obj)
+		p = self.figure.ax.add_patch(self.matplotlib_obj)
 		p.set(zorder=zorder)

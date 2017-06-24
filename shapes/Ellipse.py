@@ -7,16 +7,14 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Ellipse:
-	def __init__(self, fig, ax, xy=[0,0], r=(1,1), fc=None, ec='none', angle=0.0, lw=2, pixelSize=400):
+	def __init__(self, xy=[0,0], r=(1,1), fc=None, ec='none', angle=0.0, lw=2, figure=None):
 		self.r = r
 		self.angle=angle
 		self.lw=lw
 		self.xy = xy
+		self.figure = figure
 		semimajor = r[0]
 		semiminor = r[1]
-		self.fig = fig
-		self.ax = ax
-		self.pixelSize = pixelSize
 		semimajor = semimajor*2.0
 		semiminor = semiminor*2.0
 
@@ -55,8 +53,8 @@ class Ellipse:
 			midMajor = (self.xy[0]+(p+temp_x))/2.0
 			midMinor = (self.xy[1]+(s+temp_y))/2.0
 
-			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=.0625*self.pixelSize)
-			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=.0625*self.pixelSize)
+			textzobj = self.figure.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=.0625*self.figure.width)
+			textqobj = self.figure.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=.0625*self.figure.width)
 
 			"""
 			# Find out the pixel measurements of the text's bounding box
@@ -64,7 +62,7 @@ class Ellipse:
 			xbbox = textxobj.get_window_extent(renderer)
 			ybbox = textyobj.get_window_extent(renderer)
 			# Find out what one horizontal and vertical unit is in pixel
-			conversionMatrix = self.ax.transData.transform([(0,1),(1,0)])-self.ax.transData.transform((0,0))
+			conversionMatrix = self.figure.ax.transData.transform([(0,1),(1,0)])-self.figure.ax.transData.transform((0,0))
 			# Multiply the width in pixels by 1/width-conversion
 			xwidth = (xbbox.bounds[2]*(1/conversionMatrix[1,0]))/2
 			yheight = (25*(1/conversionMatrix[1,0]))/2
@@ -108,8 +106,8 @@ class Ellipse:
 			midMajor = (self.xy[0]+(p+temp_x))/2.0
 			midMinor = (self.xy[1]+(s+temp_y))/2.0
 
-			textzobj = self.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=.0625*self.pixelSize)
-			textqobj = self.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=.0625*self.pixelSize)
+			textzobj = self.figure.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=.0625*self.figure.width)
+			textqobj = self.figure.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=.0625*self.figure.width)
 
 
 			"""
@@ -128,5 +126,5 @@ class Ellipse:
 			"""
 
 	def __draw__(self, zorder=1):
-		e = self.ax.add_patch(self.matplotlib_obj)
+		e = self.figure.ax.add_patch(self.matplotlib_obj)
 		e.set(zorder=zorder)
