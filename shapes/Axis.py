@@ -92,8 +92,8 @@ class Axis:
 
 		if self.arrows:
 			#xyrange/pixelrange = unitsperpixel * pixels = units
-			UNITS_PER_PIXEL_x = ((0-self.figure.xyrange[0][0]) + (self.figure.xyrange[0][1]))/self.pixelSize
-			UNITS_PER_PIXEL_y = ((0-self.figure.xyrange[1][0]) + (self.figure.xyrange[1][1]))/self.pixelSize
+			UNITS_PER_PIXEL_x = ((0-self.figure.xyrange[0][0]) + (self.figure.xyrange[0][1]))/self.figure.width
+			UNITS_PER_PIXEL_y = ((0-self.figure.xyrange[1][0]) + (self.figure.xyrange[1][1]))/self.figure.width
 
 			xmin, xmax = self.ax.get_xlim()
 			ymin, ymax = self.ax.get_ylim()
