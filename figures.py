@@ -85,8 +85,8 @@ class Figures:
 
 		return s
 
-	#def __writeFile__(self, fileLocation, **kwargs):
-	#	self.fig.savefig(fileLocation, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
+	def __writeFile__(self, fileLocation, **kwargs):
+		self.fig.savefig(fileLocation, bbox_inches=('tight' if self.tight_fit else None), pad_inches=self.padding, **kwargs)
 
 	def __display__(self):
 		plt.show()
@@ -103,8 +103,6 @@ class Figures:
 
 		return (width, height)
 
-
-
 	def __draw_shapes__(self, order=None):
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
 			self.addAxis(hideAxis=True)
@@ -113,10 +111,10 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True, pixelSize=400):
-		xyrange=self.xyrange if xyrange is None else xyrange
+	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True):
+		#xyrange=self.figure.xyrange if xyrange is None else xyrange
 		pixelSize = self.width
-		axis = Axis.Axis(self.fig, self.ax, hideAxis, xyrange, grid, arrows, color, minorGrid, label, pixelSize)
+		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, figure=self)
 		self.drawOrder.append(axis)
 
 		return axis
@@ -153,30 +151,30 @@ class Figures:
 		self.fig.set_size_inches((width_in, height_in))
 
 	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True):
-		p = Point.Point(self.fig, self.ax, xys, texts, pointsize, fontsize, color, latex)
+		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, figure=self)
 		self.drawOrder.append(p)
 		return p
 
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True):
-		t = Text.Text(self.fig, self.ax,xy, text, color, fontsize, halignment, valignment, bbox, latex)
+		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, figure=self)
 		self.drawOrder.append(t)
 		return t
 
 	def addFunction(self, functions, xyranges=None, color='black', linewidth=2, variable=None):
 		xyranges= self.xyrange if xyranges == None else xyranges
-		f = Function.Function(self.fig, self.ax, functions, xyranges, color, linewidth, variable)
+		f = Function.Function(functions, xyranges, color, linewidth, variable, figure=self)
 		self.drawOrder.append(f)
 		return f
 
 	def addPolygon(self, vertices):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(self.fig, self.ax, vertices, pixelSize=self.width, figure=self)
+		polygon = Polygon.Polygon(vertices, figure=self)
 		self.drawOrder.append(polygon)
 		return polygon
 
 	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k'):
 		pixelSize=self.width
-		circle = Circle.Circle(self.fig, self.ax, xy, diameter, radius, label, fc, ec, pixelSize)
+		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, figure=self)
 		self.drawOrder.append(circle)
 		return circle
 
@@ -185,7 +183,7 @@ class Figures:
 			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec)
 		else:
 			pixelSize=self.width
-			ellipse = Ellipse.Ellipse(self.fig, self.ax, xy, r, fc, ec, angle, lw, pixelSize)
+			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, figure=self)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
@@ -205,7 +203,7 @@ class Figures:
 			vertexC = [x,y,1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-			triangle = Polygon.Polygon(self.fig, self.ax, np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
@@ -225,29 +223,11 @@ class Figures:
 			vertexC = [C+xy[0], 0+xy[1], 1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-			triangle = Polygon.Polygon(self.fig, self.ax, np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
-	"""
-	def labelVertices(self, labelList):
-		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
-		# The side that's mentioned first is horizontal
-		self.labels = labelList
-
-		centroid = np.mean(self.vertices, axis=0)
-
-		for i, label in enumerate(self.labels):
-			d = self.vertices[i, :] - centroid
-			v = self.vertices[i, :] + 0.001*np.linalg.norm(d)*d
-
-			self.ax.text(v[0, 0], v[0, 1], '$'+label+'$', fontsize=20, \
-				horizontalalignment=("right" if d[0,0] < 0 else "left"), \
-				verticalalignment=("top" if d[0, 1] < 0 else "bottom")
-			)
-
-	"""
 
 	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
-		arrow = Arrow.Arrow(self.ax, self.fig, xy, dxdy, color=color, headWidth=headWidth, width=width)
+		arrow = Arrow.Arrow(xy, dxdy, color=color, headWidth=headWidth, width=width, figure=self)
 		self.drawOrder.append(arrow)
 		return arrow

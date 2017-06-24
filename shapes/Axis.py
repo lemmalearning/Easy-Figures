@@ -14,7 +14,7 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, fig, ax, hideAxis=False, xyrange=None, grid=False, arrows=True, color='black', minorGrid=False, label=True, pixelSize=400):
+	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, figure=None):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
@@ -25,16 +25,13 @@ class Axis:
 		color='black' -
 		minorGrid=False -
 		"""
-		self.fig 		= fig
-		self.ax 		= ax
 		self.hideAxis 	= hideAxis
-		self.xyrange 	= xyrange
 		self.grid 		= grid
 		self.arrows 	= arrows
 		self.color 		= color
 		self.minorGrid 	= minorGrid
 		self.label		= label
-		self.pixelSize = pixelSize
+		self.figure    = figure
 
 	def Ticks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
@@ -42,7 +39,6 @@ class Axis:
 		self.fontsize = fontsize
 		self.origin = origin
 		self.top = top
-
 
 	def __draw__(self, zorder=1):
 		# Modify the plot view to scale, remove axis, and center our shape
@@ -67,21 +63,21 @@ class Axis:
 		        # no xaxis ticks
 		        ax.xaxis.set_ticks([])
 
-		if self.xyrange is None:
+		if self.figure.xyrange is None:
 			plt.axis('off')
 			plt.axis('scaled')
 
 		else:
 			plt.gca().set_aspect('equal', adjustable='box')
 
-			self.ax.set_xlim(left=self.xyrange[0][0]+.1 if self.xyrange[0][0]!=0 else self.xyrange[0][0], right=self.xyrange[0][1]-.1)
-			self.ax.set_ylim(bottom=self.xyrange[1][0]+.1 if self.xyrange[0][0]!=0 else self.xyrange[1][0], top=self.xyrange[1][1]-.1)
+			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[0][0], right=self.figure.xyrange[0][1]-.1)
+			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1)
 
-			self.ax.spines['right'].set_color('none')
-			self.ax.spines['top'].set_color('none')
+			self.figure.ax.spines['right'].set_color('none')
+			self.figure.ax.spines['top'].set_color('none')
 
-			self.ax.spines['left'].set_position(('data', 0))
-			self.ax.spines['bottom'].set_position(('data', 0))
+			self.figure.ax.spines['left'].set_position(('data', 0))
+			self.figure.ax.spines['bottom'].set_position(('data', 0))
 
 		if self.hideAxis:
 			plt.axis('off')
@@ -89,64 +85,64 @@ class Axis:
 
 
 		if self.grid is not False:
-			self.ax.grid(which='major', color='k' if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=0.5)
+			self.figure.ax.grid(which='major', color='k' if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=0.5)
 			if self.minorGrid is not False:
-				self.ax.grid(which='minor', color='k' if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
+				self.figure.ax.grid(which='minor', color='k' if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
 
 
 		if self.arrows:
 			#xyrange/pixelrange = unitsperpixel * pixels = units
-			UNITS_PER_PIXEL_x = ((0-self.xyrange[0][0]) + (self.xyrange[0][1]))/self.pixelSize
-			UNITS_PER_PIXEL_y = ((0-self.xyrange[1][0]) + (self.xyrange[1][1]))/self.pixelSize
+			UNITS_PER_PIXEL_x = ((0-self.figure.xyrange[0][0]) + (self.figure.xyrange[0][1]))/self.pixelSize
+			UNITS_PER_PIXEL_y = ((0-self.figure.xyrange[1][0]) + (self.figure.xyrange[1][1]))/self.pixelSize
 
 			xmin, xmax = self.ax.get_xlim()
 			ymin, ymax = self.ax.get_ylim()
 
-			self.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
+			self.figure.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
 			         head_width=UNITS_PER_PIXEL_x*.05/1.6, head_length=UNITS_PER_PIXEL_x*5,
 			         length_includes_head=True, clip_on=False,color=self.color)
 
-			self.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
+			self.figure.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
 			         head_width=UNITS_PER_PIXEL_y*.05/1.6, head_length=UNITS_PER_PIXEL_y*5,
 					 length_includes_head=True, clip_on=False,color=self.color)
 
 		# Control color
-		self.ax.spines['bottom'].set_color(self.color)
-		self.ax.spines['left'].set_color(self.color)
+		self.figure.ax.spines['bottom'].set_color(self.color)
+		self.figure.ax.spines['left'].set_color(self.color)
 
 		if self.label:
 			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			Text.Text(self.fig, self.ax, ((self.xyrange[0][1])-0.09, -0.09),'x', latex=True, fontsize=.03*self.pixelSize).__draw__()
-			Text.Text(self.fig, self.ax, (-0.3, (self.xyrange[1][1])-0.1), 'y', latex=True, fontsize=.03*self.pixelSize).__draw__()
+			Text.Text(self.figure.fig, self.figure.ax, ((self.figure.xyrange[0][1])-0.09, -0.09),'x', latex=True, fontsize=.03*self.figure.width).__draw__()
+			Text.Text(self.figure.fig, self.figure.ax, (-0.3, (self.figure.xyrange[1][1])-0.1), 'y', latex=True, fontsize=.03*self.figure.width).__draw__()
 
 		####### DRAW LABELS #######
 		# Control ticks
-		self.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.tickLabelInterval))
-		self.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.tickLabelInterval))
-		self.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
-		self.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
-		self.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
+		self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.tickLabelInterval))
+		self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.tickLabelInterval))
+		self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
+		self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
+		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 
 		if self.top:
-			self.ax.xaxis.set_label_position('top')
+			self.figure.ax.xaxis.set_label_position('top')
 
 		if self.origin:
 			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
 			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.ax.get_xticks().tolist()]
-			self.ax.set_yticklabels(ylabels)
-			self.ax.set_xticklabels(xlabels)
+			self.figure.ax.set_yticklabels(ylabels)
+			self.figure.ax.set_xticklabels(xlabels)
 		else:
 			xlabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_xticks().tolist()]
 			ylabels = [int(item) if int(item) is not 0 else "" for item in self.ax.get_yticks().tolist()]
-			self.ax.set_yticklabels(ylabels)
-			self.ax.set_xticklabels(xlabels)
+			self.figure.ax.set_yticklabels(ylabels)
+			self.figure.ax.set_xticklabels(xlabels)
 
-			for label in self.ax.xaxis.get_ticklabels():
+			for label in self.figure.ax.xaxis.get_ticklabels():
 				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
-			for label in self.ax.yaxis.get_ticklabels():
+			for label in self.figure.ax.yaxis.get_ticklabels():
 				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 		####### END DRAW LABELS #######
 
-		self.ax.xaxis.set_zorder(zorder)
-		self.ax.yaxis.set_zorder(zorder)
+		self.figure.ax.xaxis.set_zorder(zorder)
+		self.figure.ax.yaxis.set_zorder(zorder)

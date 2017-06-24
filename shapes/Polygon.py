@@ -5,13 +5,10 @@ import numpy as np
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, fig, ax, vertices, pixelSize=400, figure=None):
+	def __init__(self, vertices, figure=None):
 		self.vertices = np.matrix(vertices)
-		self.fig = fig
-		self.ax = ax
 		# Define the polygon
 		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=2)
-		self.pixelSize = pixelSize
 		self.figure = figure
 		# Create and add polygon
 
@@ -33,7 +30,6 @@ class Polygon:
 			midpoint_vertices.append([x,y])
 		midpoint_vertices = np.matrix(midpoint_vertices)
 
-
 		centroid = np.mean(midpoint_vertices, axis=0)
 
 		for i, label in enumerate(labelList):
@@ -46,7 +42,7 @@ class Polygon:
 			dx, dy = d[0, 0], d[0, 1]
 			vx, vy = v[0, 0], v[0, 1]
 
-			txt = self.ax.text(0, 0, '$'+label+'$', fontsize=10)
+			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=10)
 			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
 			w, h = self.figure.measureText(txt, True)
@@ -71,7 +67,6 @@ class Polygon:
 					vy += dely
 
 			txt.set_position((vx, vy))
-
 
 	def bisector(self, i):
 		"""For a vertex, get the vector of the angle bisector (pointing inwards)"""
@@ -107,7 +102,7 @@ class Polygon:
 			dx, dy = d[0, 0], d[0, 1]
 			vx, vy = v[0, 0], v[0, 1]
 
-			txt = self.ax.text(0, 0, '$'+label+'$', fontsize=10)
+			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=10)
 			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
 			w, h = self.figure.measureText(txt, True)
@@ -133,11 +128,9 @@ class Polygon:
 
 			txt.set_position((vx, vy))
 
-
 	def labelAngles(self, labelList):
 		self.labelVertices(labelList, True)
 
-
 	def __draw__(self, zorder=1):
-		p = self.ax.add_patch(self.matplotlib_obj)
+		p = self.figure.ax.add_patch(self.matplotlib_obj)
 		p.set(zorder=zorder)

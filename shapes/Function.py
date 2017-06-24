@@ -7,7 +7,7 @@ import numpy as np
 
 class Function:
 	matplotlib_obj = None
-	def __init__(self, fig, ax, functions, xyranges=None, color='black', linewidth=2, variable=None):
+	def __init__(self, functions, xyranges=None, color='black', linewidth=2, variable=None, figure=None):
 		if not isinstance(functions, list):
 			functions = [functions]
 
@@ -25,7 +25,6 @@ class Function:
 		self.xyranges = xyranges
 		self.color = color
 		self.variable = variable
-
 
 	def __draw__(self, zorder=1):
 		for function, xyrange, color in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.color):
