@@ -17,15 +17,15 @@ class Text:
 			bbox = [bbox]
 			latex = [latex]
 
-			self.xy = xy
-			self.text = text
-			self.color=color
-			self.fontsize = fontsize
-			self.halignment = halignment
-			self.valignment = valignment
-			self.bbox = bbox
-			self.latex = latex
-			self.figure = figure
+		self.xy = xy
+		self.text = text
+		self.color=color
+		self.fontsize = fontsize
+		self.halignment = halignment
+		self.valignment = valignment
+		self.bbox = bbox
+		self.latex = latex
+		self.figure = figure
 
 
 	def __draw__(self, zorder=1):
