@@ -136,12 +136,10 @@ class Figures:
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
 			self.addAxis(hideAxis=True)
 
-			#plt.axis('scaled')
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
 	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True):
-		#xyrange=self.figure.xyrange if xyrange is None else xyrange
 		pixelSize = self.width
 		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, figure=self)
 		self.drawOrder.append(axis)

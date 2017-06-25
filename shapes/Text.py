@@ -7,7 +7,7 @@ import numpy as np
 
 class Text:
 	matplotlib_obj = None
-	def __init__(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True, figure=None):
+	def __init__(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True, props={}, figure=None):
 		if not isinstance(color, list):
 			color = [color]
 			xy = [xy]
@@ -26,8 +26,9 @@ class Text:
 			self.bbox = bbox
 			self.latex = latex
 			self.figure = figure
+			self.props = props
 
 
 	def __draw__(self, zorder=1):
 		for xy, text, color, valignment, halignment, bbox, latex in zip(self.xy, self.text, self.color, self.valignment, self.halignment, self.bbox, self.latex):
-			self.figure.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=self.fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox, color=color, zorder=zorder)
+			self.figure.ax.annotate("$"+text+"$" if latex else text, xytext=xy, xy=xy, fontsize=self.fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox, color=color, zorder=zorder, **self.props)

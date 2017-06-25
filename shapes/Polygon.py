@@ -24,11 +24,7 @@ class Polygon:
 			newLabels[idx] = label
 		self.labelSides(newLabels, **kwargs)
 
-	def labelSides(self, labelList, fontsize=None):
-
-		if fontsize == None:
-			fontsize = 12
-
+	def labelSides(self, labelList, fontsize=15):
 		self.sideLabels = labelList
 		vertices_pairs = sorted(self.vertices.tolist(), key=lambda element: (element[0], element[1]))
 		vertices_pairs=self.vertices.tolist() + [self.vertices.tolist()[0]]
@@ -87,10 +83,7 @@ class Polygon:
 		bisec = bisec / np.linalg.norm(bisec)
 		return bisec
 
-	def labelVertices(self, labelList, inner=False, fontsize=None):
-
-		if fontsize == None:
-			fontsize = 12
+	def labelVertices(self, labelList, inner=False, fontsize=15):
 
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
 		# The side that's mentioned first is horizontal
