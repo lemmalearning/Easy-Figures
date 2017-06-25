@@ -128,8 +128,9 @@ class Figures:
 		if units:
 			width *= self.UNITS_PER_PT_x
 			height *= self.UNITS_PER_PT_y
+			descent *= self.UNITS_PER_PT_y
 
-		return (width, height)
+		return (width, height, descent)
 
 	def __draw_shapes__(self, order=None):
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
