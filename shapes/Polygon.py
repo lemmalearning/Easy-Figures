@@ -55,7 +55,7 @@ class Polygon:
 			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=fontsize)
 			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
-			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debu=True)
+			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debug=True)
 
 			txt.set_position((v[0,0], v[0,1]))
 

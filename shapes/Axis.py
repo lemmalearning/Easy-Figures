@@ -103,10 +103,11 @@ class Axis:
 		# Control color
 		self.figure.ax.spines['bottom'].set_color(self.color)
 		self.figure.ax.spines['left'].set_color(self.color)
+
 		if self.label:
 			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
 			self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center').__draw__()
-			self.figure.addText((-10*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*5), 'y', latex=True, fontsize=16, valignment='top', halignment='right').__draw__()
+			self.figure.addText((-8*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*3.5), 'y', latex=True, fontsize=16, valignment='top', halignment='right').__draw__()
 
 		####### DRAW LABELS #######
 		# Control ticks
