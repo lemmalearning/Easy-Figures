@@ -54,8 +54,6 @@ class Figures:
 
 		self.renderer = RendererSVG(w, h, self.export_str, None, 72)
 
-
-
 	def __export__(self):
 
 		self.fig.patch.set_facecolor('white')
