@@ -69,7 +69,7 @@ class Polygon:
 		bisec = bisec / np.linalg.norm(bisec)
 		return bisec
 
-	def labelVertices(self, labelList, inner=False, fontsize=15):
+	def labelVertices(self, labelList, inner=False, fontsize=15, factorPadding=1):
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
 		# The side that's mentioned first is horizontal
 		if inner:
@@ -125,8 +125,10 @@ class Polygon:
 				if p < pmin:
 					p = pmin
 
-
-			v = v + p*d # apply the padding
+			if inner:
+				v = v + p*d*factorPadding
+			else:
+				v = v + p*d# apply the padding
 			txt.set_position((v[0,0], v[0,1]))
 
 	def alignTextAlongVector(self, txt, v, d, i, debug=False):
