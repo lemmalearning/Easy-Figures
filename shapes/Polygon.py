@@ -42,19 +42,20 @@ class Polygon:
 		centroid = np.mean(midpoint_vertices, axis=0)
 
 		for i, label in enumerate(labelList):
+
 			# Get d as the perpendicular vector at the midpoint
 			ac = self.vertices[(i+1) % self.vertices.shape[0], :] - self.vertices[i, :]
 			d = np.matrix([ac[0,1], -ac[0,0]])
 
 			# Padding is "amount to clear line width" + "a constant # of points"
-			p = (self.linewidth*self.figure.UNITS_PER_PT_x / 2) + (padding*self.figure.UNITS_PER_PT_x)
+			p = (self.linewidth*self.figure.UNITS_PER_PT_x / 2) + (padding*2*self.figure.UNITS_PER_PT_x)
 			v = midpoint_vertices[i, :] + p*d
 
 
 			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=fontsize)
 			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
-			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d)
+			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debu=True)
 
 			txt.set_position((v[0,0], v[0,1]))
 
@@ -69,7 +70,6 @@ class Polygon:
 		return bisec
 
 	def labelVertices(self, labelList, inner=False, fontsize=15):
-
 		# Everything is the counter clockwise, and the first angle/vertex is the first lable, everything else is counter clockwise order
 		# The side that's mentioned first is horizontal
 		if inner:
@@ -93,7 +93,7 @@ class Polygon:
 
 			v = np.copy(self.vertices[i, :])
 
-			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d)
+			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debug=True)
 
 			# compute necessary padding to clear the polygon
 			if inner:
@@ -129,7 +129,7 @@ class Polygon:
 			v = v + p*d # apply the padding
 			txt.set_position((v[0,0], v[0,1]))
 
-	def alignTextAlongVector(self, txt, v, d):
+	def alignTextAlongVector(self, txt, v, d, i, debug=False):
 		"""
 			Returns:
 				(new v position, cartesian width, cartesian height, vector aligned width, vector aligned height)
@@ -172,12 +172,13 @@ class Polygon:
 				vy += dely
 
 		# Debug information
-		#ov = self.vertices[i,:]
-		#dv = d*10.0
-		#self.figure.addArrow([ ov[0,0], ov[0,1] ], [ dv[0,0], dv[0,1] ], width=0.002, color='grey')
-		#self.figure.addPoint([vx, vy - descent], r'\;', color='blue', pointsize=2)
-		#self.figure.addPoint([vx + w, vy - descent + h], r'\;', color='blue', pointsize=2)
-		#self.figure.addPoint([vx + (w / 2.0), vy - descent + (h / 2.0)], r'\;', color='red', pointsize=2)
+		if debug:
+			ov = self.vertices[i,:]
+			dv = d*10.0
+			self.figure.addArrow([ ov[0,0], ov[0,1] ], [ dv[0,0], dv[0,1] ], width=0.002, color='grey')
+			self.figure.addPoint([vx, vy - descent], r'\;', color='blue', pointsize=2)
+			self.figure.addPoint([vx + w, vy - descent + h], r'\;', color='blue', pointsize=2)
+			self.figure.addPoint([vx + (w / 2.0), vy - descent + (h / 2.0)], r'\;', color='red', pointsize=2)
 
 		return np.matrix([[vx, vy]]), w, h, 0, hp
 
