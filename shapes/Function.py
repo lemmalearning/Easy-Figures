@@ -7,7 +7,7 @@ import numpy as np
 
 class Function:
 	matplotlib_obj = None
-	def __init__(self, functions, xyranges=None, color='black', linewidth=2, variable=None, figure=None):
+	def __init__(self, functions, xyranges=None, color='black', linewidth=2, variable=None, props={}, figure=None):
 		if not isinstance(functions, list):
 			functions = [functions]
 
@@ -25,9 +25,10 @@ class Function:
 		self.xyranges = xyranges
 		self.color = color
 		self.variable = variable
+		self.props = props
 
 	def __draw__(self, zorder=1):
 		for function, xyrange, color in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.color):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
-			plt.plot(x, y, color, zorder=zorder)
+			plt.plot(x, y, color, zorder=zorder, **self.props)

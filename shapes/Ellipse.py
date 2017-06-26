@@ -7,18 +7,19 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Ellipse:
-	def __init__(self, xy=[0,0], r=(1,1), fc=None, ec='none', angle=0.0, lw=2, figure=None):
+	def __init__(self, xy=[0,0], r=(1,1), fc=None, ec='none', angle=0.0, lw=2, props={}, figure=None):
 		self.r = r
 		self.angle=angle
 		self.lw=lw
 		self.xy = xy
+		self.props = props
 		self.figure = figure
 		semimajor = r[0]
 		semiminor = r[1]
 		semimajor = semimajor*2.0
 		semiminor = semiminor*2.0
 
-		ellipse = patches.Ellipse(xy, semimajor, semiminor, linewidth=3, fc=fc, ec=ec, angle=angle, lw=lw)
+		ellipse = patches.Ellipse(xy, semimajor, semiminor, linewidth=3, fc=fc, ec=ec, angle=angle, lw=lw, **self.props)
 		self.matplotlib_obj = ellipse
 
 	def ellipseLabels(self, xlabel=None, ylabel=None, isRadius=True):

@@ -55,8 +55,6 @@ class Figures:
 
 		self.renderer = RendererSVG(w, h, self.export_str, None, 72)
 
-
-
 	def __export__(self):
 
 		self.fig.patch.set_facecolor('white')
@@ -139,9 +137,9 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True):
+	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, props={}):
 		pixelSize = self.width
-		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, figure=self)
+		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, props, figure=self)
 		self.drawOrder.append(axis)
 
 		return axis
@@ -177,8 +175,8 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
-	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True):
-		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, figure=self)
+	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True, props={}):
+		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, props, figure=self)
 		self.drawOrder.append(p)
 		return p
 
@@ -187,34 +185,34 @@ class Figures:
 		self.drawOrder.append(t)
 		return t
 
-	def addFunction(self, functions, xyranges=None, color='black', linewidth=2, variable=None):
+	def addFunction(self, functions, xyranges=None, color='black', linewidth=2, variable=None, props={}):
 		xyranges= self.xyrange if xyranges == None else xyranges
-		f = Function.Function(functions, xyranges, color, linewidth, variable, figure=self)
+		f = Function.Function(functions, xyranges, color, linewidth, variable, props, figure=self)
 		self.drawOrder.append(f)
 		return f
 
-	def addPolygon(self, vertices):
+	def addPolygon(self, vertices, props={}):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, figure=self)
+		polygon = Polygon.Polygon(vertices, props, figure=self)
 		self.drawOrder.append(polygon)
 		return polygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k'):
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', props={}):
 		pixelSize=self.width
-		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, figure=self)
+		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, props, figure=self)
 		self.drawOrder.append(circle)
 		return circle
 
-	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2):
+	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2, props={}):
 		if isinstance(r, int):
-			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec)
+			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, props=props)
 		else:
 			pixelSize=self.width
-			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, figure=self)
+			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, props, figure=self)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1):
+	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, props={}):
 		if isSide:
 			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
 			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
@@ -230,7 +228,7 @@ class Figures:
 			vertexC = [x,y,1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), props, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
@@ -250,11 +248,11 @@ class Figures:
 			vertexC = [C+xy[0], 0+xy[1], 1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), props, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
-	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35):
-		arrow = Arrow.Arrow(xy, dxdy, color=color, headWidth=headWidth, width=width, figure=self)
+	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35, props={}):
+		arrow = Arrow.Arrow(xy, dxdy, props=props, color=color, headWidth=headWidth, width=width, figure=self)
 		self.drawOrder.append(arrow)
 		return arrow
