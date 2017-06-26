@@ -9,12 +9,13 @@ from matplotlib.patches import Arc
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, vertices, figure=None):
+	def __init__(self, vertices, props={}, figure=None):
 		self.vertices = np.matrix(vertices)
 		self.linewidth = 2
+		self.props = props
 
 		# Define the polygon
-		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=self.linewidth)
+		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=self.linewidth, **self.props)
 		self.figure = figure
 
 
@@ -188,5 +189,5 @@ class Polygon:
 		self.labelVertices(labelList, True, **kwargs)
 
 	def __draw__(self, zorder=1):
-		p = self.figure.ax.add_patch(self.matplotlib_obj)
+		p = self.figure.ax.add_patch(self.matplotlib_obj, **self.props)
 		p.set(zorder=zorder)
