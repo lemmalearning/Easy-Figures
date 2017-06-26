@@ -93,7 +93,7 @@ class Polygon:
 
 			v = np.copy(self.vertices[i, :])
 
-			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debug=False)
+			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i)
 
 			# compute necessary padding to clear the polygon
 			if inner:
@@ -104,14 +104,14 @@ class Polygon:
 			else:
 				p = 3 * self.figure.UNITS_PER_PT_x
 
-
 			# Adding arcs for angle labels
 			if inner and arcs is not None:
+				r_x = self.figure.UNITS_PER_PT_x * 8
+				r_y = self.figure.UNITS_PER_PT_y * 8
 				if isinstance(arcs[i], int):
 					for k in range(arcs[i]):
 						r_x = self.figure.UNITS_PER_PT_x * 8
 						r_y = self.figure.UNITS_PER_PT_y * 8
-
 						# these are just the vectors along the adjacent sides
 						ab = self.vertices[i-1, :] - self.vertices[i, :]
 						ab = ab / np.linalg.norm(ab)
@@ -122,15 +122,12 @@ class Polygon:
 						theta1 = np.arctan2(ac[0,1], ac[0, 0]) * 180.0 / np.pi
 						theta2 = np.arctan2(ab[0,1], ab[0, 0]) * 180.0 / np.pi
 
-						r_x = (2*r_x + k*10*self.figure.UNITS_PER_PIXEL_x)/2
-						r_y = (2*r_y + k*10*self.figure.UNITS_PER_PIXEL_y)/2
+						r_x = (2*r_x + k*10*self.figure.UNITS_PER_PT_x)/2
+						r_y = (2*r_y + k*10*self.figure.UNITS_PER_PT_y)/2
 
 						#self.figure.ax.add_patch(Arc((self.vertices[i,0] + k*5*self.figure.UNITS_PER_PIXEL_x, self.vertices[i,1] + k*5*self.figure.UNITS_PER_PIXEL_y), 2*r, 2*r, theta1=theta1, theta2=theta2, edgecolor='k', linewidth=1))
 						self.figure.ax.add_patch(Arc((self.vertices[i,0], self.vertices[i,1]), 2*r_x, 2*r_y, theta1=theta1, theta2=theta2, edgecolor='k', linewidth=1))
 
-						pmin = r_x + 4*self.figure.UNITS_PER_PT_x
-						if p < pmin:
-							p = pmin
 				elif arcs[i].upper() == 'SQUARE' or isinstance(arcs[i], str) or arcs[i] < 0:
 					# these are just the vectors along the adjacent sides
 					"""ab = self.vertices[i-1, :] - self.vertices[i, :]
@@ -143,13 +140,19 @@ class Polygon:
 
 					verts = [self.vertices[i, :].tolist()[0], ab.tolist()[0], aa, ac.tolist()[0]]
 					cent = np.mean(verts, axis=0)
-					verts.sort(key=lambda p: np.arctan2(p[1]-cent[1],p[0]-cent[0]))
+					verts.sort(key=lambda q: np.arctan2(q[1]-cent[1],q[0]-cent[0]))
 					self.figure.addPolygon(verts, props={'lw':1})
 
+			pmin = r_x + 4*self.figure.UNITS_PER_PT_x
+			if p < pmin:
+				p = pmin
+
 			if inner:
-				v = v + p*d*factorPadding
+				v = v + p*d
 			else:
 				v = v + p*d# apply the padding
+
+
 			txt.set_position((v[0,0], v[0,1]))
 
 	def alignTextAlongVector(self, txt, v, d, i, debug=False):
