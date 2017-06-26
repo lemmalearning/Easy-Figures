@@ -4,14 +4,18 @@ import matplotlib.patches as patches
 import numpy as np
 import itertools
 
+from matplotlib.patches import Arc
+
+
 class Polygon:
 	matplotlib_obj = None
 	def __init__(self, vertices, figure=None):
 		self.vertices = np.matrix(vertices)
+		self.linewidth = 2
+
 		# Define the polygon
-		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=2)
+		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=self.linewidth)
 		self.figure = figure
-		# Create and add polygon
 
 
 	def labelOppositeSides(self, labelList, **kwargs):
@@ -24,7 +28,7 @@ class Polygon:
 			newLabels[idx] = label
 		self.labelSides(newLabels, **kwargs)
 
-	def labelSides(self, labelList, fontsize=15):
+	def labelSides(self, labelList, fontsize=15, padding=1):
 		self.sideLabels = labelList
 		vertices_pairs = sorted(self.vertices.tolist(), key=lambda element: (element[0], element[1]))
 		vertices_pairs=self.vertices.tolist() + [self.vertices.tolist()[0]]
@@ -38,40 +42,21 @@ class Polygon:
 		centroid = np.mean(midpoint_vertices, axis=0)
 
 		for i, label in enumerate(labelList):
+			# Get d as the perpendicular vector at the midpoint
 			ac = self.vertices[(i+1) % self.vertices.shape[0], :] - self.vertices[i, :]
 			d = np.matrix([ac[0,1], -ac[0,0]])
-			# TODO: We need to figure out a better amount of padding to use
-			p = 0.1
+
+			# Padding is "amount to clear line width" + "a constant # of points"
+			p = (self.linewidth*self.figure.UNITS_PER_PT_x / 2) + (padding*self.figure.UNITS_PER_PT_x)
 			v = midpoint_vertices[i, :] + p*d
 
-			dx, dy = d[0, 0], d[0, 1]
-			vx, vy = v[0, 0], v[0, 1]
 
 			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=fontsize)
 			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
-			w, h, descent = self.figure.measureText(txt, True)
+			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d)
 
-			# Next we essentially adjust the text to be anchored on a point anchored along the direction line that divides the rectangle into two equal length areas
-			# Center text on the direction line : this assumes that the text is usually anchored on the bottom left point
-			if abs(dy) > abs(dx): # run greater than rise : intersects top and bottom lines of rectangle
-				vx -= w / 2.0
-				delx = ((dx / dy) * h) / 2.0
-				if dy < 0:
-					vx -= delx
-					vy -= h
-				else:
-					vx += delx
-			else:
-				vy -= h / 2.0
-				dely = ((dy / dx) * w) / 2.0
-				if dx < 0:
-					vy -= dely
-					vx -= w
-				else:
-					vy += dely
-
-			txt.set_position((vx, vy))
+			txt.set_position((v[0,0], v[0,1]))
 
 	def bisector(self, i):
 		"""For a vertex, get the vector of the angle bisector (pointing inwards)"""
@@ -103,64 +88,99 @@ class Polygon:
 			if not inner:
 				d = -d
 
-
 			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=fontsize)
 			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
-			w, h, descent = self.figure.measureText(txt, True)
 			v = np.copy(self.vertices[i, :])
-			v[0, 1] += descent
-			h += descent
 
-			# Compute span perpendicular to direction
-			dp = np.matrix([[ d[0, 1], -d[0, 0] ]])
-			c = np.matrix([[ w / 2.0, h / 2.0 ]])
-			hp = 0
-			for ii, jj in itertools.product([0,1], [0,1]):
-				hij = abs(np.inner(np.matrix([[ ii*w, jj*h ]]) - c, dp))
-				hp = max(hij, hp)
+			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d)
 
-
+			# compute necessary padding to clear the polygon
 			if inner:
-				p = hp / np.tan(angle / 2.0)
+				line_units = self.linewidth * self.figure.UNITS_PER_PT_x
+				# Based on the right triangle formed by the angle bisector and a perpendicular line dropped to one side of the polygon
+				# The length of that perpendicular line must be long enough to fix half of the text
+				p = (hp + (line_units / 2)) / np.tan(angle / 2.0)
 			else:
-				p = 0.1
-
-			v = v + p*d
-
-			dx, dy = d[0, 0], d[0, 1]
-			vx, vy = v[0, 0], v[0, 1]
+				p = 3 * self.figure.UNITS_PER_PT_x
 
 
-			# Next we essentially adjust the text to be anchored on a point anchored along the direction line that divides the rectangle into two equal length areas
-			# Center text on the direction line : this assumes that the text is usually anchored on the bottom left point
-			if abs(dy) > abs(dx): # run greater than rise : intersects top and bottom lines of rectangle
-				vx -= w / 2.0
-				delx = ((dx / dy) * h) / 2.0
-				if dy < 0:
-					vx -= delx
-					vy -= h
-				else:
-					vx += delx
+			# Adding arcs for angle labels
+			if inner:
+				r = self.figure.UNITS_PER_PT_x * 8
+
+				# these are just the vectors along the adjacent sides
+				ab = self.vertices[i-1, :] - self.vertices[i, :]
+				ab = ab / np.linalg.norm(ab)
+				ac = self.vertices[(i+1) % self.vertices.shape[0], :] - self.vertices[i, :]
+				ac = ac / np.linalg.norm(ac)
+
+
+				theta1 = np.arctan2(ac[0,1], ac[0, 0]) * 180.0 / np.pi
+				theta2 = np.arctan2(ab[0,1], ab[0, 0]) * 180.0 / np.pi
+
+				self.figure.ax.add_patch(Arc((self.vertices[i,0], self.vertices[i,1]), 2*r, 2*r, theta1=theta1, theta2=theta2, edgecolor='k', linewidth=1))
+
+				pmin = r + 4*self.figure.UNITS_PER_PT_x
+				if p < pmin:
+					p = pmin
+
+
+			v = v + p*d # apply the padding
+			txt.set_position((v[0,0], v[0,1]))
+
+	def alignTextAlongVector(self, txt, v, d):
+		"""
+			Returns:
+				(new v position, cartesian width, cartesian height, vector aligned width, vector aligned height)
+		"""
+		# Measure the size of the text box. We correct for the descent such that the anchor point of the text is at the very bottom left corner of the text rather than at the left baseline
+		w, h, descent = self.figure.measureText(txt, True)
+		v[0, 1] += descent
+		h += descent
+
+		# Compute span perpendicular to direction
+		dp = np.matrix([[ d[0, 1], -d[0, 0] ]])
+		c = np.matrix([[ w / 2.0, h / 2.0 ]])
+		hp = 0 # This is the height of the text perpendicular to the direction vector
+		for ii, jj in itertools.product([0,1], [0,1]):
+			hij = abs(np.inner(np.matrix([[ ii*w, jj*h ]]) - c, dp))
+			hp = max(hij, hp)
+
+
+		dx, dy = d[0, 0], d[0, 1]
+		vx, vy = v[0, 0], v[0, 1]
+
+
+		# Next we essentially adjust the text to be anchored on a point anchored along the direction line that divides the rectangle into two equal length areas
+		# Center text on the direction line : this assumes that the text is usually anchored on the bottom left point
+		if abs(dy) > abs(dx): # run greater than rise : intersects top and bottom lines of rectangle
+			vx -= w / 2.0
+			delx = ((dx / dy) * h) / 2.0
+			if dy < 0:
+				vx -= delx
+				vy -= h
 			else:
-				vy -= h / 2.0
-				dely = ((dy / dx) * w) / 2.0
-				if dx < 0:
-					vy -= dely
-					vx -= w
-				else:
-					vy += dely
+				vx += delx
+		else:
+			vy -= h / 2.0
+			dely = ((dy / dx) * w) / 2.0
+			if dx < 0:
+				vy -= dely
+				vx -= w
+			else:
+				vy += dely
 
+		# Debug information
+		#ov = self.vertices[i,:]
+		#dv = d*10.0
+		#self.figure.addArrow([ ov[0,0], ov[0,1] ], [ dv[0,0], dv[0,1] ], width=0.002, color='grey')
+		#self.figure.addPoint([vx, vy - descent], r'\;', color='blue', pointsize=2)
+		#self.figure.addPoint([vx + w, vy - descent + h], r'\;', color='blue', pointsize=2)
+		#self.figure.addPoint([vx + (w / 2.0), vy - descent + (h / 2.0)], r'\;', color='red', pointsize=2)
 
-			txt.set_position((vx, vy))
+		return np.matrix([[vx, vy]]), w, h, 0, hp
 
-			# Debug information
-			#ov = self.vertices[i,:]
-			#dv = d*10.0
-			#self.figure.addArrow([ ov[0,0], ov[0,1] ], [ dv[0,0], dv[0,1] ], width=0.002, color='grey')
-			#self.figure.addPoint([vx, vy - descent], r'\;', color='blue', pointsize=2)
-			#self.figure.addPoint([vx + w, vy - descent + h], r'\;', color='blue', pointsize=2)
-			#self.figure.addPoint([vx + (w / 2.0), vy - descent + (h / 2.0)], r'\;', color='red', pointsize=2)
 
 
 
