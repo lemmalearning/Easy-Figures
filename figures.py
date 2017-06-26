@@ -32,10 +32,11 @@ class Figures:
 		self.height = height
 
 		# TODO: Move to __export__
-		self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
-		self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
-		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
-		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
+		if xyrange is not None:
+			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
+			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
+			self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
+			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
 		self.setPixelSize(width, height=height)
 		#plt.figure(figsize=ratio)
@@ -125,19 +126,18 @@ class Figures:
 		if units:
 			width *= self.UNITS_PER_PT_x
 			height *= self.UNITS_PER_PT_y
+			descent *= self.UNITS_PER_PT_y
 
-		return (width, height)
+		return (width, height, descent)
 
 	def __draw_shapes__(self, order=None):
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
 			self.addAxis(hideAxis=True)
 
-			#plt.axis('scaled')
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
 	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True):
-		#xyrange=self.figure.xyrange if xyrange is None else xyrange
 		pixelSize = self.width
 		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, figure=self)
 		self.drawOrder.append(axis)
