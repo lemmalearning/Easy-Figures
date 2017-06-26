@@ -180,8 +180,8 @@ class Figures:
 		self.drawOrder.append(p)
 		return p
 
-	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True, props={}):
-		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, props, figure=self)
+	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, props={}, latex=True, pixel=False):
+		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, props, figure=self)
 		self.drawOrder.append(t)
 		return t
 

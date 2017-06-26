@@ -18,7 +18,6 @@ class Polygon:
 		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=self.linewidth, **self.props)
 		self.figure = figure
 
-
 	def labelOppositeSides(self, labelList, **kwargs):
 		# Number of sides - 1/2  + current index mod number of sides = new index
 		numSides = len(self.vertices.tolist())
@@ -205,8 +204,6 @@ class Polygon:
 			self.figure.addPoint([vx + (w / 2.0), vy - descent + (h / 2.0)], r'\;', color='red', pointsize=2)
 
 		return np.matrix([[vx, vy]]), w, h, 0, hp
-
-
 
 
 	def labelAngles(self, labelList, **kwargs):
