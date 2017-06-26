@@ -18,7 +18,6 @@ class Polygon:
 		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=self.linewidth, **self.props)
 		self.figure = figure
 
-
 	def labelOppositeSides(self, labelList, **kwargs):
 		# Number of sides - 1/2  + current index mod number of sides = new index
 		numSides = len(self.vertices.tolist())
@@ -56,7 +55,7 @@ class Polygon:
 			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=fontsize)
 			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
-			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debug=True)
+			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debug=False)
 
 			txt.set_position((v[0,0], v[0,1]))
 
@@ -94,7 +93,7 @@ class Polygon:
 
 			v = np.copy(self.vertices[i, :])
 
-			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debug=True)
+			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debug=False)
 
 			# compute necessary padding to clear the polygon
 			if inner:
@@ -182,8 +181,6 @@ class Polygon:
 			self.figure.addPoint([vx + (w / 2.0), vy - descent + (h / 2.0)], r'\;', color='red', pointsize=2)
 
 		return np.matrix([[vx, vy]]), w, h, 0, hp
-
-
 
 
 	def labelAngles(self, labelList, **kwargs):

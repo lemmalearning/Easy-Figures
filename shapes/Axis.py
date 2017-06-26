@@ -88,7 +88,6 @@ class Axis:
 			if self.minorGrid is not False:
 				self.figure.ax.grid(which='minor', color='k' if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
 
-
 		if self.arrows:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
@@ -108,7 +107,7 @@ class Axis:
 		if self.label:
 			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
 			self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center').__draw__()
-			self.figure.addText((-8*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*3.5), 'y', latex=True, fontsize=16, valignment='top', halignment='right').__draw__()
+			self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right').__draw__()
 
 		####### DRAW LABELS #######
 		# Control ticks
@@ -117,7 +116,6 @@ class Axis:
 		self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
 		self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
 		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
-
 
 		if self.top:
 			self.figure.ax.xaxis.set_label_position('top')
