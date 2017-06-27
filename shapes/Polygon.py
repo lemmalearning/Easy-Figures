@@ -105,9 +105,9 @@ class Polygon:
 				p = 3 * self.figure.UNITS_PER_PT_x
 
 			# Adding arcs for angle labels
-			r_x = self.figure.UNITS_PER_PT_x * 8
-			r_y = self.figure.UNITS_PER_PT_y * 8
 			if inner and arcs is not None:
+				r_x = self.figure.UNITS_PER_PT_x * 8
+				r_y = self.figure.UNITS_PER_PT_y * 8
 				if isinstance(arcs[i], int):
 					for k in range(arcs[i]):
 						r_x = self.figure.UNITS_PER_PT_x * 8
@@ -143,9 +143,9 @@ class Polygon:
 					verts.sort(key=lambda q: np.arctan2(q[1]-cent[1],q[0]-cent[0]))
 					self.figure.addPolygon(verts, props={'lw':1})
 
-			pmin = r_x + 4*self.figure.UNITS_PER_PT_x
-			if p < pmin:
-				p = pmin
+				pmin = r_x + 4*self.figure.UNITS_PER_PT_x
+				if p < pmin:
+					p = pmin
 
 			if inner:
 				v = v + p*d
