@@ -4,7 +4,7 @@ matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 import matplotlib.pyplot as plt
 #plt.rcParams["figure.figsize"] = 10,10
-from shapes import Polygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
+from shapes import Polygon, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
 
 import numpy as np
 import StringIO
@@ -196,6 +196,12 @@ class Figures:
 		polygon = Polygon.Polygon(vertices, props, figure=self)
 		self.drawOrder.append(polygon)
 		return polygon
+
+	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, orientation=0.0, props={}):
+		pixelSize=self.width
+		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, orientation, props, figure=self)
+		self.drawOrder.append(regpolygon)
+		return regpolygon
 
 	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', props={}):
 		pixelSize=self.width

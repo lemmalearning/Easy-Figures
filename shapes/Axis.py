@@ -82,7 +82,6 @@ class Axis:
 			plt.axis('off')
 			return
 
-
 		if self.grid is not False:
 			self.figure.ax.grid(which='major', color='k' if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=0.5)
 			if self.minorGrid is not False:
