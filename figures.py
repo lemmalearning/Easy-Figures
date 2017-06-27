@@ -4,7 +4,7 @@ matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 import matplotlib.pyplot as plt
 #plt.rcParams["figure.figsize"] = 10,10
-from shapes import Polygon, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
+from shapes import Polygon, Arc, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
 
 import numpy as np
 import StringIO
@@ -217,6 +217,12 @@ class Figures:
 			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, props, figure=self)
 			self.drawOrder.append(ellipse)
 			return ellipse
+
+	def addArc(self, xy=(0,0), width=0, height=0, angle=0.0, theta1=0.0, theta2=360.0, props={}):
+		pixelSize=self.width
+		arc = Arc.Arc(xy, width, height, angle, theta1, theta2, props=props, figure=self)
+		self.drawOrder.append(arc)
+		return arc
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, props={}):
 		if isSide:
