@@ -4,7 +4,7 @@ matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 import matplotlib.pyplot as plt
 #plt.rcParams["figure.figsize"] = 10,10
-from shapes import Polygon, Arc, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
+from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
 
 import numpy as np
 import StringIO
@@ -13,8 +13,6 @@ import re
 from sympy.utilities.lambdify import lambdify
 
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
-
-
 
 class Figures:
 	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto'):
@@ -224,6 +222,12 @@ class Figures:
 		self.drawOrder.append(arc)
 		return arc
 
+	def addWedge(self, xy=(0,0), radius=0, theta1=0.0, theta2=360.0, props={}):
+		pixelSize=self.width
+		wedge = Wedge.Wedge(xy, radius, theta1, theta2, props=props, figure=self)
+		self.drawOrder.append(wedge)
+		return wedge
+
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, props={}):
 		if isSide:
 			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
@@ -268,3 +272,8 @@ class Figures:
 		arrow = Arrow.Arrow(xy, dxdy, props=props, color=color, headWidth=headWidth, width=width, figure=self)
 		self.drawOrder.append(arrow)
 		return arrow
+
+	def addFancyArrow(self, posA, posB, path=None, arrowstyle=None, connectionstyle=None, props={}):
+		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, arrowstyle=arrowstyle, connectionstyle=connectionstyle, props=props, figure=self)
+		self.drawOrder.append(fancyArrow)
+		return fancyArrow
