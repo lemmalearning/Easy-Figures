@@ -135,9 +135,9 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, props={}):
+	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, mplmplprops={}):
 		pixelSize = self.width
-		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, props, figure=self)
+		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, mplmplprops, figure=self)
 		self.drawOrder.append(axis)
 
 		return axis
@@ -173,62 +173,62 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
-	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True, props={}):
-		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, props, figure=self)
+	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True, ={}):
+		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, figure=self)
 		self.drawOrder.append(p)
 		return p
 
-	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, props={}, latex=True, pixel=False):
-		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, props, figure=self)
+	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, mplprops={}, latex=True, pixel=False):
+		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, figure=self)
 		self.drawOrder.append(t)
 		return t
 
-	def addFunction(self, functions, xyranges=None, color='black', linewidth=2, variable=None, props={}):
+	def addFunction(self, functions, xyranges=None, color='black', linewidth=2, variable=None, mplprops={}):
 		xyranges= self.xyrange if xyranges == None else xyranges
-		f = Function.Function(functions, xyranges, color, linewidth, variable, props, figure=self)
+		f = Function.Function(functions, xyranges, color, linewidth, variable, mplprops, figure=self)
 		self.drawOrder.append(f)
 		return f
 
-	def addPolygon(self, vertices, props={}):
+	def addPolygon(self, vertices, mplprops={}):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, props, figure=self)
+		polygon = Polygon.Polygon(vertices, mplprops, figure=self)
 		self.drawOrder.append(polygon)
 		return polygon
 
-	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, orientation=0.0, props={}):
+	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, orientation=0.0, mplprops={}):
 		pixelSize=self.width
-		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, orientation, props, figure=self)
+		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, orientation, mplprops, figure=self)
 		self.drawOrder.append(regpolygon)
 		return regpolygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', props={}):
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', mplprops={}):
 		pixelSize=self.width
-		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, props, figure=self)
+		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, mplprops, figure=self)
 		self.drawOrder.append(circle)
 		return circle
 
-	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2, props={}):
+	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2, mplprops={}):
 		if isinstance(r, int):
-			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, props=props)
+			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, mplprops=mplprops)
 		else:
 			pixelSize=self.width
-			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, props, figure=self)
+			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, mplprops, figure=self)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addArc(self, xy=(0,0), width=0, height=0, angle=0.0, theta1=0.0, theta2=360.0, props={}):
+	def addArc(self, xy=(0,0), width=0, height=0, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
 		pixelSize=self.width
-		arc = Arc.Arc(xy, width, height, angle, theta1, theta2, props=props, figure=self)
+		arc = Arc.Arc(xy, width, height, angle, theta1, theta2, mplprops=mplprops, figure=self)
 		self.drawOrder.append(arc)
 		return arc
 
-	def addWedge(self, xy=(0,0), radius=0, theta1=0.0, theta2=360.0, props={}):
+	def addWedge(self, xy=(0,0), radius=0, theta1=0.0, theta2=360.0, mplprops={}):
 		pixelSize=self.width
-		wedge = Wedge.Wedge(xy, radius, theta1, theta2, props=props, figure=self)
+		wedge = Wedge.Wedge(xy, radius, theta1, theta2, mplprops=mplprops, figure=self)
 		self.drawOrder.append(wedge)
 		return wedge
 
-	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, props={}):
+	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, mplprops={}):
 		if isSide:
 			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
 			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
@@ -244,7 +244,7 @@ class Figures:
 			vertexC = [x,y,1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), props, figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), mplprops, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
@@ -264,16 +264,16 @@ class Figures:
 			vertexC = [C+xy[0], 0+xy[1], 1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), props, figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), mplprops, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
-	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35, props={}):
-		arrow = Arrow.Arrow(xy, dxdy, props=props, color=color, headWidth=headWidth, width=width, figure=self)
+	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35, mplprops={}):
+		arrow = Arrow.Arrow(xy, dxdy, mplprops=mplprops, color=color, headWidth=headWidth, width=width, figure=self)
 		self.drawOrder.append(arrow)
 		return arrow
 
-	def addFancyArrow(self, posA, posB, path=None, arrowstyle=None, connectionstyle=None, props={}):
-		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, arrowstyle=arrowstyle, connectionstyle=connectionstyle, props=props, figure=self)
+	def addFancyArrow(self, posA, posB, path=None, arrowstyle=None, connectionstyle=None, mplprops={}):
+		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, figure=self)
 		self.drawOrder.append(fancyArrow)
 		return fancyArrow

@@ -12,7 +12,7 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, props={}, figure=None):
+	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, mplprops={}, figure=None):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
@@ -30,7 +30,7 @@ class Axis:
 		self.minorGrid 	= minorGrid
 		self.label		= label
 		self.figure    = figure
-		self.props 	   = props
+		self.mplprops 	   = mplprops
 
 	def Ticks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
@@ -69,8 +69,8 @@ class Axis:
 		else:
 			plt.gca().set_aspect('equal', adjustable='box')
 
-			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[0][0], right=self.figure.xyrange[0][1]-.1, **self.props)
-			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1, **self.props)
+			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[0][0], right=self.figure.xyrange[0][1]-.1, **self.mplprops)
+			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1, **self.mplprops)
 
 			self.figure.ax.spines['right'].set_color('none')
 			self.figure.ax.spines['top'].set_color('none')
@@ -93,11 +93,11 @@ class Axis:
 
 			self.figure.ax.arrow(xmin, 0, xmax-xmin, 0., lw = 1,
 			         head_width=self.figure.UNITS_PER_PIXEL_x*5, head_length=self.figure.UNITS_PER_PIXEL_x*10,
-			         length_includes_head=True, clip_on=False,color=self.color, **self.props)
+			         length_includes_head=True, clip_on=False,color=self.color, **self.mplprops)
 
 			self.figure.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
 			         head_width=self.figure.UNITS_PER_PIXEL_y*5, head_length=self.figure.UNITS_PER_PIXEL_y*10,
-					 length_includes_head=True, clip_on=False,color=self.color, **self.props)
+					 length_includes_head=True, clip_on=False,color=self.color, **self.mplprops)
 
 		# Control color
 		self.figure.ax.spines['bottom'].set_color(self.color)
@@ -105,8 +105,15 @@ class Axis:
 
 		if self.label:
 			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center').__draw__()
-			self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right').__draw__()
+			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center')
+			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right')
+
+			x_dims.__draw__()
+			y_dims.__draw__()
+
+			x_dims.matplotlib_obj[0].set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+			y_dims.matplotlib_obj[0].set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+
 
 		####### DRAW LABELS #######
 		# Control ticks

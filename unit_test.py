@@ -100,11 +100,13 @@ def unit_test():
 
 	# INIT #
 	f = figures.Figures([[-10,10],[-10, 10]])
+	
 	triangle(f)
 	function(f)
 	circle(f)
 	ellipse(f)
 	polygon(f)
+
 	axis(f)
 	point(f)
 	text(f)

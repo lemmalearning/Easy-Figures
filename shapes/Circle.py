@@ -7,11 +7,11 @@ import numpy as np
 
 class Circle:
 	matplotlib_obj = None
-	def __init__(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', props={}, figure=None):
+	def __init__(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', mplprops={}, figure=None):
 		self.figure = figure
-		self.props = props
+		self.mplprops = mplprops
 		if radius!=None:
-			circle = patches.Circle(xy, radius=radius, fc=fc, ec=ec, linewidth=3, **self.props)
+			circle = patches.Circle(xy, radius=radius, fc=fc, ec=ec, linewidth=3, **self.mplprops)
 			self.matplotlib_obj = circle
 			if label != "":
 				p = (xy[0]+radius, xy[1])
@@ -22,7 +22,7 @@ class Circle:
 
 
 		else:
-			circle = patches.Circle(xy, radius=diameter/2, fc=fc, ec=ec, linewidth=3, **self.props)
+			circle = patches.Circle(xy, radius=diameter/2, fc=fc, ec=ec, linewidth=3, **self.mplprops)
 			self.matplotlib_obj = circle
 			if label != "":
 				p1 = (xy[0]-diameter/2, xy[1])

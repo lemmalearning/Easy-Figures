@@ -9,13 +9,13 @@ from matplotlib.patches import Arc
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, vertices, props={}, figure=None):
+	def __init__(self, vertices, mplprops={}, figure=None):
 		self.vertices = np.matrix(vertices)
 		self.linewidth = 2
-		self.props = props
+		self.mplprops = mplprops
 
 		# Define the polygon
-		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=self.linewidth, **self.props)
+		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=self.linewidth, **self.mplprops)
 		self.figure = figure
 
 	def labelOppositeSides(self, labelList, **kwargs):
@@ -141,7 +141,7 @@ class Polygon:
 					verts = [self.vertices[i, :].tolist()[0], ab.tolist()[0], aa, ac.tolist()[0]]
 					cent = np.mean(verts, axis=0)
 					verts.sort(key=lambda q: np.arctan2(q[1]-cent[1],q[0]-cent[0]))
-					self.figure.addPolygon(verts, props={'lw':1})
+					self.figure.addPolygon(verts, mplprops={'lw':1})
 
 				pmin = r_x + 4*self.figure.UNITS_PER_PT_x
 				if p < pmin:
