@@ -3,22 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
 
-"""
-Curve	-
-CurveB	->
-BracketB	-[
-CurveFilledB	-|>
-CurveA	<-
-CurveAB	<->
-CurveFilledA	<|-	
-CurveFilledAB	<|-|>
-BracketA	]-
-BracketAB	]-[
-Fancy	fancy
-Simple	simple
-Wedge	wedge
-BarAB	|-|
-"""
+#f.addFancyArrow(posA=(-5,2.5), posB=(3,2.5), arrowstyle='|-|', connectionstyle='bar', props={'mutation_scale':5})
+#f.addFancyArrow(posA=(6, 0), posB=(6, 3), arrowstyle='<->', connectionstyle='bar', props={'mutation_scale':7})
 
 class FancyArrowPatch:
     def __init__(self, posA=None, posB=None, path=None, arrowstyle='simple', connectionstyle='bar', props={}, figure=None):
