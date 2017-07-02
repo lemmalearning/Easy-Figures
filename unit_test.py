@@ -67,7 +67,7 @@ def unit_test():
 	# AXIS #
 	def axis(f):
 		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', minorGrid='red')
-		axis.Ticks(tickLabelInterval=2, tickInterval=1, fontsize=12, origin=True, top=True)
+		axis.Ticks(tickLabelInterval=2, tickInterval=1, fontsize=12, origin=False, top=True)
 
 	# POINT #
 	def point(f):
@@ -100,13 +100,12 @@ def unit_test():
 
 	# INIT #
 	f = figures.Figures([[-10,10],[-10, 10]])
-	
+
 	triangle(f)
 	function(f)
 	circle(f)
 	ellipse(f)
 	polygon(f)
-
 	axis(f)
 	point(f)
 	text(f)

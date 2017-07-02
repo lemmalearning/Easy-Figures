@@ -34,4 +34,4 @@ class Text:
 
 	def __draw__(self, zorder=1):
 		for xy, text, color, valignment, halignment, bbox, latex, pixel in zip(self.xy, self.text, self.color, self.valignment, self.halignment, self.bbox, self.latex, self.pixel):
-			self.matplotlib_obj.append(self.figure.ax.annotate("$"+text+"$" if latex else text, xytext=xy if not pixel else (xy[0]*self.figure.UNITS_PER_PIXEL_x, xy[1]*self.figure.UNITS_PER_PIXEL_y), xy=xy if not pixel else (xy[0]*self.figure.UNITS_PER_PIXEL_x, xy[1]*self.figure.UNITS_PER_PIXEL_y), fontsize=self.fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox, color=color, zorder=zorder, **self.mplprops))
+			self.matplotlib_obj.append(self.figure.ax.text(xy[0] if not pixel else xy[0]*self.figure.UNITS_PER_PIXEL_x, xy[1] if not pixel else xy[1]*self.figure.UNITS_PER_PIXEL_y, "$"+text+"$" if latex else text, fontsize=self.fontsize, horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox, color=color, zorder=zorder, **self.mplprops))

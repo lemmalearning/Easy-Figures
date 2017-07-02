@@ -135,9 +135,9 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, mplmplprops={}):
+	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, mplprops={}):
 		pixelSize = self.width
-		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, mplmplprops, figure=self)
+		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, mplprops, figure=self)
 		self.drawOrder.append(axis)
 
 		return axis
@@ -173,7 +173,7 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
-	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True, ={}):
+	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True, mplprops={}):
 		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, figure=self)
 		self.drawOrder.append(p)
 		return p
@@ -268,10 +268,14 @@ class Figures:
 			self.drawOrder.append(triangle)
 			return triangle
 
-	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35, mplprops={}):
-		arrow = Arrow.Arrow(xy, dxdy, mplprops=mplprops, color=color, headWidth=headWidth, width=width, figure=self)
-		self.drawOrder.append(arrow)
-		return arrow
+	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35, mplprops={}, **kwargs):
+		if 'arrowstyle' in kwargs:
+			self.addFancyArrow(posA=posA, posB=posB, path=None, arrowstyle='fancy', connectionstyle='bar', mplprops={})
+
+		else :
+			arrow = Arrow.Arrow(xy, dxdy, mplprops=mplprops, color=color, headWidth=headWidth, width=width, figure=self)
+			self.drawOrder.append(arrow)
+			return arrow
 
 	def addFancyArrow(self, posA, posB, path=None, arrowstyle=None, connectionstyle=None, mplprops={}):
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, figure=self)

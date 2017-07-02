@@ -41,6 +41,7 @@ class Axis:
 
 	def __draw__(self, zorder=1):
 		# Modify the plot view to scale, remove axis, and center our shape
+
 		def adjust_spines(ax, spines):
 		    for loc, spine in ax.spines.items():
 		        if loc in spines:
@@ -105,15 +106,14 @@ class Axis:
 
 		if self.label:
 			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center')
-			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right')
+			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(facecolor='white', edgecolor='none', pad=0.1))
+			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(facecolor='white', edgecolor='none', pad=0.1))
 
 			x_dims.__draw__()
 			y_dims.__draw__()
 
-			x_dims.matplotlib_obj[0].set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
-			y_dims.matplotlib_obj[0].set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
-
+			#x_dims.matplotlib_obj[0].set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+			#y_dims.matplotlib_obj[0].set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
 		####### DRAW LABELS #######
 		# Control ticks
@@ -139,6 +139,8 @@ class Axis:
 
 			for label in self.figure.ax.xaxis.get_ticklabels():
 				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+				#print type(label)
+
 			for label in self.figure.ax.yaxis.get_ticklabels():
 				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 		####### END DRAW LABELS #######
