@@ -105,15 +105,12 @@ class Axis:
 		self.figure.ax.spines['left'].set_color(self.color)
 
 		if self.label:
-			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor='white', edgecolor='none', pad=0.1))
-			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor='white', edgecolor='none', pad=0.1))
+			# size conversion: Should be 12 for every 400 pixels, or .003 per pixel
+			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor='white', edgecolor='none', pad=(self.figure.UNITS_PER_PIXEL_x/5.0)-(self.figure.UNITS_PER_PIXEL_x*20.0)))
+			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor='white', edgecolor='none', pad=(self.figure.UNITS_PER_PIXEL_x/5.0)-(self.figure.UNITS_PER_PIXEL_x*20.0)))
 
 			x_dims.__draw__()
 			y_dims.__draw__()
-
-			#x_dims.matplotlib_obj[0].set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
-			#y_dims.matplotlib_obj[0].set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
 
 		####### DRAW LABELS #######
 		# Control ticks

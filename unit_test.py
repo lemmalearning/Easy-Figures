@@ -33,7 +33,6 @@ def unit_test():
 			color="blue"
 		)
 
-
 	# CIRCLE #
 	def circle(f):
 		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='grey')
@@ -79,7 +78,6 @@ def unit_test():
 		f.addText((-5,-4), "With\ cool\ effects", bbox=dict(boxstyle="rarrow,pad=0.3", fc="cyan", ec="b", lw=2), color='red')
 		f.addText((-0,4), r"Rendered\ as\  TeX\ ->\ \int_{a}^{b} x^2 dx", bbox=dict(boxstyle="circle,pad=0.3", fc="orange", ec="yellow", lw=2), color='blue')
 		f.addText((-5,9), "Or plain text!", latex=False, color='green', fontsize=20)
-
 
 	# ARROW #
 	def arrow(f):
