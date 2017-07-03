@@ -97,7 +97,7 @@ class Axis:
 			         length_includes_head=True, clip_on=False,color=self.color, **self.mplprops)
 
 			self.figure.ax.arrow(0, ymin, 0., ymax-ymin, lw = 1,
-			         head_width=self.figure.UNITS_PER_PIXEL_y*5, head_length=self.figure.UNITS_PER_PIXEL_y*10,
+			         head_width=self.figure.UNITS_PER_PIXEL_x*5, head_length=self.figure.UNITS_PER_PIXEL_x*10,
 					 length_includes_head=True, clip_on=False,color=self.color, **self.mplprops)
 
 		# Control color
@@ -106,8 +106,8 @@ class Axis:
 
 		if self.label:
 			#size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(facecolor='white', edgecolor='none', pad=0.1))
-			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(facecolor='white', edgecolor='none', pad=0.1))
+			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5, -0.5*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor='white', edgecolor='none', pad=0.1))
+			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor='white', edgecolor='none', pad=0.1))
 
 			x_dims.__draw__()
 			y_dims.__draw__()
@@ -138,11 +138,11 @@ class Axis:
 			self.figure.ax.set_xticklabels(xlabels)
 
 			for label in self.figure.ax.xaxis.get_ticklabels():
-				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+				label.set_bbox(dict(boxstyle='round', facecolor='white', edgecolor='none', pad=0.1))
 				#print type(label)
 
 			for label in self.figure.ax.yaxis.get_ticklabels():
-				label.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+				label.set_bbox(dict(boxstyle='round', facecolor='white', edgecolor='none', pad=0.1))
 		####### END DRAW LABELS #######
 
 		self.figure.ax.xaxis.set_zorder(zorder)

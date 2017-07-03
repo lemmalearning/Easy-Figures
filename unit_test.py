@@ -71,8 +71,8 @@ def unit_test():
 
 	# POINT #
 	def point(f):
-		f.addPoint((2,3), 'A', color='red')
-		f.addPoint((4,3), 'B', color='black')
+		#f.addPoint([(2,3), (4, 3), (6,3)], ['A', 'B', 'C'], color=['red', 'blue', 'green'], pointsize=14)
+		f.addPoint((4,3), color='black')
 
 	# TEXT #
 	def text(f):
@@ -101,15 +101,15 @@ def unit_test():
 	# INIT #
 	f = figures.Figures([[-10,10],[-10, 10]])
 
-	triangle(f)
+	"""triangle(f)
 	function(f)
 	circle(f)
 	ellipse(f)
-	polygon(f)
+	polygon(f)"""
 	axis(f)
 	point(f)
-	text(f)
-	arrow(f)
+	"""text(f)
+	arrow(f)"""
 	write(f)
 
 if __name__ == "__main__":

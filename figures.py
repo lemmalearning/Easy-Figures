@@ -31,8 +31,8 @@ class Figures:
 
 		# TODO: Move to __export__
 		if xyrange is not None:
-			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
-			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.width
+			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/(self.width if not isinstance(self.width, str) else self.height)
+			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/(self.width if not isinstance(self.width, str) else self.height)
 			self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
@@ -158,14 +158,23 @@ class Figures:
 
 		self.padding = px2in(padding)
 
-		width_in = px2in(width)
-		height_in = width_in
+		if isinstance(width, str):
+			height_in = px2in(height)
+			width_in = height_in
+		else:
+			width_in = px2in(width)
+			height_in = width_in
 
 		if height == 'auto':
 			self.height = height
 			self.tight_fit = False
 			#self.fig.set_tight_layout({ "pad": 1.08 })
 			height_in = 2*width_in
+		elif width == 'auto':
+			self.width = height
+			self.tight_fit = False
+			#self.fig.set_tight_layout({ "pad": 1.08 })
+			height_in = 2*height_in
 		elif height != None:
 			self.tight_fit = False
 			#self.fig.set_tight_layout({ "pad": self.padding })
@@ -173,7 +182,7 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
-	def addPoint(self, xys, texts, pointsize=6, fontsize=12, color='black', latex=True, mplprops={}):
+	def addPoint(self, xys, texts='\ ', pointsize=6, fontsize=12, color='black', latex=True, mplprops={}):
 		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, figure=self)
 		self.drawOrder.append(p)
 		return p
