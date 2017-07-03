@@ -3,6 +3,7 @@ matplotlib.rcParams['font.family'] = 'cmr10' # Change font to Computer Modern (L
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 import matplotlib.pyplot as plt
+#plt.rcParams['axes.facecolor'] = 'red'
 #plt.rcParams["figure.figsize"] = 10,10
 from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
 
@@ -15,7 +16,7 @@ from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto'):
+	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto', bgcolor='white'):
 		self.fig, self.ax = plt.subplots()
 		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
@@ -28,6 +29,8 @@ class Figures:
 		self.drawOrder = []
 		self.width = width
 		self.height = height
+		self.bgcolor = bgcolor
+		self.ax.set_facecolor(bgcolor)
 
 		# TODO: Move to __export__
 		if xyrange is not None:
@@ -40,7 +43,6 @@ class Figures:
 		#plt.figure(figsize=ratio)
 
 		self.__init_canvas__()
-
 
 	def __init_canvas__(self):
 		# Adapted from https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_svg.py : print_svg
