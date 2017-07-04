@@ -30,21 +30,23 @@ def unit_test():
 		f.addFunction(
 			func,
 			[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]],
-			color="blue"
+			color="blue",
+			lw=10
+			#mplprops={'lw':10}
 		)
 
 	# CIRCLE #
 	def circle(f):
-		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='grey')
+		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='grey', lw=5)
 		# OR #
 		#circ = f.addEllipse(xy=(7,10), label="r", r=10, fc='grey')
 
 	# ELLIPSE #
 	def ellipse(f):
-		ell = f.addEllipse(xy=[9,12], r=(9,12), angle=30.0, fc='red', ec='w')
+		ell = f.addEllipse(xy=[9,12], r=(9,12), angle=30.0, fc='red', ec='w', lw=10)
 		ell.ellipseLabels(xlabel='x', ylabel='y', isRadius=False)
 		ell2 = f.addEllipse(xy=[-12,8], r=(4,8), angle=190.0, fc='yellow')
-		ell3 = f.addEllipse(xy=[10,-8], r=(8,3), angle=45.0, fc='pink', lw=4)
+		ell3 = f.addEllipse(xy=[10,-8], r=(8,3), angle=45.0, lw=5.0, fc='pink')
 		ell4 = f.addEllipse(xy=[-13,-7], r=(5,6), angle=270.0, fc='green', lw=1)
 
 	# POLYGON #
@@ -56,7 +58,8 @@ def unit_test():
 				[4.9, 6.3],
 				[6.0, 6.3],
 				[6.4, 5.1]
-			]
+			],
+			lw=10
 		)
 		poly.labelVertices(['a', 'b', 'c', 'd', 'e'])
 		poly.labelOppositeSides(['A', 'B', 'C', 'D', 'E'])
@@ -84,7 +87,7 @@ def unit_test():
 		dxdy1 = (randint_except(-1,8, 0), randint_except(-4,2, 0))
 		dxdy2 = (randint_except(-8,2, 0), randint_except(-1, 5, 0))
 
-		f.addArrow((0,0), dxdy1, color='blue', width=0.035)
+		f.addArrow((0,0), dxdy1, color='blue', width=0.035, lw=10)
 		f.addArrow((0,0), dxdy2, color='blue', width=0.035)
 
 	# WRITE #
@@ -99,15 +102,15 @@ def unit_test():
 	# INIT #
 	f = figures.Figures([[-10,10],[-10, 10]])
 
-	"""triangle(f)
+	triangle(f)
 	function(f)
 	circle(f)
 	ellipse(f)
-	polygon(f)"""
+	polygon(f)
 	axis(f)
 	point(f)
-	"""text(f)
-	arrow(f)"""
+	text(f)
+	arrow(f)
 	write(f)
 
 if __name__ == "__main__":

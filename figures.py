@@ -16,7 +16,7 @@ from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto', bgcolor='white'):
+	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto', bgcolor='#faffeeff'):
 		self.fig, self.ax = plt.subplots()
 		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
@@ -194,52 +194,52 @@ class Figures:
 		self.drawOrder.append(t)
 		return t
 
-	def addFunction(self, functions, xyranges=None, color='black', linewidth=2, variable=None, mplprops={}):
+	def addFunction(self, functions, xyranges=None, color='black', lw=2, variable=None, mplprops={}):
 		xyranges= self.xyrange if xyranges == None else xyranges
-		f = Function.Function(functions, xyranges, color, linewidth, variable, mplprops, figure=self)
+		f = Function.Function(functions, xyranges, color, lw, variable, mplprops, figure=self)
 		self.drawOrder.append(f)
 		return f
 
-	def addPolygon(self, vertices, mplprops={}):
+	def addPolygon(self, vertices, lw=2, mplprops={}):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, mplprops, figure=self)
+		polygon = Polygon.Polygon(vertices, lw, mplprops, figure=self)
 		self.drawOrder.append(polygon)
 		return polygon
 
-	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, orientation=0.0, mplprops={}):
+	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, lw=2, orientation=0.0, mplprops={}):
 		pixelSize=self.width
-		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, orientation, mplprops, figure=self)
+		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, lw, orientation, mplprops, figure=self)
 		self.drawOrder.append(regpolygon)
 		return regpolygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', mplprops={}):
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', lw=2, mplprops={}):
 		pixelSize=self.width
-		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, mplprops, figure=self)
+		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, lw, mplprops, figure=self)
 		self.drawOrder.append(circle)
 		return circle
 
 	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2, mplprops={}):
 		if isinstance(r, int):
-			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, mplprops=mplprops)
+			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, lw=lw, mplprops=mplprops)
 		else:
 			pixelSize=self.width
 			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, mplprops, figure=self)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addArc(self, xy=(0,0), width=0, height=0, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
+	def addArc(self, xy=(0,0), width=0, height=0, lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
 		pixelSize=self.width
-		arc = Arc.Arc(xy, width, height, angle, theta1, theta2, mplprops=mplprops, figure=self)
+		arc = Arc.Arc(xy, width, height, lw, angle, theta1, theta2, mplprops=mplprops, figure=self)
 		self.drawOrder.append(arc)
 		return arc
 
-	def addWedge(self, xy=(0,0), radius=0, theta1=0.0, theta2=360.0, mplprops={}):
+	def addWedge(self, xy=(0,0), radius=0, lw=2, theta1=0.0, theta2=360.0, mplprops={}):
 		pixelSize=self.width
-		wedge = Wedge.Wedge(xy, radius, theta1, theta2, mplprops=mplprops, figure=self)
+		wedge = Wedge.Wedge(xy, radius, lw, theta1, theta2, mplprops=mplprops, figure=self)
 		self.drawOrder.append(wedge)
 		return wedge
 
-	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, mplprops={}):
+	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
 		if isSide:
 			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
 			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
@@ -255,7 +255,7 @@ class Figures:
 			vertexC = [x,y,1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), mplprops, figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
@@ -275,20 +275,20 @@ class Figures:
 			vertexC = [C+xy[0], 0+xy[1], 1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), mplprops, figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
-	def addArrow(self, xy, dxdy, color='black', headWidth=0.1, width=0.35, mplprops={}, **kwargs):
+	def addArrow(self, xy, dxdy, color='black', lw=2, headWidth=0.1, width=0.35, mplprops={}, **kwargs):
 		if 'arrowstyle' in kwargs:
-			self.addFancyArrow(posA=posA, posB=posB, path=None, arrowstyle='fancy', connectionstyle='bar', mplprops={})
+			self.addFancyArrow(posA=posA, posB=posB, lw=lw, path=None, arrowstyle='fancy', connectionstyle='bar', mplprops={})
 
 		else :
-			arrow = Arrow.Arrow(xy, dxdy, mplprops=mplprops, color=color, headWidth=headWidth, width=width, figure=self)
+			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, color=color, headWidth=headWidth, width=width, figure=self)
 			self.drawOrder.append(arrow)
 			return arrow
 
-	def addFancyArrow(self, posA, posB, path=None, arrowstyle=None, connectionstyle=None, mplprops={}):
-		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, figure=self)
+	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mplprops={}):
+		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, figure=self)
 		self.drawOrder.append(fancyArrow)
 		return fancyArrow

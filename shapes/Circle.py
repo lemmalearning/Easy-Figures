@@ -7,11 +7,12 @@ import numpy as np
 
 class Circle:
 	matplotlib_obj = None
-	def __init__(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', mplprops={}, figure=None):
+	def __init__(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', lw=2, mplprops={}, figure=None):
 		self.figure = figure
+		self.lw = lw
 		self.mplprops = mplprops
 		if radius!=None:
-			circle = patches.Circle(xy, radius=radius, fc=fc, ec=ec, linewidth=3, **self.mplprops)
+			circle = patches.Circle(xy, radius=radius, fc=fc, ec=ec, lw=lw, **self.mplprops)
 			self.matplotlib_obj = circle
 			if label != "":
 				p = (xy[0]+radius, xy[1])
@@ -22,12 +23,12 @@ class Circle:
 
 
 		else:
-			circle = patches.Circle(xy, radius=diameter/2, fc=fc, ec=ec, linewidth=3, **self.mplprops)
+			circle = patches.Circle(xy, radius=diameter/2, fc=fc, ec=ec, lw=2, **self.mplprops)
 			self.matplotlib_obj = circle
 			if label != "":
 				p1 = (xy[0]-diameter/2, xy[1])
 				p2 = (xy[0]+diameter/2, xy[1])
-				plt.plot([p1[0],p2[0]], [p1[1],p2[1]], linewidth=2, ls='dashed', color='black')
+				plt.plot([p1[0],p2[0]], [p1[1],p2[1]], lw=2, ls='dashed', color='black')
 
 				textobj = self.figure.ax.text(xy[0], xy[1]*1.015, '$'+label+'$', fontsize=.0625*self.figure.width, horizontalalignment='center')
 

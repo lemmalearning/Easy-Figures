@@ -9,13 +9,13 @@ from matplotlib.patches import Arc
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, vertices, mplprops={}, figure=None):
+	def __init__(self, vertices, lw=2, mplprops={}, figure=None):
 		self.vertices = np.matrix(vertices)
-		self.linewidth = 2
+		self.lw = lw
 		self.mplprops = mplprops
 
 		# Define the polygon
-		self.matplotlib_obj = plt.Polygon(vertices, fill=False, linewidth=self.linewidth, **self.mplprops)
+		self.matplotlib_obj = plt.Polygon(vertices, fill=False, lw=lw, **self.mplprops)
 		self.figure = figure
 
 	def labelOppositeSides(self, labelList, **kwargs):
@@ -48,12 +48,12 @@ class Polygon:
 			d = np.matrix([ac[0,1], -ac[0,0]])
 
 			# Padding is "amount to clear line width" + "a constant # of points"
-			p = (self.linewidth*self.figure.UNITS_PER_PT_x / 2) + (padding*2*self.figure.UNITS_PER_PT_x)
+			p = (self.lw*self.figure.UNITS_PER_PT_x / 2) + (padding*2*self.figure.UNITS_PER_PT_x)
 			v = midpoint_vertices[i, :] + p*d
 
 
 			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=fontsize)
-			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+			txt.set_bbox(dict(facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
 
 			v, w, h, wp, hp = self.alignTextAlongVector(txt, v, d, i, debug=False)
 
@@ -89,7 +89,7 @@ class Polygon:
 				d = -d
 
 			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=fontsize)
-			txt.set_bbox(dict(facecolor='white', edgecolor='none', pad=0.1))
+			txt.set_bbox(dict(facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
 
 			v = np.copy(self.vertices[i, :])
 
@@ -97,7 +97,7 @@ class Polygon:
 
 			# compute necessary padding to clear the polygon
 			if inner:
-				line_units = self.linewidth * self.figure.UNITS_PER_PT_x
+				line_units = self.lw * self.figure.UNITS_PER_PT_x
 				# Based on the right triangle formed by the angle bisector and a perpendicular line dropped to one side of the polygon
 				# The length of that perpendicular line must be long enough to fix half of the text
 				p = (hp + (line_units / 2)) / np.tan(angle / 2.0)
@@ -207,7 +207,6 @@ class Polygon:
 			self.figure.addPoint([vx + (w / 2.0), vy - descent + (h / 2.0)], r'\;', color='red', pointsize=2)
 
 		return np.matrix([[vx, vy]]), w, h, 0, hp
-
 
 	def labelAngles(self, labelList, **kwargs):
 		self.labelVertices(labelList, True, **kwargs)

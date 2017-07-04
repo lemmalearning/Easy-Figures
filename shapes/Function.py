@@ -7,13 +7,18 @@ import numpy as np
 
 class Function:
 	matplotlib_obj = None
-	def __init__(self, functions, xyranges=None, color='black', linewidth=2, variable=None, mplprops={}, figure=None):
+	def __init__(self, functions, xyranges=None, color='black', lw=2, variable=None, mplprops={}, figure=None):
 		if not isinstance(functions, list):
 			functions = [functions]
-
-		if not isinstance(color, list):
-			xyranges = [xyranges] * len(functions)
+			lw = [lw] * len(functions)
+			xyranges = list([xyranges]) * len(functions)
 			color = [color] * len(functions)
+
+
+		if not isinstance(functions, list):
+			self.xyranges = list([xyranges]) * len(functions)
+			color = [color] * len(functions)
+
 
 		if variable is not None:
 			if not isinstance(variable, list):
@@ -24,11 +29,12 @@ class Function:
 		self.function_lam = function_lam if variable is not None else None
 		self.xyranges = xyranges
 		self.color = color
+		self.lw = lw
 		self.variable = variable
 		self.mplprops = mplprops
 
 	def __draw__(self, zorder=1):
-		for function, xyrange, color in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.color):
+		for function, xyrange, color, lw in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.color, self.lw):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
-			plt.plot(x, y, color, zorder=zorder, **self.mplprops)
+			plt.plot(x, y, color, zorder=zorder, lw=lw, **self.mplprops)

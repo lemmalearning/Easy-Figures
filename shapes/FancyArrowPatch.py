@@ -7,16 +7,17 @@ import numpy as np
 #f.addFancyArrow(posA=(6, 0), posB=(6, 3), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':7})
 
 class FancyArrowPatch:
-    def __init__(self, posA=None, posB=None, path=None, arrowstyle='simple', connectionstyle='bar', mplprops={}, figure=None):
+    def __init__(self, posA=None, posB=None, path=None, lw=1, arrowstyle='simple', connectionstyle='bar', mplprops={}, figure=None):
         self.posA = posA
         self.posB = posB
         self.path = path
+        self.lw = lw
         self.arrowstyle = arrowstyle
         self.connectionstyle = connectionstyle
         self.mplprops = mplprops
         self.figure = figure
 
-        fancyArrow = patches.FancyArrowPatch(posA, posB, path, arrowstyle, connectionstyle, **self.mplprops)
+        fancyArrow = patches.FancyArrowPatch(posA, posB, path, arrowstyle, connectionstyle, lw=lw, **self.mplprops)
         self.matplotlib_obj = fancyArrow
 
     def __draw__(self, zorder=1):

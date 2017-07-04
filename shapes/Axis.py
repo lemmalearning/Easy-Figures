@@ -79,6 +79,7 @@ class Axis:
 			self.figure.ax.spines['left'].set_position(('data', 0))
 			self.figure.ax.spines['bottom'].set_position(('data', 0))
 
+
 		if self.hideAxis:
 			plt.axis('off')
 			return
@@ -106,8 +107,8 @@ class Axis:
 
 		if self.label:
 			# size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -3.0*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor='white', edgecolor='none', pad=-0.01))
-			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor='white', edgecolor='none', pad=-0.01))
+			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -4.0*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
+			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
 
 			x_dims.__draw__()
 			y_dims.__draw__()
@@ -135,11 +136,11 @@ class Axis:
 			self.figure.ax.set_xticklabels(xlabels)
 
 			for label in self.figure.ax.xaxis.get_ticklabels():
-				label.set_bbox(dict(boxstyle='round', facecolor='white', edgecolor='none', pad=0.1))
+				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
 				#print type(label)
 
 			for label in self.figure.ax.yaxis.get_ticklabels():
-				label.set_bbox(dict(boxstyle='round', facecolor='white', edgecolor='none', pad=0.1))
+				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
 		####### END DRAW LABELS #######
 
 		self.figure.ax.xaxis.set_zorder(zorder)
