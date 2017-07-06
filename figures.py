@@ -31,6 +31,7 @@ class Figures:
 		self.height = height
 		self.bgcolor = bgcolor
 		self.ax.set_facecolor(bgcolor)
+		self.fig.patch.set_facecolor(bgcolor)
 
 		# TODO: Move to __export__
 		if xyrange is not None:
@@ -57,7 +58,6 @@ class Figures:
 
 	def __export__(self):
 
-		self.fig.patch.set_facecolor('white')
 		self.fig._cachedRenderer = self.renderer
 
 		# draw
