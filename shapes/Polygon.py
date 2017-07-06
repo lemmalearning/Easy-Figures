@@ -141,7 +141,7 @@ class Polygon:
 					verts = [self.vertices[i, :].tolist()[0], ab.tolist()[0], aa, ac.tolist()[0]]
 					cent = np.mean(verts, axis=0)
 					verts.sort(key=lambda q: np.arctan2(q[1]-cent[1],q[0]-cent[0]))
-					self.figure.addPolygon(verts, mplprops={'lw':1})
+					self.figure.addPolygon(verts, lw=1)
 
 				pmin = r_x + 4*self.figure.UNITS_PER_PT_x
 				if p < pmin:
