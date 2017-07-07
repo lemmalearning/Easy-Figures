@@ -12,7 +12,7 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, mplprops={}, figure=None):
+	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, mplprops={}, figure=None):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
@@ -30,6 +30,7 @@ class Axis:
 		self.minorGrid 	= minorGrid
 		self.label		= label
 		self.figure    = figure
+		self.lw	= lw
 		self.mplprops 	   = mplprops
 
 	def Ticks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
@@ -79,6 +80,7 @@ class Axis:
 			self.figure.ax.spines['left'].set_position(('data', 0))
 			self.figure.ax.spines['bottom'].set_position(('data', 0))
 
+		[i.set_linewidth(self.lw) for i in self.figure.ax.spines.itervalues()]
 
 		if self.hideAxis:
 			plt.axis('off')

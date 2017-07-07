@@ -68,7 +68,7 @@ def unit_test():
 
 	# AXIS #
 	def axis(f):
-		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', minorGrid='red')
+		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=4, minorGrid='red')
 		axis.Ticks(tickLabelInterval=2, tickInterval=1, fontsize=12, origin=False, top=True)
 
 	# POINT #

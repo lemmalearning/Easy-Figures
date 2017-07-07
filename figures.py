@@ -16,7 +16,7 @@ from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto', bgcolor='#faffeeff'):
+	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto', bgcolor='#f0feffff'):
 		self.fig, self.ax = plt.subplots()
 		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
@@ -137,9 +137,9 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', minorGrid=False, label=True, mplprops={}):
+	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, mplprops={}):
 		pixelSize = self.width
-		axis = Axis.Axis(hideAxis, grid, arrows, color, minorGrid, label, mplprops, figure=self)
+		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, mplprops, figure=self)
 		self.drawOrder.append(axis)
 
 		return axis

@@ -110,7 +110,6 @@ class Ellipse:
 			textzobj = self.figure.ax.text(midMajor, ((self.xy[1]+q+temp_y)/2.0)*1.15, '$'+xlabel+'$', fontsize=.0625*self.figure.width)
 			textqobj = self.figure.ax.text(((self.xy[0]+r+temp_x)/2.0)*1.15, midMinor, '$'+ylabel+'$', fontsize=.0625*self.figure.width)
 
-
 			"""
 			# Find out the pixel measurements of the text's bounding box
 			renderer = FigureCanvasAgg(self.fig).get_renderer()
