@@ -5,7 +5,7 @@ matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 import matplotlib.pyplot as plt
 #plt.rcParams['axes.facecolor'] = 'red'
 #plt.rcParams["figure.figsize"] = 10,10
-from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function
+from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line
 
 import numpy as np
 import StringIO
@@ -189,6 +189,13 @@ class Figures:
 		self.drawOrder.append(p)
 		return p
 
+	def addLine(self, pointA, pointB, lw=2, mplprops={}):
+		print 'created1'
+		pixelSize=self.width
+		l = Line.Line(pointA, pointB, lw, mplprops, figure=self)
+		self.drawOrder.append(l)
+		return l
+
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, mplprops={}, latex=True, pixel=False):
 		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, figure=self)
 		self.drawOrder.append(t)
@@ -279,12 +286,12 @@ class Figures:
 			self.drawOrder.append(triangle)
 			return triangle
 
-	def addArrow(self, xy, dxdy, color='black', lw=2, headWidth=0.1, width=0.35, mplprops={}, **kwargs):
+	def addArrow(self, xy, dxdy, color='black', lw=2, headWidth=0.1, mplprops={}, **kwargs):
 		if 'arrowstyle' in kwargs:
 			self.addFancyArrow(posA=posA, posB=posB, lw=lw, path=None, arrowstyle='fancy', connectionstyle='bar', mplprops={})
 
 		else :
-			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, color=color, headWidth=headWidth, width=width, figure=self)
+			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, color=color, headWidth=headWidth, figure=self)
 			self.drawOrder.append(arrow)
 			return arrow
 
