@@ -1,3 +1,4 @@
+import matplotlib
 import figures
 import numpy as np
 from random import randint
@@ -102,15 +103,23 @@ def unit_test():
 	# INIT #
 	f = figures.Figures([[-10,10],[-10, 10]])
 
-	triangle(f)
-	function(f)
-	circle(f)
-	ellipse(f)
-	polygon(f)
+	#triangle(f)
+	#function(f)
+	#circle(f)
+	#ellipse(f)
+	#polygon(f)
+
+	#point(f)
+
+	#text(f)
+	#arrow(f)
+	#wedge = f.addWedge(xy=(1,1), radius=5, theta1=0, theta2=300, mplprops={'width':None})
+
+	line = f.addLine([0,0], [5,5], lw=2, mplprops={'color':'k'})
+	#matplotlib.lines.Line2D([0,0], [5,5])
+
 	axis(f)
-	point(f)
-	text(f)
-	arrow(f)
+
 	write(f)
 
 if __name__ == "__main__":

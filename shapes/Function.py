@@ -33,6 +33,8 @@ class Function:
 		self.variable = variable
 		self.mplprops = mplprops
 
+
+
 	def __draw__(self, zorder=1):
 		for function, xyrange, color, lw in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.color, self.lw):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
