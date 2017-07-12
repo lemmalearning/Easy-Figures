@@ -108,14 +108,13 @@ def unit_test():
 	#circle(f)
 	#ellipse(f)
 	#polygon(f)
-
 	#point(f)
-
 	#text(f)
 	#arrow(f)
 	#wedge = f.addWedge(xy=(1,1), radius=5, theta1=0, theta2=300, mplprops={'width':None})
 
-	line = f.addLine([0,0], [5,5], lw=2, mplprops={'color':'k'})
+	line = f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
+
 	#matplotlib.lines.Line2D([0,0], [5,5])
 
 	axis(f)

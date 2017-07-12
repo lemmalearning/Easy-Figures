@@ -190,8 +190,7 @@ class Figures:
 		return p
 
 	def addLine(self, pointA, pointB, lw=2, mplprops={}):
-		print 'created1'
-		pixelSize=self.width
+		#pixelSize=self.width
 		l = Line.Line(pointA, pointB, lw, mplprops, figure=self)
 		self.drawOrder.append(l)
 		return l
