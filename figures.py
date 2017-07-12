@@ -239,9 +239,9 @@ class Figures:
 		self.drawOrder.append(arc)
 		return arc
 
-	def addWedge(self, xy=(0,0), radius=0, lw=2, theta1=0.0, theta2=360.0, mplprops={}):
+	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, width=None, mplprops={}):
 		pixelSize=self.width
-		wedge = Wedge.Wedge(xy, radius, lw, theta1, theta2, mplprops=mplprops, figure=self)
+		wedge = Wedge.Wedge(xy, r, theta1, theta2, width=width, mplprops=mplprops, figure=self)
 		self.drawOrder.append(wedge)
 		return wedge
 

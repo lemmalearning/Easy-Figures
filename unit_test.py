@@ -91,6 +91,16 @@ def unit_test():
 		f.addArrow((0,0), dxdy1, color='blue', width=0.035, lw=10)
 		f.addArrow((0,0), dxdy2, color='blue', width=0.035)
 
+	# WEDGE #
+	def wedge(f):
+		#f.addWedge((0,0), r=5, theta1=60, theta2=90)
+
+		f.addWedge((0,0), r=5, theta1=60, theta2=90)
+		f.addWedge((-2,0), r=3, theta1=120, theta2=190)
+		f.addWedge((-2,0), r=8, theta1=270, theta2=360)
+
+
+
 	# WRITE #
 	def write(f):
 		f.__draw_shapes__()
@@ -112,8 +122,8 @@ def unit_test():
 	#text(f)
 	#arrow(f)
 	#wedge = f.addWedge(xy=(1,1), radius=5, theta1=0, theta2=300, mplprops={'width':None})
-
-	line = f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
+	wedge(f)
+	#line = f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
 
 	#matplotlib.lines.Line2D([0,0], [5,5])
 
