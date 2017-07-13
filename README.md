@@ -1,4 +1,4 @@
-# README
+# Easy Figures
 
 ### Purpose
 The purpose of this library is to reduce the complexity of adding simple shapes
@@ -10,8 +10,7 @@ Using the `Figures` class you can either save to file or display it on the scree
 The `Figures` lets you add shapes and modify the axes.
 
 ### Examples
-##### Regular Polygon
-
+#### Regular Polygon
 
     f = figures.Figures([[0,20],[-5, 15]], bgcolor='w')
     poly = f.addPolygon(
@@ -31,9 +30,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Regular Polygon](images/polygon.png "Regular Polygon")
 
-
-##### Circle
-
+#### Circle
 
     f = figures.Figures([[-10,25],[-10,25]], bgcolor='w')
 		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='#f4ab7a', lw=5)
@@ -42,9 +39,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Circle](images/circle.png "Circle")
 
-
 #### Ellipse
-
 
     f = figures.Figures([[-10,25],[-10,25]], bgcolor='w')
     ell = f.addEllipse(xy=[7,10], r=(9,12), angle=20.0)
@@ -54,9 +49,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Regular Polygon](images/ellipse.png "Ellipse")
 
-
-##### Axis
-
+#### Axis
 
     f = figures.Figures([[-10,10],[-5,5]], bgcolor='w')
     f.format_axis(xyrange=[[-10,10], [-10,10]], grid=True, tick_interval=.25, tick_label_interval=1, color='blue')
@@ -65,9 +58,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Axis](images/axis.png "Axis")
 
-
-##### Functions
-
+#### Functions
 
   	f = figures.Figures()
 
@@ -92,9 +83,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Function](images/func.png "Function")
 
-
-##### Triangle
-
+#### Triangle
 
     f = figures.Figures([[-7,7],[-12,12]], bgcolor='w')
 
@@ -107,9 +96,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Triangle](images/triangle.png "Triangle")
 
-
-##### Point
-
+#### Point
 
     f = figures.Figures([[-7,7],[-7,7]], bgcolor='w')
 
@@ -120,9 +107,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Point](images/point.png "Point")
 
-
-##### Text
-
+#### Text
 
     f = figures.Figures([[-7,7],[-5,5]], bgcolor='w')
 
@@ -134,9 +119,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Text](images/text.png "Text")
 
-
-##### Arrow
-
+#### Arrow
 
     f = figures.Figures([[-15,15],[-10,10]], bgcolor='w')
 
@@ -150,8 +133,8 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Arrow](images/arrow.png "Arrow")
 
+#### Wedge
 
-##### Wedge
     f = figures.Figures([[-15,15],[-15,15]], height=200, width=200, bgcolor='w')
 
 		f.addWedge((0,0), r=10, theta1=0, theta2=32, mplprops={'color':'#a39c92', 'lw':1})
@@ -169,13 +152,6 @@ The `Figures` lets you add shapes and modify the axes.
     f.__writeFile__('/Users/<USER>/wedge.png')
 
 ![Wedge](images/wedge.png "Wedge")
-
-
-
-
-
-
-
 
 
 # License
