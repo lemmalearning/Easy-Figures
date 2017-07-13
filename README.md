@@ -27,7 +27,7 @@ The `Figures` lets you add shapes and modify the axes.
 		poly.labelVertices(['a', 'b', 'c', 'd', 'e'])
 		poly.labelAngles([r'\alpha', r'\beta', r'\gamma', r'\delta', r'\epsilon'])
 
-	f.__writeFile__('/Users/<USER>/polygon.png')
+	  f.__writeFile__('/Users/<USER>/polygon.png')
 
 ![Regular Polygon](images/polygon.png "Regular Polygon")
 
@@ -38,7 +38,7 @@ The `Figures` lets you add shapes and modify the axes.
     f = figures.Figures([[-10,25],[-10,25]], bgcolor='w')
 		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='#f4ab7a', lw=5)
 
-	f.__writeFile__('/Users/<USER>/circle.png')
+	  f.__writeFile__('/Users/<USER>/circle.png')
 
 ![Circle](images/circle.png "Circle")
 
@@ -50,7 +50,7 @@ The `Figures` lets you add shapes and modify the axes.
     ell = f.addEllipse(xy=[7,10], r=(9,12), angle=20.0)
   	ell.ellipseLabels(xlabel='x', ylabel='y', isRadius=False)
 
-  f.__writeFile__('/Users/<USER>/ellipse.png')
+    f.__writeFile__('/Users/<USER>/ellipse.png')
 
 ![Regular Polygon](images/ellipse.png "Ellipse")
 
@@ -61,7 +61,7 @@ The `Figures` lets you add shapes and modify the axes.
     f = figures.Figures([[-10,10],[-5,5]], bgcolor='w')
     f.format_axis(xyrange=[[-10,10], [-10,10]], grid=True, tick_interval=.25, tick_label_interval=1, color='blue')
 
-  f.__writeFile__('/Users/<USER>/axis.png')
+    f.__writeFile__('/Users/<USER>/axis.png')
 
 ![Axis](images/axis.png "Axis")
 
@@ -88,7 +88,7 @@ The `Figures` lets you add shapes and modify the axes.
 			lw=2
 		)
 
-	f.__writeFile__('/Users/<USER>/func.png')
+	   f.__writeFile__('/Users/<USER>/func.png')
 
 ![Function](images/func.png "Function")
 
