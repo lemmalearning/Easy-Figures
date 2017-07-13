@@ -131,8 +131,8 @@ def unit_test():
 	# INIT #
 	f = figures.Figures([[-7,7],[-12,12]], bgcolor='w')
 
-	triangle(f)
-	###function(f)
+	###triangle(f)
+	function(f)
 	###circle(f)
 	###ellipse(f)
 	###polygon(f)

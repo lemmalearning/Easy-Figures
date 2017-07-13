@@ -39,7 +39,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 	f.__writeFile__('/Users/<USER>/circle.png')
 
-![Circle (Radius)](images/circle.png "Circle")
+![Circle](images/circle.png "Circle")
 
 
 #### Ellipse
