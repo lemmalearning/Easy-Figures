@@ -31,6 +31,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Regular Polygon](images/polygon.png "Regular Polygon")
 
+
 ##### Circle
 
 
@@ -53,6 +54,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Regular Polygon](images/ellipse.png "Ellipse")
 
+
 ##### Axis
 
 
@@ -62,6 +64,7 @@ The `Figures` lets you add shapes and modify the axes.
   f.__writeFile__('/Users/<USER>/axis.png')
 
 ![Axis](images/axis.png "Axis")
+
 
 ##### Functions
 
@@ -89,6 +92,7 @@ The `Figures` lets you add shapes and modify the axes.
 
 ![Function](images/func.png "Function")
 
+
 ##### Triangle
 
 
@@ -102,6 +106,75 @@ The `Figures` lets you add shapes and modify the axes.
     f.__writeFile__('/Users/<USER>/triangle.png')
 
 ![Triangle](images/triangle.png "Triangle")
+
+
+##### Point
+
+
+    f = figures.Figures([[-7,7],[-7,7]], bgcolor='w')
+
+    f.addPoint((2,3), texts='A', color='k', pointsize=4)
+		f.addPoint([(2,-2), (4,-4), (6,-6)], texts=['C','D','E'], color=['red', 'blue', 'green'], pointsize=7)
+
+    f.__writeFile__('/Users/<USER>/point.png')
+
+![Point](images/point.png "Point")
+
+
+##### Text
+
+
+    f = figures.Figures([[-7,7],[-5,5]], bgcolor='w')
+
+		f.addText((-4,-2), "With\ cool\ effects", bbox=dict(boxstyle="rarrow,pad=0.3", ec="b", lw=2), color='blue')
+		f.addText((2,4), r"Rendered\ as\  TeX\ ->\ \int_{a}^{b} x^2 dx")
+		f.addText((0,1), "Or plain text!", latex=False, color='green', fontsize=18)
+
+    f.__writeFile__('/Users/<USER>/text.png')
+
+![Text](images/text.png "Text")
+
+
+##### Arrow
+
+
+    f = figures.Figures([[-15,15],[-10,10]], bgcolor='w')
+
+    f.addFancyArrow(posA=(-8,-7), posB=(-4, 3), lw=1, arrowstyle='|-|', connectionstyle='bar', mplprops={'mutation_scale':3})
+    f.addFancyArrow(posA=(8,-8), posB=(-8, 10), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':10})
+    f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
+    f.addFancyArrow(posA=(10,8), posB=(4, 4), arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'black'})
+    f.addFancyArrow(posA=(8,8), posB=(3, 4), lw=1, arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'white', 'ec':'black'})
+
+    f.__writeFile__('/Users/<USER>/arrow.png')
+
+![Arrow](images/arrow.png "Arrow")
+
+
+##### Wedge
+    f = figures.Figures([[-15,15],[-15,15]], height=200, width=200, bgcolor='w')
+
+		f.addWedge((0,0), r=10, theta1=0, theta2=32, mplprops={'color':'#a39c92', 'lw':1})
+		f.addWedge((0,0), r=10, theta1=32, theta2=64, mplprops={'color':'#d3c7b6', 'lw':1})
+		f.addWedge((0,0), r=10, theta1=64, theta2=96, mplprops={'color':'#a39c92', 'lw':1})
+ 		f.addWedge((0,0), r=10, theta1=96, theta2=128, mplprops={'color':'#d3c7b6', 'lw':1})
+ 		f.addWedge((0,0), r=10, theta1=128, theta2=160, mplprops={'color':'#a39c92','lw':1})
+		f.addWedge((0,0), r=10, theta1=160, theta2=192, mplprops={'color':'#d3c7b6', 'lw':1})
+		f.addWedge((0,0), r=10, theta1=192, theta2=224, mplprops={'color':'#a39c92', 'lw':1})
+		f.addWedge((0,0), r=10, theta1=224, theta2=256, mplprops={'color':'#d3c7b6', 'lw':1})
+		f.addWedge((0.2,-0.8), r=10, theta1=259, theta2=360, width=2, mplprops={'color':'orange', 'lw':1})
+		f.addWedge((0.2,-0.8), r=7, theta1=296, theta2=360, width=1, mplprops={'color':'red', 'lw':1})
+		f.addWedge((0.2,-0.8), r=5, theta1=328, theta2=360, width=1, mplprops={'color':'green', 'lw':1})
+
+    f.__writeFile__('/Users/<USER>/wedge.png')
+
+![Wedge](images/wedge.png "Wedge")
+
+
+
+
+
+
 
 
 

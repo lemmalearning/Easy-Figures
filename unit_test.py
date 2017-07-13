@@ -95,29 +95,47 @@ def unit_test():
 	# POINT #
 	def point(f):
 		#f.addPoint([(2,3), (4, 3), (6,3)], ['A', 'B', 'C'], color=['red', 'blue', 'green'], pointsize=14)
-		f.addPoint((4,3), color='black')
+
+		f.addPoint((2,3), texts='A', color='k', pointsize=4)
+		f.addPoint([(2,-2), (4,-4), (6,-6)], texts=['C','D','E'], color=['red', 'blue', 'green'], pointsize=7)
+
 
 	# TEXT #
 	def text(f):
-		f.addText((-5,-4), "With\ cool\ effects", bbox=dict(boxstyle="rarrow,pad=0.3", fc="cyan", ec="b", lw=2), color='red')
-		f.addText((-0,4), r"Rendered\ as\  TeX\ ->\ \int_{a}^{b} x^2 dx", bbox=dict(boxstyle="circle,pad=0.3", fc="orange", ec="yellow", lw=2), color='blue')
-		f.addText((-5,9), "Or plain text!", latex=False, color='green', fontsize=20)
+		f.addText((-4,-2), "With\ cool\ effects", bbox=dict(boxstyle="rarrow,pad=0.3", ec="b", lw=2), color='blue')
+		f.addText((2,4), r"Rendered\ as\  TeX\ ->\ \int_{a}^{b} x^2 dx")
+		f.addText((0,1), "Or plain text!", latex=False, color='green', fontsize=18)
 
 	# ARROW #
 	def arrow(f):
+		"""
 		dxdy1 = (randint_except(-1,8, 0), randint_except(-4,2, 0))
 		dxdy2 = (randint_except(-8,2, 0), randint_except(-1, 5, 0))
 
 		f.addArrow((0,0), dxdy1, color='blue', width=0.035, lw=10)
 		f.addArrow((0,0), dxdy2, color='blue', width=0.035)
+		"""
+		f.addFancyArrow(posA=(-8,-7), posB=(-4, 3), lw=1, arrowstyle='|-|', connectionstyle='bar', mplprops={'mutation_scale':3})
+		f.addFancyArrow(posA=(8,-8), posB=(-8, 10), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':10})
+		f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
+		f.addFancyArrow(posA=(10,8), posB=(4, 4), arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'black'})
+		f.addFancyArrow(posA=(8,8), posB=(3, 4), lw=1, arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'white', 'ec':'black'})
 
 	# WEDGE #
 	def wedge(f):
-		#f.addWedge((0,0), r=5, theta1=60, theta2=90)
 
-		f.addWedge((0,0), r=5, theta1=60, theta2=90, mplprops={'color':'orange', 'ec':'k'})
-		f.addWedge((-2,0), r=3, theta1=120, theta2=190)
-		f.addWedge((-2,0), r=8, theta1=270, theta2=360)
+		f.addWedge((0,0), r=10, theta1=0, theta2=32, mplprops={'color':'#a39c92', 'lw':1})
+		f.addWedge((0,0), r=10, theta1=32, theta2=64, mplprops={'color':'#d3c7b6', 'lw':1})
+		f.addWedge((0,0), r=10, theta1=64, theta2=96, mplprops={'color':'#a39c92', 'lw':1})
+ 		f.addWedge((0,0), r=10, theta1=96, theta2=128, mplprops={'color':'#d3c7b6', 'lw':1})
+ 		f.addWedge((0,0), r=10, theta1=128, theta2=160, mplprops={'color':'#a39c92','lw':1})
+		f.addWedge((0,0), r=10, theta1=160, theta2=192, mplprops={'color':'#d3c7b6', 'lw':1})
+		f.addWedge((0,0), r=10, theta1=192, theta2=224, mplprops={'color':'#a39c92', 'lw':1})
+		f.addWedge((0,0), r=10, theta1=224, theta2=256, mplprops={'color':'#d3c7b6', 'lw':1})
+		f.addWedge((0.2,-0.8), r=10, theta1=259, theta2=360, width=2, mplprops={'color':'orange', 'lw':1})
+		f.addWedge((0.2,-0.8), r=7, theta1=296, theta2=360, width=1, mplprops={'color':'red', 'lw':1})
+		f.addWedge((0.2,-0.8), r=5, theta1=328, theta2=360, width=1, mplprops={'color':'green', 'lw':1})
+
 
 	# WRITE #
 	def write(f):
@@ -129,22 +147,18 @@ def unit_test():
 		f.close()
 
 	# INIT #
-	f = figures.Figures([[-7,7],[-12,12]], bgcolor='w')
+	f = figures.Figures([[-15,15],[-15,15]], height=200, width=200, bgcolor='w')
 
 	###triangle(f)
-	function(f)
+	###function(f)
 	###circle(f)
 	###ellipse(f)
 	###polygon(f)
-	#point(f)
-	#text(f)
-	#arrow(f)
-	#wedge = f.addWedge(xy=(1,1), radius=5, theta1=0, theta2=300, mplprops={'width':None})
-	#wedge(f)
+	###point(f)
+	###text(f)
+	###arrow(f)
+	###wedge(f)
 	#line = f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
-
-	#matplotlib.lines.Line2D([0,0], [5,5])
-
 	###axis(f)
 
 	write(f)
