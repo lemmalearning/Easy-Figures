@@ -10,25 +10,6 @@ Using the `Figures` class you can either save to file or display it on the scree
 The `Figures` lets you add shapes and modify the axes.
 
 ### Examples
-#### Regular Polygon
-
-    f = figures.Figures([[0,20],[-5, 15]], bgcolor='w')
-    poly = f.addPolygon(
-			[
-				[8.5, 2.5],
-				[1.5, 6.1],
-				[7.2, 12.3],
-				[12.0, 12.3],
-				[15.4, 6.1]
-			],
-			lw=3
-		)
-		poly.labelVertices(['a', 'b', 'c', 'd', 'e'])
-		poly.labelAngles([r'\alpha', r'\beta', r'\gamma', r'\delta', r'\epsilon'])
-
-	  f.__writeFile__('/Users/<USER>/polygon.png')
-
-![Regular Polygon](images/polygon.png "Regular Polygon")
 
 #### Circle
 
@@ -95,6 +76,27 @@ The `Figures` lets you add shapes and modify the axes.
     f.__writeFile__('/Users/<USER>/triangle.png')
 
 ![Triangle](images/triangle.png "Triangle")
+
+#### Regular Polygon
+
+    f = figures.Figures([[0,20],[-5, 15]], bgcolor='w')
+    poly = f.addPolygon(
+			[
+				[8.5, 2.5],
+				[1.5, 6.1],
+				[7.2, 12.3],
+				[12.0, 12.3],
+				[15.4, 6.1]
+			],
+			lw=3
+		)
+		poly.labelVertices(['a', 'b', 'c', 'd', 'e'])
+		poly.labelAngles([r'\alpha', r'\beta', r'\gamma', r'\delta', r'\epsilon'])
+
+	  f.__writeFile__('/Users/<USER>/polygon.png')
+
+![Regular Polygon](images/polygon.png "Regular Polygon")
+
 
 #### Point
 
