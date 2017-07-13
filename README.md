@@ -68,24 +68,24 @@ The `Figures` lets you add shapes and modify the axes.
 
   	f = figures.Figures()
 
-      func = lambda x: np.sin(x)
-  		func2 = lambda x: x**2
+    func = lambda x: np.sin(x)
+  	func2 = lambda x: x**2
 
-  		f.addFunction(
-  			func,
-  			[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]],
-  			color="green",
-  			lw=2
-  		)
+		f.addFunction(
+			func,
+			[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]],
+			color="green",
+			lw=2
+		)
 
-  		f.addFunction(
-  			func2,
-  			[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]],
-  			color="orange",
-  			lw=2
-  		)
+		f.addFunction(
+			func2,
+			[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]],
+			color="orange",
+			lw=2
+		)
 
-  	f.__writeFile__('/Users/<USER>/func.png')
+	f.__writeFile__('/Users/<USER>/func.png')
 
 ![Function](images/func.png "Function")
 
