@@ -20,7 +20,7 @@ def randint_except(a, b, c):
 def unit_test():
 	# TRIANGLE #
 	def triangle(f):
-		t = f.addTriangle(isSide=False, angle=np.pi/6, xy=[-3,6], rotation=0/np.pi, length=3)
+		t = f.addTriangle(isSide=False, angle=np.pi/6, xy=[-3,6], rotation=0/np.pi, length=4)
 		t.labelAngles([r'\alpha', r'\beta', r'\gamma'])
 		t.labelOppositeSides(['A', 'B', 'C'])
 		t.labelVertices(['a', 'b', 'c'])
@@ -28,30 +28,40 @@ def unit_test():
 	# FUNCTION #
 	def function(f):
 		func = lambda x: np.sin(x)
+		func2 = lambda x: x**2
+
 		f.addFunction(
 			func,
 			[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]],
-			color="blue",
-			lw=10
-			#mplprops={'lw':10}
+			color="green",
+			lw=2
 		)
+
+		f.addFunction(
+			func2,
+			[[-3*np.pi,3*np.pi],[-3*np.pi,3*np.pi]],
+			color="orange",
+			lw=2
+		)
+
 
 	# CIRCLE #
 	def circle(f):
-		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='grey', lw=5)
+		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='#f4ab7a', lw=5)
 		# OR #
 		#circ = f.addEllipse(xy=(7,10), label="r", r=10, fc='grey')
 
 	# ELLIPSE #
 	def ellipse(f):
-		ell = f.addEllipse(xy=[9,12], r=(9,12), angle=30.0, fc='red', ec='w', lw=10)
+		ell = f.addEllipse(xy=[7,10], r=(9,12), angle=20.0)
 		ell.ellipseLabels(xlabel='x', ylabel='y', isRadius=False)
-		ell2 = f.addEllipse(xy=[-12,8], r=(4,8), angle=190.0, fc='yellow')
-		ell3 = f.addEllipse(xy=[10,-8], r=(8,3), angle=45.0, lw=5.0, fc='pink')
-		ell4 = f.addEllipse(xy=[-13,-7], r=(5,6), angle=270.0, fc='green', lw=1)
+		#ell2 = f.addEllipse(xy=[-12,8], r=(4,8), angle=190.0, fc='yellow')
+		#ell3 = f.addEllipse(xy=[10,-8], r=(8,3), angle=45.0, lw=5.0, fc='pink')
+		#ell4 = f.addEllipse(xy=[-13,-7], r=(5,6), angle=270.0, fc='green', lw=1)
 
 	# POLYGON #
 	def polygon(f):
+		"""
 		poly = f.addPolygon(
 			[
 				[5.5, 4.5],
@@ -60,16 +70,26 @@ def unit_test():
 				[6.0, 6.3],
 				[6.4, 5.1]
 			],
-			lw=10
+			lw=3
+		)
+		"""
+		poly = f.addPolygon(
+			[
+				[8.5, 2.5],
+				[1.5, 6.1],
+				[7.2, 12.3],
+				[12.0, 12.3],
+				[15.4, 6.1]
+			],
+			lw=3
 		)
 		poly.labelVertices(['a', 'b', 'c', 'd', 'e'])
-		poly.labelOppositeSides(['A', 'B', 'C', 'D', 'E'])
 		poly.labelAngles([r'\alpha', r'\beta', r'\gamma', r'\delta', r'\epsilon'])
 
 
 	# AXIS #
 	def axis(f):
-		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=4, minorGrid='red')
+		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=1, minorGrid='red')
 		axis.Ticks(tickLabelInterval=2, tickInterval=1, fontsize=12, origin=False, top=True)
 
 	# POINT #
@@ -95,11 +115,9 @@ def unit_test():
 	def wedge(f):
 		#f.addWedge((0,0), r=5, theta1=60, theta2=90)
 
-		f.addWedge((0,0), r=5, theta1=60, theta2=90)
+		f.addWedge((0,0), r=5, theta1=60, theta2=90, mplprops={'color':'orange', 'ec':'k'})
 		f.addWedge((-2,0), r=3, theta1=120, theta2=190)
 		f.addWedge((-2,0), r=8, theta1=270, theta2=360)
-
-
 
 	# WRITE #
 	def write(f):
@@ -111,23 +129,23 @@ def unit_test():
 		f.close()
 
 	# INIT #
-	f = figures.Figures([[-10,10],[-10, 10]])
+	f = figures.Figures([[-7,7],[-12,12]], bgcolor='w')
 
-	#triangle(f)
-	#function(f)
-	#circle(f)
-	#ellipse(f)
-	#polygon(f)
+	triangle(f)
+	###function(f)
+	###circle(f)
+	###ellipse(f)
+	###polygon(f)
 	#point(f)
 	#text(f)
 	#arrow(f)
 	#wedge = f.addWedge(xy=(1,1), radius=5, theta1=0, theta2=300, mplprops={'width':None})
-	wedge(f)
+	#wedge(f)
 	#line = f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
 
 	#matplotlib.lines.Line2D([0,0], [5,5])
 
-	axis(f)
+	###axis(f)
 
 	write(f)
 
