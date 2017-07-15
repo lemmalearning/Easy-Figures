@@ -8,7 +8,10 @@ import matplotlib.pyplot as plt
 from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line
 
 import numpy as np
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import math
 import re
 from sympy.utilities.lambdify import lambdify
@@ -48,7 +51,7 @@ class Figures:
 	def __init_canvas__(self):
 		# Adapted from https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_svg.py : print_svg
 		self.canvas = FigureCanvas(self.fig)
-		self.export_str = StringIO.StringIO()
+		self.export_str = StringIO()
 
 		self.fig.set_dpi(72.0)
 		width, height = self.fig.get_size_inches()
@@ -92,7 +95,7 @@ class Figures:
 		#print(self.ax.get_position().bounds) # This gives you percentage wise the xmin, ymin, width, height up to the very edge of the grid lines
 		#print(self.fig.bbox)
 		if self.height == 'auto':
-		 	bb = self.ax.get_tightbbox(self.fig._cachedRenderer) #get_renderer()))
+			bb = self.ax.get_tightbbox(self.fig._cachedRenderer) #get_renderer()))
 
 			minY = math.floor(bb.y0)
 			maxY = math.ceil(bb.y1)
