@@ -79,6 +79,9 @@ The `Figures` lets you add shapes and modify the axes.
 
 #### Regular Polygon
 
+
+#### Polygon
+
     f = figures.Figures([[0,20],[-5, 15]], bgcolor='w')
     poly = f.addPolygon(
 			[

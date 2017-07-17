@@ -44,7 +44,6 @@ def unit_test():
 			lw=2
 		)
 
-
 	# CIRCLE #
 	def circle(f):
 		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='#f4ab7a', lw=5)
@@ -61,18 +60,6 @@ def unit_test():
 
 	# POLYGON #
 	def polygon(f):
-		"""
-		poly = f.addPolygon(
-			[
-				[5.5, 4.5],
-				[4.5, 5.1],
-				[4.9, 6.3],
-				[6.0, 6.3],
-				[6.4, 5.1]
-			],
-			lw=3
-		)
-		"""
 		poly = f.addPolygon(
 			[
 				[8.5, 2.5],
@@ -86,19 +73,25 @@ def unit_test():
 		poly.labelVertices(['a', 'b', 'c', 'd', 'e'])
 		poly.labelAngles([r'\alpha', r'\beta', r'\gamma', r'\delta', r'\epsilon'])
 
+	# REGULAR POLYGON #
+	#    def __init__(self, xy, numVertices, lw=2, radius=0, fill=False, orientation=0.0, mplprops={}, figure=None):
+	#        polygon = patches.RegularPolygon(xy, numVertices, radius, fill=False, lw=lw, **self.mplprops)
+	#	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, lw=2, orientation=0.0, mplprops={}):
+
+	def regpoly(f):
+		f.addRegularPolygon(xy=(-4,-3), numVertices=3, radius=7, mplprops={'ec':'k', 'color':'orange'})
+		f.addRegularPolygon((7,0), 4, radius=3, orientation=np.pi/2, mplprops={'color':'green'})
+		f.addRegularPolygon((6,-6), 5, radius=3, mplprops={'ls':'dashed'})
 
 	# AXIS #
 	def axis(f):
-		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=1, minorGrid='red')
+		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
 		axis.Ticks(tickLabelInterval=2, tickInterval=1, fontsize=12, origin=False, top=True)
 
 	# POINT #
 	def point(f):
-		#f.addPoint([(2,3), (4, 3), (6,3)], ['A', 'B', 'C'], color=['red', 'blue', 'green'], pointsize=14)
-
 		f.addPoint((2,3), texts='A', color='k', pointsize=4)
 		f.addPoint([(2,-2), (4,-4), (6,-6)], texts=['C','D','E'], color=['red', 'blue', 'green'], pointsize=7)
-
 
 	# TEXT #
 	def text(f):
@@ -136,7 +129,6 @@ def unit_test():
 		f.addWedge((0.2,-0.8), r=7, theta1=296, theta2=360, width=1, mplprops={'color':'red', 'lw':1, 'ec':'w'})
 		f.addWedge((0.2,-0.8), r=5, theta1=328, theta2=360, width=1, mplprops={'color':'green', 'lw':1, 'ec':'w'})
 
-
 	# WRITE #
 	def write(f):
 		f.__draw_shapes__()
@@ -147,19 +139,23 @@ def unit_test():
 		f.close()
 
 	# INIT #
-	f = figures.Figures([[-15,15],[-15,15]], height=200, width=200, bgcolor='w')
+	f = figures.Figures([[-16,16],[-16,16]], height=600, width=600, bgcolor='w')
 
 	###triangle(f)
 	###function(f)
 	###circle(f)
 	###ellipse(f)
 	###polygon(f)
+
+	#regpoly(f)
+	#reg = f.addRegularPolygon((-4,-3), 3, radius=10, mplprops={'ec':'k', 'color':'orange'})
+
 	###point(f)
 	###text(f)
 	###arrow(f)
-	wedge(f)
+	###wedge(f)
 	#line = f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
-	###axis(f)
+	axis(f)
 
 	write(f)
 
