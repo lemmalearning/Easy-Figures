@@ -3,6 +3,7 @@ import figures
 import numpy as np
 from random import randint
 from sympy import sin
+import matplotlib.pyplot as plt
 
 def randint_except(a, b, c):
 	if not isinstance(c, list) and not isinstance(c, tuple):
@@ -81,24 +82,25 @@ def unit_test():
 
 	# AXIS #
 	def axis(f):
-		#axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
-		#axis.Ticks(tickLabelInterval=2, tickInterval=1, fontsize=12, origin=False, top=True)
+		#plt.axis('equal')
+
+		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red', xlabel='hi', ylabel='bye')
+		#axis.Ticks(tickLabelInterval=1, tickInterval=0.5, fontsize=12, origin=False, top=True)
+		axis.Ticks(xtickLabelInterval=25, ytickLabelInterval=10, tickInterval=5, fontsize=12, origin=False, top=True)
 
 
+		"""
 		t = np.arange(0.0, 1.0 + 0.01, 0.01)
-		s = np.cos(2*2*np.pi*t)
-		plt.plot(t, s, '-', lw=2)
 
-		plt.xlabel('time (s)')
-		plt.ylabel('voltage (mV)')
-		plt.title('About as simple as it gets, folks')
-		plt.grid(True)
+		f.plot(t, s, '-', lw=2)
 
-		plt.axes().set_aspect('equal', 'datalim')
+		f.grid(True)
+
+		f.axes().set_aspect('equal', 'datalim')
 
 
 		plt.show()
-
+		"""
 	# POINT #
 	def point(f):
 		f.addPoint((2,3), texts='A', color='k', pointsize=4)
@@ -142,6 +144,7 @@ def unit_test():
 	# LINE #
 	def line(f):
 		f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
+		#f.addLine([0.02,0.02], [0.06,0.05], lw=2, mplprops={'color':'r'})
 
 
 	# WRITE #
@@ -154,7 +157,9 @@ def unit_test():
 		f.close()
 
 	# INIT #
-	f = figures.Figures([[-16,16],[-16,16]], height=600, width=600, bgcolor='w')
+	#f = figures.Figures([[-1.8,1.8],[-1.8,1.4]], height='auto', bgcolor='w')
+	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
+	f = figures.Figures([[-30,100],[-60,100]], height=400, bgcolor='w')
 
 	#triangle(f)
 	#function(f)
@@ -166,8 +171,8 @@ def unit_test():
 	#text(f)
 	#arrow(f)
 	#wedge(f)
-	#line(f)
-	#axis(f)
+	line(f)
+	axis(f)
 
 	write(f)
 

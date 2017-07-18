@@ -140,9 +140,9 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, mplprops={}):
+	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}):
 		pixelSize = self.width
-		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, mplprops, figure=self)
+		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure=self)
 		self.drawOrder.append(axis)
 
 		return axis

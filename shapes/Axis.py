@@ -12,7 +12,7 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, mplprops={}, figure=None):
+	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}, figure=None):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
@@ -29,13 +29,16 @@ class Axis:
 		self.color 		= color
 		self.minorGrid 	= minorGrid
 		self.label		= label
+		self.xlabel		= xlabel
+		self.ylabel		= ylabel
 		self.figure    = figure
 		self.lw	= lw
 		self.mplprops 	   = mplprops
 
-	def Ticks(self, tickLabelInterval=1, tickInterval=1, fontsize=12, origin=False, top=True):
+	def Ticks(self, xtickLabelInterval=0.1, ytickLabelInterval=0.1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
-		self.tickLabelInterval = tickLabelInterval
+		self.xtickLabelInterval = xtickLabelInterval
+		self.ytickLabelInterval = ytickLabelInterval
 		self.fontsize = fontsize
 		self.origin = origin
 		self.top = top
@@ -109,16 +112,16 @@ class Axis:
 
 		if self.label:
 			# size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -4.0*self.figure.UNITS_PER_PIXEL_y),'x', latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
-			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), 'y', latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
+			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -4.0*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
+			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), self.ylabel, latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
 
 			x_dims.__draw__()
 			y_dims.__draw__()
 
 		####### DRAW LABELS #######
 		# Control ticks
-		self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.tickLabelInterval))
-		self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.tickLabelInterval))
+		self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xtickLabelInterval))
+		self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ytickLabelInterval))
 		self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
 		self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
 		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
