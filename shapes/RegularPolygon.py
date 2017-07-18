@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
 
+
 class RegularPolygon:
-    def __init__(self, xy, numVertices, lw=2, radius=0, fill=False, orientation=0.0, mplprops={}, figure=None):
+    def __init__(self, xy, numVertices, radius=0, fill=False, lw=2, orientation=0.0, mplprops={}, figure=None):
         self.xy = xy
         self.numVertices = numVertices
         self.radius = radius

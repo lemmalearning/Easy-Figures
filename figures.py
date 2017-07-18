@@ -193,7 +193,6 @@ class Figures:
 		return p
 
 	def addLine(self, pointA, pointB, lw=2, mplprops={}):
-		#pixelSize=self.width
 		l = Line.Line(pointA, pointB, lw, mplprops, figure=self)
 		self.drawOrder.append(l)
 		return l

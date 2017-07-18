@@ -54,9 +54,9 @@ def unit_test():
 	def ellipse(f):
 		ell = f.addEllipse(xy=[7,10], r=(9,12), angle=20.0)
 		ell.ellipseLabels(xlabel='x', ylabel='y', isRadius=False)
-		#ell2 = f.addEllipse(xy=[-12,8], r=(4,8), angle=190.0, fc='yellow')
-		#ell3 = f.addEllipse(xy=[10,-8], r=(8,3), angle=45.0, lw=5.0, fc='pink')
-		#ell4 = f.addEllipse(xy=[-13,-7], r=(5,6), angle=270.0, fc='green', lw=1)
+		ell2 = f.addEllipse(xy=[-12,8], r=(4,8), angle=190.0, fc='yellow')
+		ell3 = f.addEllipse(xy=[10,-8], r=(8,3), angle=45.0, lw=5.0, fc='pink')
+		ell4 = f.addEllipse(xy=[-13,-7], r=(5,6), angle=270.0, fc='green', lw=1)
 
 	# POLYGON #
 	def polygon(f):
@@ -74,10 +74,6 @@ def unit_test():
 		poly.labelAngles([r'\alpha', r'\beta', r'\gamma', r'\delta', r'\epsilon'])
 
 	# REGULAR POLYGON #
-	#    def __init__(self, xy, numVertices, lw=2, radius=0, fill=False, orientation=0.0, mplprops={}, figure=None):
-	#        polygon = patches.RegularPolygon(xy, numVertices, radius, fill=False, lw=lw, **self.mplprops)
-	#	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, lw=2, orientation=0.0, mplprops={}):
-
 	def regpoly(f):
 		f.addRegularPolygon(xy=(-4,-3), numVertices=3, radius=7, mplprops={'ec':'k', 'color':'orange'})
 		f.addRegularPolygon((7,0), 4, radius=3, orientation=np.pi/2, mplprops={'color':'green'})
@@ -85,8 +81,23 @@ def unit_test():
 
 	# AXIS #
 	def axis(f):
-		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
-		axis.Ticks(tickLabelInterval=2, tickInterval=1, fontsize=12, origin=False, top=True)
+		#axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
+		#axis.Ticks(tickLabelInterval=2, tickInterval=1, fontsize=12, origin=False, top=True)
+
+
+		t = np.arange(0.0, 1.0 + 0.01, 0.01)
+		s = np.cos(2*2*np.pi*t)
+		plt.plot(t, s, '-', lw=2)
+
+		plt.xlabel('time (s)')
+		plt.ylabel('voltage (mV)')
+		plt.title('About as simple as it gets, folks')
+		plt.grid(True)
+
+		plt.axes().set_aspect('equal', 'datalim')
+
+
+		plt.show()
 
 	# POINT #
 	def point(f):
@@ -116,7 +127,6 @@ def unit_test():
 
 	# WEDGE #
 	def wedge(f):
-
 		f.addWedge((0,0), r=10, theta1=0, theta2=32, mplprops={'color':'#a39c92', 'lw':1, 'ec':'w'})
 		f.addWedge((0,0), r=10, theta1=32, theta2=64, mplprops={'color':'#d3c7b6', 'lw':1, 'ec':'w'})
 		f.addWedge((0,0), r=10, theta1=64, theta2=96, mplprops={'color':'#a39c92', 'lw':1, 'ec':'w'})
@@ -128,6 +138,11 @@ def unit_test():
 		f.addWedge((0.2,-0.8), r=10, theta1=259, theta2=360, width=2, mplprops={'color':'orange', 'lw':1, 'ec':'w'})
 		f.addWedge((0.2,-0.8), r=7, theta1=296, theta2=360, width=1, mplprops={'color':'red', 'lw':1, 'ec':'w'})
 		f.addWedge((0.2,-0.8), r=5, theta1=328, theta2=360, width=1, mplprops={'color':'green', 'lw':1, 'ec':'w'})
+
+	# LINE #
+	def line(f):
+		f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
+
 
 	# WRITE #
 	def write(f):
@@ -141,21 +156,18 @@ def unit_test():
 	# INIT #
 	f = figures.Figures([[-16,16],[-16,16]], height=600, width=600, bgcolor='w')
 
-	###triangle(f)
-	###function(f)
-	###circle(f)
-	###ellipse(f)
-	###polygon(f)
-
+	#triangle(f)
+	#function(f)
+	#circle(f)
+	#ellipse(f)
+	#polygon(f)
 	#regpoly(f)
-	#reg = f.addRegularPolygon((-4,-3), 3, radius=10, mplprops={'ec':'k', 'color':'orange'})
-
-	###point(f)
-	###text(f)
-	###arrow(f)
-	###wedge(f)
-	#line = f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
-	axis(f)
+	#point(f)
+	#text(f)
+	#arrow(f)
+	#wedge(f)
+	#line(f)
+	#axis(f)
 
 	write(f)
 
