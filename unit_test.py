@@ -84,23 +84,10 @@ def unit_test():
 	def axis(f):
 		#plt.axis('equal')
 
-		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red', xlabel='hi', ylabel='bye')
+		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
 		#axis.Ticks(tickLabelInterval=1, tickInterval=0.5, fontsize=12, origin=False, top=True)
-		axis.Ticks(xtickLabelInterval=25, ytickLabelInterval=10, tickInterval=5, fontsize=12, origin=False, top=True)
+		axis.Ticks(xtickLabelInterval=1, ytickLabelInterval=50, tickInterval=10, fontsize=12, origin=False, top=True)
 
-
-		"""
-		t = np.arange(0.0, 1.0 + 0.01, 0.01)
-
-		f.plot(t, s, '-', lw=2)
-
-		f.grid(True)
-
-		f.axes().set_aspect('equal', 'datalim')
-
-
-		plt.show()
-		"""
 	# POINT #
 	def point(f):
 		f.addPoint((2,3), texts='A', color='k', pointsize=4)
@@ -121,11 +108,11 @@ def unit_test():
 		f.addArrow((0,0), dxdy1, color='blue', width=0.035, lw=10)
 		f.addArrow((0,0), dxdy2, color='blue', width=0.035)
 		"""
-		f.addFancyArrow(posA=(-8,-7), posB=(-4, 3), lw=1, arrowstyle='|-|', connectionstyle='bar', mplprops={'mutation_scale':3})
-		f.addFancyArrow(posA=(8,-8), posB=(-8, 10), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':10})
-		f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
-		f.addFancyArrow(posA=(10,8), posB=(4, 4), arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'black'})
-		f.addFancyArrow(posA=(8,8), posB=(3, 4), lw=1, arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'white', 'ec':'black'})
+		#f.addFancyArrow(posA=(-8,-7), posB=(-4, 3), lw=1, arrowstyle='|-|', connectionstyle='bar', mplprops={'mutation_scale':3})
+		#f.addFancyArrow(posA=(8,-8), posB=(80, 10), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':10})
+		#f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
+		#f.addFancyArrow(posA=(10,8), posB=(4, 4), arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'black'})
+		f.addFancyArrow(posA=(8,80), posB=(3, 40), lw=1, arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'white', 'ec':'black'})
 
 	# WEDGE #
 	def wedge(f):
@@ -143,7 +130,7 @@ def unit_test():
 
 	# LINE #
 	def line(f):
-		f.addLine([2,4], [6,8], lw=2, mplprops={'color':'r'})
+		f.addLine([2,4], [60,80], lw=2, mplprops={'color':'r'})
 		#f.addLine([0.02,0.02], [0.06,0.05], lw=2, mplprops={'color':'r'})
 
 
@@ -159,7 +146,7 @@ def unit_test():
 	# INIT #
 	#f = figures.Figures([[-1.8,1.8],[-1.8,1.4]], height='auto', bgcolor='w')
 	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
-	f = figures.Figures([[-30,100],[-60,100]], height=400, bgcolor='w')
+	f = figures.Figures([[-10,10],[-10,300]], height=400, bgcolor='w')
 
 	#triangle(f)
 	#function(f)
@@ -169,9 +156,9 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	#arrow(f)
+	arrow(f)
 	#wedge(f)
-	line(f)
+	#line(f)
 	axis(f)
 
 	write(f)

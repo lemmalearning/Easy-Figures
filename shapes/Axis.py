@@ -72,7 +72,9 @@ class Axis:
 			plt.axis('scaled')
 
 		else:
-			plt.gca().set_aspect('equal', adjustable='box')
+
+			plt.autoscale(enable=True, axis='y', tight=None)
+			#plt.gca().set_aspect('equal', adjustable='box')
 
 			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[0][0], right=self.figure.xyrange[0][1]-.1, **self.mplprops)
 			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1, **self.mplprops)
