@@ -85,8 +85,10 @@ def unit_test():
 		#plt.axis('equal')
 
 		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
-		#axis.Ticks(tickLabelInterval=1, tickInterval=0.5, fontsize=12, origin=False, top=True)
-		axis.Ticks(xtickLabelInterval=1, ytickLabelInterval=50, tickInterval=10, fontsize=12, origin=False, top=True)
+		#axis.Ticks(xtickLabelInterval=15, ytickLabelInterval=15, tickInterval=15, fontsize=12, origin=False, top=True)
+		#axis.Ticks(xtickLabelInterval=3, ytickLabelInterval=20, tickInterval=5, fontsize=12, origin=False, top=True)
+		axis.Ticks(xtickLabelInterval=5, ytickLabelInterval=5, tickInterval=5, fontsize=12, origin=False, top=True)
+
 
 	# POINT #
 	def point(f):
@@ -130,7 +132,7 @@ def unit_test():
 
 	# LINE #
 	def line(f):
-		f.addLine([2,4], [60,80], lw=2, mplprops={'color':'r'})
+		f.addLine([2,4], [60,80], lw=2)
 		#f.addLine([0.02,0.02], [0.06,0.05], lw=2, mplprops={'color':'r'})
 
 
@@ -146,7 +148,8 @@ def unit_test():
 	# INIT #
 	#f = figures.Figures([[-1.8,1.8],[-1.8,1.4]], height='auto', bgcolor='w')
 	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
-	f = figures.Figures([[-10,10],[-10,300]], height=400, bgcolor='w')
+	f = figures.Figures([[-25,25],[-25,25]], height=400, bgcolor='w')
+	#f = figures.Figures([[-50,50],[-50,50]], height=600, width=600, bgcolor='w')
 
 	#triangle(f)
 	#function(f)
@@ -156,9 +159,9 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	arrow(f)
+	#arrow(f)
 	#wedge(f)
-	#line(f)
+	line(f)
 	axis(f)
 
 	write(f)

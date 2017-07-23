@@ -99,14 +99,16 @@ class Axis:
 		if self.arrows:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
+			print self.figure.UNITS_PER_PIXEL_x
 
-			self.figure.ax.arrow(xmin, 0, xmax-xmin+(self.lw/8.), 0., lw=self.figure.UNITS_PER_PIXEL_x*5,
-			         head_width=self.figure.UNITS_PER_PIXEL_x*self.lw*3, head_length=self.figure.UNITS_PER_PIXEL_x*self.lw*5,
-			         length_includes_head=True, clip_on=False,color=self.color, **self.mplprops)
+			self.figure.ax.arrow(xmin, 0, xmax-xmin+(float(self.xtickLabelInterval)/float(3.0*self.tickInterval)), 0, lw=self.figure.UNITS_PER_PIXEL_x,
+					 head_width=self.lw+(self.lw/(self.figure.UNITS_PER_PIXEL_x*25.)), head_length=float(self.xtickLabelInterval),
+					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
-			self.figure.ax.arrow(0, ymin, 0., ymax-ymin+(self.lw/8.), lw = self.figure.UNITS_PER_PIXEL_x*5,
-			         head_width=self.figure.UNITS_PER_PIXEL_x*self.lw*3, head_length=self.figure.UNITS_PER_PIXEL_x*self.lw*5,
-					 length_includes_head=True, clip_on=False,color=self.color, **self.mplprops)
+			self.figure.ax.arrow(0, ymin, 0, xmax-xmin+(float(self.xtickLabelInterval)/float(3.0*self.tickInterval)), lw=self.figure.UNITS_PER_PIXEL_y,
+				   	 head_width=self.lw+(self.lw/(self.figure.UNITS_PER_PIXEL_y*25.)), head_length=float(self.ytickLabelInterval),
+					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
+
 
 		# Control color
 		self.figure.ax.spines['bottom'].set_color(self.color)

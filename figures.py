@@ -77,7 +77,6 @@ class Figures:
 		# do all drawing that depends on unit metrics
 		# TODO
 
-
 		# Do the actual drawing onto the svg
 		# Adapted from https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_svg.py : print_svg
 		self.fig.draw(self.renderer)
@@ -108,193 +107,200 @@ class Figures:
 
 		return s
 
-	def __writeFile__(self, fileLocation, **kwargs):
-		s = self.__export__()
-		f = open(fileLocation, "w+")
-		f.write(s)
-		f.flush()
-		f.close()
+    	def __writeFile__(self, fileLocation, **kwargs):
+    		s = self.__export__()
+    		f = open(fileLocation, "w+")
+    		f.write(s)
+    		f.flush()
+    		f.close()
 
-	def __display__(self):
-		plt.show()
+    	def __display__(self):
+    		plt.show()
 
-	def measureText(self, text, units=False):
-		"""Given a matplotlib Text object, returns a tuple of its width and height (in pts)"""
+    	def measureText(self, text, units=False):
+    		"""Given a matplotlib Text object, returns a tuple of its width and height (in pts)"""
 
-		prop = text._fontproperties
-		width, height, descent, svg_elements, used_chars = self.renderer.mathtext_parser.parse(text.get_text(), 72, prop)
+    		prop = text._fontproperties
+    		width, height, descent, svg_elements, used_chars = self.renderer.mathtext_parser.parse(text.get_text(), 72, prop)
 
-		if units:
-			width *= self.UNITS_PER_PT_x
-			height *= self.UNITS_PER_PT_y
-			descent *= self.UNITS_PER_PT_y
+    		if units:
+    			width *= self.UNITS_PER_PT_x
+    			height *= self.UNITS_PER_PT_y
+    			descent *= self.UNITS_PER_PT_y
 
-		return (width, height, descent)
+    		return (width, height, descent)
 
-	def __draw_shapes__(self, order=None):
-		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
-			self.addAxis(hideAxis=True)
+    	def __draw_shapes__(self, order=None):
+    		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
+    			self.addAxis(hideAxis=True)
 
-		for i, shape in enumerate(self.drawOrder if order is None else order):
-			shape.__draw__(zorder=i)
+    		for i, shape in enumerate(self.drawOrder if order is None else order):
+    			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}):
-		pixelSize = self.width
-		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure=self)
-		self.drawOrder.append(axis)
+    	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}):
+    		pixelSize = self.width
+    		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure=self)
+    		self.drawOrder.append(axis)
 
-		return axis
+    		return axis
 
-	def setPixelSize(self, width=400, height=None, padding=0):
-		"""Sets the pixel size of the figure.
+    	def setPixelSize(self, width=400, height=None, padding=0):
+    		"""Sets the pixel size of the figure.
 
-			Warning: Do NOT call this outside of the constructor
+    			Warning: Do NOT call this outside of the constructor
 
-			If only width is provided, then the figure will try to tight fit to that width
-			If height is also specified, then the size is completely fixed to that size
-		"""
+    			If only width is provided, then the figure will try to tight fit to that width
+    			If height is also specified, then the size is completely fixed to that size
+    		"""
 
-		self.width = width
+    		self.width = width
 
-		# a point is 1/72in;  12pt = 16px
-		px2in = lambda p: (p * 0.75 / 72.0)
+    		# a point is 1/72in;  12pt = 16px
+    		px2in = lambda p: (p * 0.75 / 72.0)
 
-		self.padding = px2in(padding)
+    		self.padding = px2in(padding)
 
-		if isinstance(width, str):
-			height_in = px2in(height)
-			width_in = height_in
-		else:
-			width_in = px2in(width)
-			height_in = width_in
+    		if isinstance(width, str):
+    			height_in = px2in(height)
+    			width_in = height_in
+    		else:
+    			width_in = px2in(width)
+    			height_in = width_in
 
-		if height == 'auto':
-			self.height = height
-			self.tight_fit = False
-			#self.fig.set_tight_layout({ "pad": 1.08 })
-			height_in = 2*width_in
-		elif width == 'auto':
-			self.width = height
-			self.tight_fit = False
-			#self.fig.set_tight_layout({ "pad": 1.08 })
-			height_in = 2*height_in
-		elif height != None:
-			self.tight_fit = False
-			#self.fig.set_tight_layout({ "pad": self.padding })
-			height_in = px2in(height)
+    		if height == 'auto':
+    			self.height = height
+    			self.tight_fit = False
+    			#self.fig.set_tight_layout({ "pad": 1.08 })
+    			height_in = 2*width_in
+    		elif width == 'auto':
+    			self.width = height
+    			self.tight_fit = False
+    			#self.fig.set_tight_layout({ "pad": 1.08 })
+    			height_in = 2*height_in
+    		elif height != None:
+    			self.tight_fit = False
+    			#self.fig.set_tight_layout({ "pad": self.padding })
+    			height_in = px2in(height)
 
-		self.fig.set_size_inches((width_in, height_in))
+    		self.fig.set_size_inches((width_in, height_in))
 
-	def addPoint(self, xys, texts='\ ', pointsize=6, fontsize=12, color='black', latex=True, mplprops={}):
-		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, figure=self)
-		self.drawOrder.append(p)
-		return p
+    	def addPoint(self, xys, texts='\ ', pointsize=6, fontsize=12, color='black', latex=True, mplprops={}):
+    		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, figure=self)
+    		self.drawOrder.append(p)
+    		return p
 
-	def addLine(self, pointA, pointB, lw=2, mplprops={}):
-		l = Line.Line(pointA, pointB, lw, mplprops, figure=self)
-		self.drawOrder.append(l)
-		return l
+        def addLine(self, pointA, pointB, lw=2, color='k', mplprops={}):
+            l = Line.Line(pointA, pointB, lw, color, mplprops, figure=self)
+            self.drawOrder.append(l)
+            return l
 
-	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, mplprops={}, latex=True, pixel=False):
-		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, figure=self)
-		self.drawOrder.append(t)
-		return t
+        def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, mplprops={}, latex=True, pixel=False):
+            t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, figure=self)
+            self.drawOrder.append(t)
+            return t
 
-	def addFunction(self, functions, xyranges=None, color='black', lw=2, variable=None, mplprops={}):
-		xyranges= self.xyrange if xyranges == None else xyranges
-		f = Function.Function(functions, xyranges, color, lw, variable, mplprops, figure=self)
-		self.drawOrder.append(f)
-		return f
+        def addFunction(self, functions, xyranges=None, color='black', lw=2, variable=None, mplprops={}):
+            xyranges= self.xyrange if xyranges == None else xyranges
+            f = Function.Function(functions, xyranges, color, lw, variable, mplprops, figure=self)
+            self.drawOrder.append(f)
+            return f
 
-	def addPolygon(self, vertices, lw=2, mplprops={}):
-		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, lw, mplprops, figure=self)
-		self.drawOrder.append(polygon)
-		return polygon
+            """
+        def addBox(self, xy, xlabel='x', ylabel='y', lw=2, mplprops={}):
+            b = Box.Box(xy, xlabel, ylabel, lw, mplprops, figure=self)
+            self.drawOrder.append(f)
+            return b
+            """
 
-	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, lw=2, orientation=0.0, mplprops={}):
-		pixelSize=self.width
-		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, lw, orientation, mplprops, figure=self)
-		self.drawOrder.append(regpolygon)
-		return regpolygon
+    	def addPolygon(self, vertices, lw=2, mplprops={}):
+    		pixelSize=self.width
+    		polygon = Polygon.Polygon(vertices, lw, mplprops, figure=self)
+    		self.drawOrder.append(polygon)
+    		return polygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', lw=2, mplprops={}):
-		pixelSize=self.width
-		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, lw, mplprops, figure=self)
-		self.drawOrder.append(circle)
-		return circle
+    	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, lw=2, orientation=0.0, mplprops={}):
+    		pixelSize=self.width
+    		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, lw, orientation, mplprops, figure=self)
+    		self.drawOrder.append(regpolygon)
+    		return regpolygon
 
-	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2, mplprops={}):
-		if isinstance(r, int):
-			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, lw=lw, mplprops=mplprops)
-		else:
-			pixelSize=self.width
-			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, mplprops, figure=self)
-			self.drawOrder.append(ellipse)
-			return ellipse
+    	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', lw=2, mplprops={}):
+    		pixelSize=self.width
+    		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, lw, mplprops, figure=self)
+    		self.drawOrder.append(circle)
+    		return circle
 
-	def addArc(self, xy=(0,0), width=0, height=0, lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
-		pixelSize=self.width
-		arc = Arc.Arc(xy, width, height, lw, angle, theta1, theta2, mplprops=mplprops, figure=self)
-		self.drawOrder.append(arc)
-		return arc
+    	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2, mplprops={}):
+    		if isinstance(r, int):
+    			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, lw=lw, mplprops=mplprops)
+    		else:
+    			pixelSize=self.width
+    			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, mplprops, figure=self)
+    			self.drawOrder.append(ellipse)
+    			return ellipse
 
-	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, width=None, mplprops={}):
-		pixelSize=self.width
-		wedge = Wedge.Wedge(xy, r, theta1, theta2, width=width, mplprops=mplprops, figure=self)
-		self.drawOrder.append(wedge)
-		return wedge
+    	def addArc(self, xy=(0,0), width=0, height=0, lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
+    		pixelSize=self.width
+    		arc = Arc.Arc(xy, width, height, lw, angle, theta1, theta2, mplprops=mplprops, figure=self)
+    		self.drawOrder.append(arc)
+    		return arc
 
-	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
-		if isSide:
-			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
-			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
-			gamma = (np.pi)-alpha-beta
+    	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, width=None, mplprops={}):
+    		pixelSize=self.width
+    		wedge = Wedge.Wedge(xy, r, theta1, theta2, width=width, mplprops=mplprops, figure=self)
+    		self.drawOrder.append(wedge)
+    		return wedge
 
-			# Points
-			x = (c*np.tan(beta))/(np.tan(alpha)+np.tan(beta))
-			y = x * np.tan(alpha)
-			z = np.array([a,b,c])
+    	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
+    		if isSide:
+    			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
+    			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
+    			gamma = (np.pi)-alpha-beta
 
-			vertexA = [0+xy[0],0,1]
-			vertexB = [z[-1],0+xy[0],1]
-			vertexC = [x,y,1]
+    			# Points
+    			x = (c*np.tan(beta))/(np.tan(alpha)+np.tan(beta))
+    			y = x * np.tan(alpha)
+    			z = np.array([a,b,c])
 
-			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
-			self.drawOrder.append(triangle)
-			return triangle
+    			vertexA = [0+xy[0],0,1]
+    			vertexB = [z[-1],0+xy[0],1]
+    			vertexC = [x,y,1]
 
-		else:
-			# Define the angles and sides
-			alpha = angle
-			beta = np.pi/2
-			gamma = np.pi-beta-alpha
+    			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
+    			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
+    			self.drawOrder.append(triangle)
+    			return triangle
 
-			A = length
-			B = np.sin(beta)*length/np.sin(alpha)
-			C = np.sin(gamma)*length/np.sin(alpha)
+    		else:
+    			# Define the angles and sides
+    			alpha = angle
+    			beta = np.pi/2
+    			gamma = np.pi-beta-alpha
 
-			# Define the vertices
-			vertexA = [0+xy[0], A+xy[1], 1]
-			vertexB = [xy[0], xy[1], 1]
-			vertexC = [C+xy[0], 0+xy[1], 1]
+    			A = length
+    			B = np.sin(beta)*length/np.sin(alpha)
+    			C = np.sin(gamma)*length/np.sin(alpha)
 
-			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
-			self.drawOrder.append(triangle)
-			return triangle
+    			# Define the vertices
+    			vertexA = [0+xy[0], A+xy[1], 1]
+    			vertexB = [xy[0], xy[1], 1]
+    			vertexC = [C+xy[0], 0+xy[1], 1]
 
-	def addArrow(self, xy, dxdy, color='black', lw=2, headWidth=0.1, mplprops={}, **kwargs):
-		if 'arrowstyle' in kwargs:
-			self.addFancyArrow(posA=posA, posB=posB, lw=lw, path=None, arrowstyle='fancy', connectionstyle='bar', mplprops={})
+    			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
+    			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
+    			self.drawOrder.append(triangle)
+    			return triangle
 
-		else :
-			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, color=color, headWidth=headWidth, figure=self)
-			self.drawOrder.append(arrow)
-			return arrow
+    	def addArrow(self, xy, dxdy, color='black', lw=2, headWidth=0.1, mplprops={}, **kwargs):
+    		if 'arrowstyle' in kwargs:
+    			self.addFancyArrow(posA=posA, posB=posB, lw=lw, path=None, arrowstyle='fancy', connectionstyle='bar', mplprops={})
 
-	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mplprops={}):
-		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, figure=self)
-		self.drawOrder.append(fancyArrow)
-		return fancyArrow
+    		else :
+    			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, color=color, headWidth=headWidth, figure=self)
+    			self.drawOrder.append(arrow)
+    			return arrow
+
+    	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mplprops={}):
+    		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, figure=self)
+    		self.drawOrder.append(fancyArrow)
+    		return fancyArrow
