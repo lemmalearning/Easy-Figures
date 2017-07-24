@@ -35,10 +35,11 @@ class Axis:
 		self.lw	= lw
 		self.mplprops 	   = mplprops
 
-	def Ticks(self, xtickLabelInterval=0.1, ytickLabelInterval=0.1, tickInterval=1, fontsize=12, origin=False, top=True):
+	def Ticks(self, ticks=1, xticks=1, yticks=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
-		self.xtickLabelInterval = xtickLabelInterval
-		self.ytickLabelInterval = ytickLabelInterval
+		self.xticks = xticks
+		self.yticks = yticks
+		self.ticks = ticks
 		self.fontsize = fontsize
 		self.origin = origin
 		self.top = top
@@ -72,7 +73,6 @@ class Axis:
 			plt.axis('scaled')
 
 		else:
-
 			plt.autoscale(enable=True, axis='y', tight=None)
 			#plt.gca().set_aspect('equal', adjustable='box')
 
@@ -101,12 +101,12 @@ class Axis:
 			ymin, ymax = self.figure.ax.get_ylim()
 			print self.figure.UNITS_PER_PIXEL_x
 
-			self.figure.ax.arrow(xmin, 0, xmax-xmin+(float(self.xtickLabelInterval)/float(3.0*self.tickInterval)), 0, lw=self.figure.UNITS_PER_PIXEL_x,
-					 head_width=self.lw+(self.lw/(self.figure.UNITS_PER_PIXEL_x*25.)), head_length=float(self.xtickLabelInterval),
+			self.figure.ax.arrow(xmin, 0, xmax-xmin+(float(self.xticks)/float(3.0*self.tickInterval)), 0, lw=self.figure.UNITS_PER_PIXEL_x,
+					 head_width=self.lw, head_length=float(self.xticks),
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
-			self.figure.ax.arrow(0, ymin, 0, xmax-xmin+(float(self.xtickLabelInterval)/float(3.0*self.tickInterval)), lw=self.figure.UNITS_PER_PIXEL_y,
-				   	 head_width=self.lw+(self.lw/(self.figure.UNITS_PER_PIXEL_y*25.)), head_length=float(self.ytickLabelInterval),
+			self.figure.ax.arrow(0, ymin, 0, xmax-xmin+(float(self.xticks)/float(3.0*self.tickInterval)), lw=self.figure.UNITS_PER_PIXEL_y,
+				   	 head_width=self.lw, head_length=float(self.yticks),
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
 
@@ -124,11 +124,21 @@ class Axis:
 
 		####### DRAW LABELS #######
 		# Control ticks
-		self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xtickLabelInterval))
-		self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ytickLabelInterval))
-		self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
-		self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
-		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
+		if self.ticks:
+			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
+			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
+			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
+			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
+			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
+
+		#not going here right now
+		elif self.xticks:
+			print "hi"
+			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
+			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
+			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
+			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
+			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 		if self.top:
 			self.figure.ax.xaxis.set_label_position('top')

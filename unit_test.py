@@ -87,7 +87,8 @@ def unit_test():
 		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
 		#axis.Ticks(xtickLabelInterval=15, ytickLabelInterval=15, tickInterval=15, fontsize=12, origin=False, top=True)
 		#axis.Ticks(xtickLabelInterval=3, ytickLabelInterval=20, tickInterval=5, fontsize=12, origin=False, top=True)
-		axis.Ticks(xtickLabelInterval=5, ytickLabelInterval=5, tickInterval=5, fontsize=12, origin=False, top=True)
+		axis.Ticks(tickInterval=2, fontsize=12, origin=False, top=True)
+		#axis.Ticks(ticks=2, tickInterval=5, fontsize=12, origin=False, top=True )
 
 
 	# POINT #
@@ -114,7 +115,9 @@ def unit_test():
 		#f.addFancyArrow(posA=(8,-8), posB=(80, 10), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':10})
 		#f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
 		#f.addFancyArrow(posA=(10,8), posB=(4, 4), arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'black'})
-		f.addFancyArrow(posA=(8,80), posB=(3, 40), lw=1, arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'white', 'ec':'black'})
+
+		f.addArrow((0,0), (13, 13), color='r', connectionstyle='bar', lw=1, arrowstyle='fancy')
+		#f.addFancyArrow(posA=(8,80), posB=(3, 40), lw=1, arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'white', 'ec':'black'})
 
 	# WEDGE #
 	def wedge(f):
@@ -148,7 +151,7 @@ def unit_test():
 	# INIT #
 	#f = figures.Figures([[-1.8,1.8],[-1.8,1.4]], height='auto', bgcolor='w')
 	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
-	f = figures.Figures([[-25,25],[-25,25]], height=400, bgcolor='w')
+	f = figures.Figures([[-10,10],[-10,10]], height=400, bgcolor='w')
 	#f = figures.Figures([[-50,50],[-50,50]], height=600, width=600, bgcolor='w')
 
 	#triangle(f)
@@ -159,9 +162,9 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	#arrow(f)
+	arrow(f)
 	#wedge(f)
-	line(f)
+	#line(f)
 	axis(f)
 
 	write(f)

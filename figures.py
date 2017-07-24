@@ -291,16 +291,15 @@ class Figures:
     			self.drawOrder.append(triangle)
     			return triangle
 
-    	def addArrow(self, xy, dxdy, color='black', lw=2, headWidth=0.1, mplprops={}, **kwargs):
-    		if 'arrowstyle' in kwargs:
-    			self.addFancyArrow(posA=posA, posB=posB, lw=lw, path=None, arrowstyle='fancy', connectionstyle='bar', mplprops={})
-
-    		else :
+    	def addArrow(self, xy, dxdy, color, lw=2, headWidth=0.1, mplprops={}, **kwargs):
+            if 'arrowstyle' in kwargs:
+    			self.addFancyArrow(posA=[xy[0],xy[1]], posB=[xy[0]+dxdy[0],xy[1]+dxdy[1]], lw=lw, path=None, color=color, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops={})
+            else:
     			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, color=color, headWidth=headWidth, figure=self)
     			self.drawOrder.append(arrow)
     			return arrow
 
-    	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mplprops={}):
-    		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, figure=self)
-    		self.drawOrder.append(fancyArrow)
-    		return fancyArrow
+    	def addFancyArrow(self, posA, posB, path=None, color='black', lw=2, arrowstyle=None, connectionstyle=None, mutation_scale=3, mplprops={}):
+            fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, mutation_scale=mutation_scale, figure=self)
+            self.drawOrder.append(fancyArrow)
+            return fancyArrow
