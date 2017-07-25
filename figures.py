@@ -3,7 +3,7 @@ matplotlib.rcParams['font.family'] = 'cmr10' # Change font to Computer Modern (L
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
 import matplotlib.pyplot as plt
-from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line
+from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line, Box
 
 import numpy as np
 try:
@@ -205,12 +205,10 @@ class Figures:
             self.drawOrder.append(f)
             return f
 
-            """
         def addBox(self, xy, xlabel='x', ylabel='y', lw=2, mplprops={}):
             b = Box.Box(xy, xlabel, ylabel, lw, mplprops, figure=self)
             self.drawOrder.append(f)
             return b
-            """
 
     	def addPolygon(self, vertices, lw=2, mplprops={}):
     		pixelSize=self.width
@@ -291,11 +289,11 @@ class Figures:
     			self.drawOrder.append(triangle)
     			return triangle
 
-    	def addArrow(self, xy, dxdy, color, lw=2, headWidth=0.1, mplprops={}, **kwargs):
+    	def addArrow(self, xy, dxdy, lw=2, headWidth=0.1, mplprops={}, **kwargs):
             if 'arrowstyle' in kwargs:
-    			self.addFancyArrow(posA=[xy[0],xy[1]], posB=[xy[0]+dxdy[0],xy[1]+dxdy[1]], lw=lw, path=None, color=color, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops={})
+    			self.addFancyArrow(posA=[xy[0],xy[1]], posB=[xy[0]+dxdy[0],xy[1]+dxdy[1]], lw=lw, path=None, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops={})
             else:
-    			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, color=color, headWidth=headWidth, figure=self)
+    			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, headWidth=headWidth, figure=self)
     			self.drawOrder.append(arrow)
     			return arrow
 

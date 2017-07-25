@@ -7,7 +7,7 @@ import numpy as np
 
 class Arrow:
 	matplotlib_obj = None
-	def __init__(self, xy, dxdy, color='k', headWidth=1, lw=2, mplprops={}, figure=None):
+	def __init__(self, xy, dxdy, headWidth=1, lw=2, mplprops={}, figure=None):
 		self.figure = figure
 		self.lw = lw
 		self.mplprops = mplprops

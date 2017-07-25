@@ -85,7 +85,7 @@ def unit_test():
 		#plt.axis('equal')
 		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
 		#axis.Ticks(ticks=2, tickInterval=3, fontsize=12, origin=False, top=True)
-		axis.Ticks(xticks=3, yticks=5, tickInterval=1, fontsize=12, origin=False, top=True )
+		axis.Ticks(xticks=3, yticks=5, tickInterval=1, fontsize=12, origin=False, top=True)
 
 	# POINT #
 	def point(f):
@@ -105,7 +105,7 @@ def unit_test():
 		#f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
 		#f.addFancyArrow(posA=(10,8), posB=(4, 4), arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'black'})
 
-		f.addArrow((0,0), (13, 13), color='r', connectionstyle='bar', lw=1, arrowstyle='fancy')
+		f.addArrow((0,0), (13, 13), connectionstyle='bar', lw=5, arrowstyle='<->')
 		#f.addFancyArrow(posA=(8,80), posB=(3, 40), lw=1, arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'white', 'ec':'black'})
 
 	# WEDGE #
@@ -127,6 +127,9 @@ def unit_test():
 		f.addLine([2,4], [60,80], lw=2)
 		#f.addLine([0.02,0.02], [0.06,0.05], lw=2, mplprops={'color':'r'})
 
+	# BOX #
+	def box(f):
+		f.addBox((1,1), xlabel='x', ylabel='y', lw=2)
 
 	# WRITE #
 	def write(f):
@@ -141,7 +144,7 @@ def unit_test():
 	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
 	#f = figures.Figures([[-10,10],[-10,10]], height=400, width=400, bgcolor='w')
 	#f = figures.Figures([[-50,50],[-50,50]], height=600, width=600, bgcolor='w')
-	f= figures.Figures([[-5,5],[-5,5]])
+	f = figures.Figures([[-15,15],[-15,15]])
 
 	#triangle(f)
 	#function(f)
@@ -151,10 +154,11 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	#arrow(f)
+	arrow(f)
 	#wedge(f)
 	#line(f)
-	axis(f)
+	#box(f)
+	#axis(f)
 	write(f)
 
 if __name__ == "__main__":
