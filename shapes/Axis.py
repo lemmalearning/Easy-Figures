@@ -35,7 +35,7 @@ class Axis:
 		self.lw	= lw
 		self.mplprops 	   = mplprops
 
-	def Ticks(self, ticks=1, xticks=1, yticks=1, tickInterval=1, fontsize=12, origin=False, top=True):
+	def Ticks(self, ticks=None, xticks=1, yticks=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
 		self.xticks = xticks
 		self.yticks = yticks
@@ -74,7 +74,6 @@ class Axis:
 
 		else:
 			plt.autoscale(enable=True, axis='y', tight=None)
-			#plt.gca().set_aspect('equal', adjustable='box')
 
 			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[0][0], right=self.figure.xyrange[0][1]-.1, **self.mplprops)
 			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1, **self.mplprops)
@@ -99,16 +98,14 @@ class Axis:
 		if self.arrows:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
-			print self.figure.UNITS_PER_PIXEL_x
 
 			self.figure.ax.arrow(xmin, 0, xmax-xmin+(float(self.xticks)/float(3.0*self.tickInterval)), 0, lw=self.figure.UNITS_PER_PIXEL_x,
-					 head_width=self.lw, head_length=float(self.xticks),
+					 head_width=self.lw, head_length=self.lw,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
-			self.figure.ax.arrow(0, ymin, 0, xmax-xmin+(float(self.xticks)/float(3.0*self.tickInterval)), lw=self.figure.UNITS_PER_PIXEL_y,
-				   	 head_width=self.lw, head_length=float(self.yticks),
+			self.figure.ax.arrow(0, ymin, 0, ymax-ymin+(float(self.xticks)/float(3.0*self.tickInterval)), lw=self.figure.UNITS_PER_PIXEL_y,
+				   	 head_width=self.lw, head_length=self.lw,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
-
 
 		# Control color
 		self.figure.ax.spines['bottom'].set_color(self.color)
@@ -124,16 +121,17 @@ class Axis:
 
 		####### DRAW LABELS #######
 		# Control ticks
-		if self.ticks:
+
+		if self.ticks is not None:
+			print "just ticks"
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
 			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
 			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
 			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
-		#not going here right now
-		elif self.xticks:
-			print "hi"
+		elif self.ticks is None:
+			print "xticks"
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
 			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
@@ -156,7 +154,6 @@ class Axis:
 
 			for label in self.figure.ax.xaxis.get_ticklabels():
 				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
-				#print type(label)
 
 			for label in self.figure.ax.yaxis.get_ticklabels():
 				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))

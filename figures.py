@@ -17,7 +17,7 @@ from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10], width=400, height='auto', bgcolor='#f0feffff'):
+	def __init__(self, xyrange=None, ratio=[10,10], width=200, height=200, bgcolor='#f0feffff'):
 		self.fig, self.ax = plt.subplots()
 		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)

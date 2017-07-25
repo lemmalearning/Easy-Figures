@@ -83,12 +83,11 @@ def unit_test():
 	# AXIS #
 	def axis(f):
 		#plt.axis('equal')
-
 		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
 		#axis.Ticks(xtickLabelInterval=15, ytickLabelInterval=15, tickInterval=15, fontsize=12, origin=False, top=True)
 		#axis.Ticks(xtickLabelInterval=3, ytickLabelInterval=20, tickInterval=5, fontsize=12, origin=False, top=True)
-		axis.Ticks(tickInterval=2, fontsize=12, origin=False, top=True)
-		#axis.Ticks(ticks=2, tickInterval=5, fontsize=12, origin=False, top=True )
+		#axis.Ticks(tickInterval=10, fontsize=12, origin=False, top=True)
+		axis.Ticks(ticks=3, tickInterval=50, fontsize=12, origin=False, top=True )
 
 
 	# POINT #
@@ -151,7 +150,7 @@ def unit_test():
 	# INIT #
 	#f = figures.Figures([[-1.8,1.8],[-1.8,1.4]], height='auto', bgcolor='w')
 	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
-	f = figures.Figures([[-10,10],[-10,10]], height=400, bgcolor='w')
+	f = figures.Figures([[-10,10],[-10,100]], height=400, width=400, bgcolor='w')
 	#f = figures.Figures([[-50,50],[-50,50]], height=600, width=600, bgcolor='w')
 
 	#triangle(f)
@@ -162,11 +161,10 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	arrow(f)
+	#arrow(f)
 	#wedge(f)
 	#line(f)
 	axis(f)
-
 	write(f)
 
 if __name__ == "__main__":
