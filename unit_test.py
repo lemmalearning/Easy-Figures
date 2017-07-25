@@ -84,11 +84,8 @@ def unit_test():
 	def axis(f):
 		#plt.axis('equal')
 		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
-		#axis.Ticks(xtickLabelInterval=15, ytickLabelInterval=15, tickInterval=15, fontsize=12, origin=False, top=True)
-		#axis.Ticks(xtickLabelInterval=3, ytickLabelInterval=20, tickInterval=5, fontsize=12, origin=False, top=True)
-		#axis.Ticks(tickInterval=10, fontsize=12, origin=False, top=True)
-		axis.Ticks(ticks=3, tickInterval=50, fontsize=12, origin=False, top=True )
-
+		#axis.Ticks(ticks=2, tickInterval=3, fontsize=12, origin=False, top=True)
+		axis.Ticks(xticks=3, yticks=5, tickInterval=1, fontsize=12, origin=False, top=True )
 
 	# POINT #
 	def point(f):
@@ -103,13 +100,6 @@ def unit_test():
 
 	# ARROW #
 	def arrow(f):
-		"""
-		dxdy1 = (randint_except(-1,8, 0), randint_except(-4,2, 0))
-		dxdy2 = (randint_except(-8,2, 0), randint_except(-1, 5, 0))
-
-		f.addArrow((0,0), dxdy1, color='blue', width=0.035, lw=10)
-		f.addArrow((0,0), dxdy2, color='blue', width=0.035)
-		"""
 		#f.addFancyArrow(posA=(-8,-7), posB=(-4, 3), lw=1, arrowstyle='|-|', connectionstyle='bar', mplprops={'mutation_scale':3})
 		#f.addFancyArrow(posA=(8,-8), posB=(80, 10), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':10})
 		#f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
@@ -148,10 +138,10 @@ def unit_test():
 		f.close()
 
 	# INIT #
-	#f = figures.Figures([[-1.8,1.8],[-1.8,1.4]], height='auto', bgcolor='w')
 	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
-	f = figures.Figures([[-10,10],[-10,100]], height=400, width=400, bgcolor='w')
+	#f = figures.Figures([[-10,10],[-10,10]], height=400, width=400, bgcolor='w')
 	#f = figures.Figures([[-50,50],[-50,50]], height=600, width=600, bgcolor='w')
+	f= figures.Figures([[-5,5],[-5,5]])
 
 	#triangle(f)
 	#function(f)

@@ -31,9 +31,9 @@ class Axis:
 		self.label		= label
 		self.xlabel		= xlabel
 		self.ylabel		= ylabel
-		self.figure    = figure
-		self.lw	= lw
-		self.mplprops 	   = mplprops
+		self.figure     = figure
+		self.lw			= lw
+		self.mplprops 	= mplprops
 
 	def Ticks(self, ticks=None, xticks=1, yticks=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
@@ -99,13 +99,17 @@ class Axis:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
-			self.figure.ax.arrow(xmin, 0, xmax-xmin+(float(self.xticks)/float(3.0*self.tickInterval)), 0, lw=self.figure.UNITS_PER_PIXEL_x,
-					 head_width=self.lw, head_length=self.lw,
+			print self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9
+
+			self.figure.ax.arrow(xmin, 0, (xmax*2)-(xmin+self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*8), 0, lw=self.figure.UNITS_PER_PIXEL_x*self.lw*3,
+					 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
-			self.figure.ax.arrow(0, ymin, 0, ymax-ymin+(float(self.xticks)/float(3.0*self.tickInterval)), lw=self.figure.UNITS_PER_PIXEL_y,
-				   	 head_width=self.lw, head_length=self.lw,
+			self.figure.ax.arrow(0, ymin, 0, (ymax*2)-(ymin+self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*8), lw=self.figure.UNITS_PER_PIXEL_y*self.lw*3,
+				   	 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
+
+		#xmax-xmin+(float(self.xticks)/float(self.tickInterval))
 
 		# Control color
 		self.figure.ax.spines['bottom'].set_color(self.color)
@@ -123,7 +127,6 @@ class Axis:
 		# Control ticks
 
 		if self.ticks is not None:
-			print "just ticks"
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
 			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
@@ -131,7 +134,6 @@ class Axis:
 			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 		elif self.ticks is None:
-			print "xticks"
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
 			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
