@@ -104,17 +104,18 @@ def unit_test():
 		#f.addFancyArrow(posA=(8,-8), posB=(80, 10), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':10})
 		#f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
 		#f.addFancyArrow(posA=(10,8), posB=(4, 4), arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'black'})
+		f.addArrow((12,-8), (-20, 20), lw=2, arrowstyle='<->', connectionstyle='bar', mplprops={'color':'red'})
+		f.addArrow((0,0), (13, 13), lw=3, arrowstyle='fancy', connectionstyle='bar', mplprops={'color':'red'})
+		#f.addArrow((0,0), (10, 10), lw=2, arrowstyle='simple', mplprops={'color':'red'})
 
-		f.addArrow((0,0), (13, 13), connectionstyle='bar', lw=5, arrowstyle='<->')
-		#f.addFancyArrow(posA=(8,80), posB=(3, 40), lw=1, arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'white', 'ec':'black'})
 
 	# WEDGE #
 	def wedge(f):
 		f.addWedge((0,0), r=10, theta1=0, theta2=32, mplprops={'color':'#a39c92', 'lw':1, 'ec':'w'})
 		f.addWedge((0,0), r=10, theta1=32, theta2=64, mplprops={'color':'#d3c7b6', 'lw':1, 'ec':'w'})
 		f.addWedge((0,0), r=10, theta1=64, theta2=96, mplprops={'color':'#a39c92', 'lw':1, 'ec':'w'})
- 		f.addWedge((0,0), r=10, theta1=96, theta2=128, mplprops={'color':'#d3c7b6', 'lw':1, 'ec':'w'})
- 		f.addWedge((0,0), r=10, theta1=128, theta2=160, mplprops={'color':'#a39c92','lw':1, 'ec':'w'})
+		f.addWedge((0,0), r=10, theta1=96, theta2=128, mplprops={'color':'#d3c7b6', 'lw':1, 'ec':'w'})
+		f.addWedge((0,0), r=10, theta1=128, theta2=160, mplprops={'color':'#a39c92','lw':1, 'ec':'w'})
 		f.addWedge((0,0), r=10, theta1=160, theta2=192, mplprops={'color':'#d3c7b6', 'lw':1, 'ec':'w'})
 		f.addWedge((0,0), r=10, theta1=192, theta2=224, mplprops={'color':'#a39c92', 'lw':1, 'ec':'w'})
 		f.addWedge((0,0), r=10, theta1=224, theta2=256, mplprops={'color':'#d3c7b6', 'lw':1, 'ec':'w'})
@@ -155,10 +156,10 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	#arrow(f)
+	arrow(f)
 	#wedge(f)
 	#line(f)
-	box(f)
+	#box(f)
 	#axis(f)
 	write(f)
 
