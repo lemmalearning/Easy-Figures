@@ -127,9 +127,10 @@ def unit_test():
 		f.addLine([2,4], [60,80], lw=2)
 		#f.addLine([0.02,0.02], [0.06,0.05], lw=2, mplprops={'color':'r'})
 
+
 	# BOX #
 	def box(f):
-		f.addBox((1,1), xlabel='x', ylabel='y', lw=2)
+		f.addBox((1,10), (1,10), (1,2), xlabel='x', ylabel='y', mplprops={'color':'k'})
 
 	# WRITE #
 	def write(f):
@@ -154,10 +155,10 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	arrow(f)
+	#arrow(f)
 	#wedge(f)
 	#line(f)
-	#box(f)
+	box(f)
 	#axis(f)
 	write(f)
 

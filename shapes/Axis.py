@@ -50,8 +50,9 @@ class Axis:
 		def adjust_spines(ax, spines):
 		    for loc, spine in ax.spines.items():
 		        if loc in spines:
-		            spine.set_position(('outward', 10))  # outward by 10 points
-		            spine.set_smart_bounds(True)
+					spine.set_position(('outward', 10))  # outward by 10 points
+					spine.set_smart_bounds(True)
+					#spine.set_color('k')
 		        else:
 		            spine.set_color('none')  # don't draw spine
 
@@ -108,8 +109,6 @@ class Axis:
 			self.figure.ax.arrow(0, ymin, 0, (ymax*2)-(ymin+self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*8), lw=self.figure.UNITS_PER_PIXEL_y*self.lw*3,
 				   	 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
-
-		#xmax-xmin+(float(self.xticks)/float(self.tickInterval))
 
 		# Control color
 		self.figure.ax.spines['bottom'].set_color(self.color)

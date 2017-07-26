@@ -42,7 +42,6 @@ class Figures:
 			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
 		self.setPixelSize(width, height=height)
-		#plt.figure(figsize=ratio)
 
 		self.__init_canvas__()
 
@@ -205,9 +204,9 @@ class Figures:
             self.drawOrder.append(f)
             return f
 
-        def addBox(self, xy, xlabel='x', ylabel='y', lw=2, mplprops={}):
-            b = Box.Box(xy, xlabel, ylabel, lw, mplprops, figure=self)
-            self.drawOrder.append(f)
+        def addBox(self, x, y, data, xlabel='x', ylabel='y', lw=2, mplprops={}):
+            b = Box.Box(x, y, data, xlabel, ylabel, lw, mplprops, figure=self)
+            self.drawOrder.append(b)
             return b
 
     	def addPolygon(self, vertices, lw=2, mplprops={}):
