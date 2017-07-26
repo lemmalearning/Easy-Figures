@@ -130,7 +130,7 @@ def unit_test():
 
 	# BOX #
 	def box(f):
-		f.addBox((1,10), (1,10), (1,2), xlabel='x', ylabel='y', mplprops={'color':'k'})
+		f.addBox((1,10), (1,10), (1,2), xlabel='hello', ylabel='yellow', mplprops={'color':'k'})
 
 	# WRITE #
 	def write(f):
