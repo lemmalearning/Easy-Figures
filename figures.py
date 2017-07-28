@@ -130,7 +130,7 @@ class Figures:
 		return (width, height, descent)
 
 	def __draw_shapes__(self, order=None):
-		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]):
+		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]) and not any([isinstance(obj, Box.Box) for obj in self.drawOrder]):
 			self.addAxis(hideAxis=True)
 
 		for i, shape in enumerate(self.drawOrder if order is None else order):
@@ -204,9 +204,9 @@ class Figures:
 		self.drawOrder.append(f)
 		return f
 
-	def addBox(self, x, y, data, xlabel='x', ylabel='y', lw=2, mplprops={}):
+	def addBox(self, x, y, data, xlabel='  ', ylabel='  ', title="  ", lw=2, mplprops={}):
 		pixelSize=self.width
-		b = Box.Box(x, y, data, xlabel, ylabel, lw, mplprops, figure=self)
+		b = Box.Box(x, y, data, xlabel, ylabel, title, lw, mplprops, figure=self)
 		self.drawOrder.append(b)
 		return b
 

@@ -34,7 +34,7 @@ class Axis:
 		self.figure     = figure
 		self.lw			= lw
 		self.mplprops 	= mplprops
-
+		
 	def Ticks(self, ticks=None, xticks=1, yticks=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
 		self.xticks = xticks
@@ -48,26 +48,26 @@ class Axis:
 		# Modify the plot view to scale, remove axis, and center our shape
 
 		def adjust_spines(ax, spines):
-		    for loc, spine in ax.spines.items():
-		        if loc in spines:
+			for loc, spine in ax.spines.items():
+				if loc in spines:
 					spine.set_position(('outward', 10))  # outward by 10 points
 					spine.set_smart_bounds(True)
 					#spine.set_color('k')
-		        else:
-		            spine.set_color('none')  # don't draw spine
+				else:
+					spine.set_color('none')  # don't draw spine
 
-		    # turn off ticks where there is no spine
-		    if 'left' in spines:
-		        ax.yaxis.set_ticks_position('left')
-		    else:
-		        # no yaxis ticks
-		        ax.yaxis.set_ticks([])
+			# turn off ticks where there is no spine
+			if 'left' in spines:
+				ax.yaxis.set_ticks_position('left')
+			else:
+				# no yaxis ticks
+				ax.yaxis.set_ticks([])
 
-		    if 'bottom' in spines:
-		        ax.xaxis.set_ticks_position('bottom')
-		    else:
-		        # no xaxis ticks
-		        ax.xaxis.set_ticks([])
+			if 'bottom' in spines:
+				ax.xaxis.set_ticks_position('bottom')
+			else:
+				# no xaxis ticks
+				ax.xaxis.set_ticks([])
 
 		if self.figure.xyrange is None:
 			plt.axis('off')
@@ -107,7 +107,7 @@ class Axis:
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
 			self.figure.ax.arrow(0, ymin, 0, (ymax*2)-(ymin+self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*8), lw=self.figure.UNITS_PER_PIXEL_y*self.lw*3,
-				   	 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
+						head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
 		# Control color

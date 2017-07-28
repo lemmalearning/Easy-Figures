@@ -108,7 +108,6 @@ def unit_test():
 		f.addArrow((0,0), (13, 13), lw=3, arrowstyle='fancy', connectionstyle='bar', mplprops={'color':'red'})
 		#f.addArrow((0,0), (10, 10), lw=2, arrowstyle='simple', mplprops={'color':'red'})
 
-
 	# WEDGE #
 	def wedge(f):
 		f.addWedge((0,0), r=10, theta1=0, theta2=32, mplprops={'color':'#a39c92', 'lw':1, 'ec':'w'})
@@ -125,13 +124,13 @@ def unit_test():
 
 	# LINE #
 	def line(f):
-		f.addLine([2,4], [60,80], lw=2)
+		f.addLine([5,10], [5,5], mplprops={'ls':'dotted'})
 		#f.addLine([0.02,0.02], [0.06,0.05], lw=2, mplprops={'color':'r'})
 
 
 	# BOX #
 	def box(f):
-		f.addBox((1,10), (1,10), (1,2), xlabel='hello', ylabel='yellow', mplprops={'color':'k'})
+		f.addBox((1,20), (1,200), (1,2), xlabel='hello', ylabel='yellow', title='This is the title', mplprops={'color':'k'})
 
 	# WRITE #
 	def write(f):
@@ -146,7 +145,7 @@ def unit_test():
 	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
 	#f = figures.Figures([[-10,10],[-10,10]], height=400, width=400, bgcolor='w')
 	#f = figures.Figures([[-50,50],[-50,50]], height=600, width=600, bgcolor='w')
-	f = figures.Figures([[-15,15],[-15,15]])
+	f = figures.Figures([[-10,10],[-10,10]])
 
 	#triangle(f)
 	#function(f)
@@ -156,10 +155,10 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	arrow(f)
+	#arrow(f)
 	#wedge(f)
 	#line(f)
-	#box(f)
+	box(f)
 	#axis(f)
 	write(f)
 
