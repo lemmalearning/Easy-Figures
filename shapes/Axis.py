@@ -34,7 +34,7 @@ class Axis:
 		self.figure     = figure
 		self.lw			= lw
 		self.mplprops 	= mplprops
-		
+
 	def Ticks(self, ticks=None, xticks=1, yticks=1, tickInterval=1, fontsize=12, origin=False, top=True):
 		self.tickInterval = tickInterval
 		self.xticks = xticks
@@ -116,8 +116,8 @@ class Axis:
 
 		if self.label:
 			# size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -4.0*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True, fontsize=16, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
-			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*13), self.ylabel, latex=True, fontsize=16, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
+			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -4.0*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True, fontsize=15, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
+			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*17), self.ylabel, latex=True, fontsize=15, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
 
 			x_dims.__draw__()
 			y_dims.__draw__()
