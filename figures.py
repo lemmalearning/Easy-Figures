@@ -294,7 +294,6 @@ class Figures:
 
 		else:
 			arrow = Arrow.Arrow([start[0],start[1]], [end[0]-start[0],end[1]-start[1]], lw=lw, mplprops=mplprops, headWidth=headWidth, figure=self)
-			print end[0], end[1]
 			self.drawOrder.append(arrow)
 			return arrow
 
