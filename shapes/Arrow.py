@@ -11,7 +11,7 @@ class Arrow:
 		self.figure = figure
 		self.lw = lw
 		self.mplprops = mplprops
-		self.matplotlib_obj = figure.ax.arrow(start[0], start[1], start[0]+end[0], start[1]+end[1], length_includes_head=True, head_width=headWidth, head_length=2*headWidth, lw=lw, **self.mplprops)
+		self.matplotlib_obj = figure.ax.arrow(start[0], start[1], end[0], end[1], length_includes_head=True, head_width=headWidth, head_length=2*headWidth, lw=lw, **self.mplprops)
 
 	def __draw__(self, zorder=1):
 		a = self.figure.ax.add_patch(self.matplotlib_obj)

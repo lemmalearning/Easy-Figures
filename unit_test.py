@@ -104,7 +104,7 @@ def unit_test():
 		#f.addFancyArrow(posA=(8,-8), posB=(80, 10), arrowstyle='<->', connectionstyle='bar', mplprops={'mutation_scale':10})
 		#f.addFancyArrow(posA=(-8,-8), posB=(8, -9), lw=1, arrowstyle='<|-|>', connectionstyle='arc', mplprops={'mutation_scale':10, 'ls':'dotted'})
 		#f.addFancyArrow(posA=(10,8), posB=(4, 4), arrowstyle='fancy', connectionstyle='bar', mplprops={'mutation_scale':15, 'color':'black'})
-		f.addArrow((10,-3), (10, 8), lw=2, arrowstyle='<->', connectionstyle='bar', mplprops={'color':'red'})
+		f.addArrow((10,3), (5,3), lw=2, arrowstyle='<->', connectionstyle='bar', mplprops={'color':'red'})
 		#f.addArrow((0,0), (13, 13), lw=3, arrowstyle='fancy', connectionstyle='bar', mplprops={'color':'red'})
 		#f.addArrow((0,0), (10, 10), lw=2, arrowstyle='simple', mplprops={'color':'red'})
 
@@ -131,7 +131,7 @@ def unit_test():
 	# BOX #
 	def box(f):
 		f.addBox((0,20), (0,20), xlabel='hello', ylabel='yellow', title='This is the title', mplprops={'color':'k'})
-		f.addBox((0,20), (0,20))
+		#f.addBox((0,20), (0,20))
 
 
 	# WRITE #
