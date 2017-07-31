@@ -293,7 +293,7 @@ class Figures:
 			self.addFancyArrow(posA=[start[0],start[1]], posB=[end[0],end[1]], lw=lw, path=None, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops=mplprops)
 
 		else:
-			arrow = Arrow.Arrow([start[0],start[1]], [end[0],end[1]], lw=lw, mplprops=mplprops, headWidth=headWidth, figure=self)
+			arrow = Arrow.Arrow([start[0],start[1]], [start[0]+end[0],start[1]+end[1]], lw=lw, mplprops=mplprops, headWidth=headWidth, figure=self)
 			self.drawOrder.append(arrow)
 			return arrow
 
