@@ -140,7 +140,6 @@ class Figures:
 		pixelSize = self.width
 		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure=self)
 		self.drawOrder.append(axis)
-
 		return axis
 
 	def setPixelSize(self, width=400, height=None, padding=0):
@@ -289,11 +288,12 @@ class Figures:
 			self.drawOrder.append(triangle)
 			return triangle
 
-	def addArrow(self, xy, dxdy, lw=2, headWidth=0.1, mplprops={}, **kwargs):
+	def addArrow(self, start, end, lw=2, headWidth=0.1, mplprops={}, **kwargs):
 		if 'arrowstyle' in kwargs:
-			self.addFancyArrow(posA=[xy[0],xy[1]], posB=[xy[0]+dxdy[0],xy[1]+dxdy[1]], lw=lw, path=None, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops=mplprops)
+			self.addFancyArrow(posA=[start[0],start[1]], posB=[end[0],end[1]], lw=lw, path=None, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops=mplprops)
+
 		else:
-			arrow = Arrow.Arrow(xy, dxdy, lw=lw, mplprops=mplprops, headWidth=headWidth, figure=self)
+			arrow = Arrow.Arrow([start[0],start[1]], [end[0],end[1]], lw=lw, mplprops=mplprops, headWidth=headWidth, figure=self)
 			self.drawOrder.append(arrow)
 			return arrow
 

@@ -100,8 +100,6 @@ class Axis:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
-			print self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9
-
 			self.figure.ax.arrow(xmin, 0, (xmax*2)-(xmin+self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*8), 0, lw=self.figure.UNITS_PER_PIXEL_x*self.lw*3,
 					 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)

@@ -35,5 +35,5 @@ class Box:
 			plt.bar(y_pos, performance, align='center', alpha=0.2) #drawing the bars
 			plt.xticks(y_pos, objects)  #tick labels
 
-			#bar(left, height, width=0.8, bottom=None, hold=None, data=None, **kwargs)¶
+			#bar(left, height, width=0.8, bottom=None, hold=None, data=None, **kwargs)
 			"""
