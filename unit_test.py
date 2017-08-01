@@ -77,8 +77,8 @@ def unit_test():
 	# REGULAR POLYGON #
 	def regpoly(f):
 		f.addRegularPolygon(xy=(-4,-3), numVertices=3, radius=7, mplprops={'ec':'k', 'color':'orange'})
-		f.addRegularPolygon((7,0), 4, radius=3, orientation=np.pi/2, mplprops={'color':'green'})
-		f.addRegularPolygon((6,-6), 5, radius=3, mplprops={'ls':'dashed'})
+		f.addRegularPolygon((3,0), 4, radius=3, orientation=np.pi/2, lw=1, mplprops={'color':'green'})
+		f.addRegularPolygon((6,-6), 5, radius=3, lw=3, mplprops={'ls':'dashed'})
 
 	# AXIS #
 	def axis(f):
@@ -144,7 +144,9 @@ def unit_test():
 
 	# BOX #
 	def box(f):
-		f.addBox((0,20), (0,20), xlabel='hello', ylabel='yellow', title='This is the title', mplprops={'color':'k'})
+		#f.addBox((0,20), (0,20), xlabel='hello', ylabel='yellow', title='This is the title', mplprops={'color':'k'})
+		f.addBox((0,0.3), (0,500), xlabel='Time (s)', ylabel='Velocity (m/s)', title='Velocity vs Time')
+
 		#f.addBox((0,20), (0,20))
 
 
@@ -159,9 +161,9 @@ def unit_test():
 
 	# INIT #
 	#f = figures.Figures([[-0.06,0.06],[-0.06, 0.06]], height='auto', bgcolor='w')
-	#f = figures.Figures([[-10,10],[-10,10]], height=400, width=400, bgcolor='w')
-	#f = figures.Figures([[-15,15],[-15,15]], height=600, width=600, bgcolor='w')
-	f = figures.Figures([[-.5,2.6], [-.5, 2.6]], width=200, height=200)
+	f = figures.Figures([[-10,10],[-10,10]], height=400, width=400, bgcolor='w')
+	#f = figures.Figures([[-15,15],[-15,15]], height=400, width=400, bgcolor='w')
+	#f = figures.Figures([[-.5,2.6], [-.5, 2.6]], width=200, height=200)
 
 	#f = figures.Figures([[-7, 5],[-4, 4]], width=400, height=300)
 
@@ -173,11 +175,11 @@ def unit_test():
 	#regpoly(f)
 	#point(f)
 	#text(f)
-	arrow(f)
+	#arrow(f)
 	#wedge(f)
 	#line(f)
-	#box(f)
-	axis(f)
+	box(f)
+	#axis(f)
 	write(f)
 
 if __name__ == "__main__":
