@@ -51,7 +51,6 @@ class Polygon:
 			p = (self.lw*self.figure.UNITS_PER_PT_x / 2) + (padding*2*self.figure.UNITS_PER_PT_x)
 			v = midpoint_vertices[i, :] + p*d
 
-
 			txt = self.figure.ax.text(0, 0, '$'+label+'$', fontsize=fontsize)
 			txt.set_bbox(dict(facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
 

@@ -68,8 +68,6 @@ class Figures:
 		self.fig.tight_layout(pad=self.padding) # TODO: Give the author control other padding on all sides
 
 		# compute pixel/pt/unit conversations based on axis limits and known padding
-		# print(self.ax.get_xlim())
-		# print(self.ax.get_ylim())
 		# TODO
 
 		# post draw
@@ -89,7 +87,6 @@ class Figures:
 		# https://stackoverflow.com/questions/22667224/matplotlib-get-text-bounding-box-independent-of-backend/22689498
 		# https://stackoverflow.com/questions/28692981/matplotlib-get-resulting-bounding-box-of-bbox-inches-tight
 		#print(self.ax.get_position().bounds) # This gives you percentage wise the xmin, ymin, width, height up to the very edge of the grid lines
-		#print(self.fig.bbox)
 		if self.height == 'auto':
 			bb = self.ax.get_tightbbox(self.fig._cachedRenderer) #get_renderer()))
 

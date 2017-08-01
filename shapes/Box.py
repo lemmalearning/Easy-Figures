@@ -25,15 +25,3 @@ class Box:
 			plt.title(self.title)
 			plt.xlabel(self.xlabel)
 			plt.ylabel(self.ylabel)
-			#plt.plot(self.data)
-			"""
-
-			objects = ('Python', 'C++', 'Java', 'Perl', 'Scala', 'Lisp')
-			y_pos = np.arange(len(objects)) #left: sequence of scalars
-			performance = [10,8,6,4,2,1]  #height
-
-			plt.bar(y_pos, performance, align='center', alpha=0.2) #drawing the bars
-			plt.xticks(y_pos, objects)  #tick labels
-
-			#bar(left, height, width=0.8, bottom=None, hold=None, data=None, **kwargs)
-			"""
