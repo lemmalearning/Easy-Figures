@@ -82,9 +82,11 @@ def unit_test():
 
 	# AXIS #
 	def axis(f):
-		axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
+		#axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
 		#axis.Ticks(ticks=2, tickInterval=3, fontsize=12, origin=False, top=True)
-		axis.Ticks(xticks=1, yticks=1, fontsize=12, origin=False, top=True)
+		#axis.Ticks(xticks=1, yticks=1, fontsize=12, origin=False, top=True)
+		axis = f.addAxis(arrows=True, grid=True, xlabel='x', ylabel='y')
+		axis.Ticks(tickInterval = 10, ticks=10)
 
 	# POINT #
 	def point(f):
@@ -136,9 +138,11 @@ def unit_test():
 
 	# INIT #
 	f = figures.Figures([[-10,10],[-10,10]], height=400, width=400, bgcolor='w')
+	#f = figures.Figures([[-7, 5],[-4, 4]], width=400, height=300)
+
 
 	#triangle(f)
-	#function(f)
+	function(f)
 	#circle(f)
 	#ellipse(f)
 	#polygon(f)
@@ -149,7 +153,7 @@ def unit_test():
 	#wedge(f)
 	#line(f)
 	#box(f)
-	#axis(f)
+	axis(f)
 	write(f)
 
 if __name__ == "__main__":

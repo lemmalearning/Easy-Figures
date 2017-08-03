@@ -46,7 +46,6 @@ class Axis:
 
 	def __draw__(self, zorder=1):
 		# Modify the plot view to scale, remove axis, and center our shape
-
 		def adjust_spines(ax, spines):
 			for loc, spine in ax.spines.items():
 				if loc in spines:
@@ -100,12 +99,12 @@ class Axis:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
-			self.figure.ax.arrow(xmin, 0, (xmax*2)-(xmin+self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*8), 0, lw=self.figure.UNITS_PER_PIXEL_x*self.lw*3,
+			self.figure.ax.arrow(xmin, 0, (xmax*2)-(xmin+self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9), 0, lw=self.figure.UNITS_PER_PIXEL_x*self.lw*3,
 					 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
-			self.figure.ax.arrow(0, ymin, 0, (ymax*2)-(ymin+self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*8), lw=self.figure.UNITS_PER_PIXEL_y*self.lw*3,
-						head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
+			self.figure.ax.arrow(0, ymin, 0, (ymax*2)-(ymin+self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_x*9), lw=self.figure.UNITS_PER_PIXEL_x*self.lw*3,
+					 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
 		# Control color
@@ -115,7 +114,7 @@ class Axis:
 		if self.label:
 			# size conversion: Should be 12 for every 400 pixels, or .003 per pixel
 			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -4.0*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True, fontsize=15, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
-			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*17), self.ylabel, latex=True, fontsize=15, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
+			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*20), self.ylabel, latex=True, fontsize=15, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
 
 			x_dims.__draw__()
 			y_dims.__draw__()
@@ -148,8 +147,10 @@ class Axis:
 		else:
 			xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
 			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
+
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)
+
 
 			for label in self.figure.ax.xaxis.get_ticklabels():
 				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))

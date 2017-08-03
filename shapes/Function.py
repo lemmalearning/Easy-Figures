@@ -14,12 +14,10 @@ class Function:
 			lw = [lw] * len(functions)
 			xyranges = list([xyranges]) * len(functions)
 			color = [color] * len(functions)
-
-
-		if not isinstance(functions, list):
-			self.xyranges = list([xyranges]) * len(functions)
+		elif isinstance(functions, list):
+			lw = [lw] * len(functions)
+			xyranges = list([xyranges]) * len(functions)
 			color = [color] * len(functions)
-
 
 		if variable is not None:
 			if not isinstance(variable, list):
@@ -34,10 +32,8 @@ class Function:
 		self.variable = variable
 		self.mplprops = mplprops
 
-
-
 	def __draw__(self, zorder=1):
 		for function, xyrange, color, lw in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.color, self.lw):
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
-			plt.plot(x, y, color, zorder=zorder, lw=lw, **self.mplprops)
+			plt.plot(x, y, color, lw=lw, zorder=zorder, **self.mplprops)
