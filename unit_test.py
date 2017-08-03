@@ -83,10 +83,9 @@ def unit_test():
 	# AXIS #
 	def axis(f):
 		#axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
-		#axis.Ticks(ticks=2, tickInterval=3, fontsize=12, origin=False, top=True)
-		#axis.Ticks(xticks=1, yticks=1, fontsize=12, origin=False, top=True)
-		axis = f.addAxis(arrows=True, grid=True, xlabel='x', ylabel='y')
-		axis.Ticks(tickInterval = 10, ticks=10)
+		axis = f.addAxis(arrows=True, grid=False, minorGrid='red', xlabel='x', ylabel='y')
+		axis.Ticks(xticks=2, yticks=3, xgrids=3, ygrids=5, fontsize=12, origin=False, top=True)
+		#axis.Ticks(ticks=4, xgrids=8, ygrids=5)
 
 	# POINT #
 	def point(f):
@@ -137,12 +136,14 @@ def unit_test():
 		f.close()
 
 	# INIT #
-	f = figures.Figures([[-10,10],[-10,10]], height=400, width=400, bgcolor='w')
-	#f = figures.Figures([[-7, 5],[-4, 4]], width=400, height=300)
+	#f = figures.Figures([[-5,7],[-2,10]], height=400, width=400, bgcolor='w')
+	f = figures.Figures([[-10, 10],[-10, 10]], width=400, height=300)
+
+	#f = figures.Figures([[-100, 500],[-4000, 400]], width=400, height=400)
 
 
 	#triangle(f)
-	function(f)
+	#function(f)
 	#circle(f)
 	#ellipse(f)
 	#polygon(f)

@@ -35,8 +35,9 @@ class Axis:
 		self.lw			= lw
 		self.mplprops 	= mplprops
 
-	def Ticks(self, ticks=None, xticks=1, yticks=1, tickInterval=1, fontsize=12, origin=False, top=True):
-		self.tickInterval = tickInterval
+	def Ticks(self, ticks=None, xticks=1, yticks=1, xgrids=1, ygrids=1, fontsize=12, origin=False, top=True):
+		self.xgrids = xgrids
+		self.ygrids = ygrids
 		self.xticks = xticks
 		self.yticks = yticks
 		self.ticks = ticks
@@ -92,18 +93,18 @@ class Axis:
 
 		if self.grid is not False:
 			self.figure.ax.grid(which='major', color='k' if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=0.5)
-			if self.minorGrid is not False:
-				self.figure.ax.grid(which='minor', color='k' if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
+		if self.minorGrid is not False:
+			self.figure.ax.grid(which='minor', color='k' if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
 
 		if self.arrows:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
-			self.figure.ax.arrow(xmin, 0, (xmax*2)-(xmin+self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9), 0, lw=self.figure.UNITS_PER_PIXEL_x*self.lw*3,
+			self.figure.ax.arrow(xmin, 0, (xmax*2)-(xmin+self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5), 0, lw=self.lw,
 					 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
-			self.figure.ax.arrow(0, ymin, 0, (ymax*2)-(ymin+self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_x*9), lw=self.figure.UNITS_PER_PIXEL_x*self.lw*3,
+			self.figure.ax.arrow(0, ymin, 0, (ymax*2)-(ymin+self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_x*5), lw=self.lw,
 					 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
 					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
 
@@ -125,16 +126,19 @@ class Axis:
 		if self.ticks is not None:
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
-			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
-			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
+			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xgrids))
+			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.ygrids))
 			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 		elif self.ticks is None:
+			print self.figure.xyrange[1][1]/self.yticks
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
-			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
-			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.tickInterval))
+			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xgrids))
+			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.ygrids))
 			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
+			self.figure.ax.xaxis.set_ticks([x for x in range(self.figure.xyrange[0][0]+(self.figure.xyrange[1][1]%self.xticks), self.figure.xyrange[0][1]+(self.figure.xyrange[1][1]%self.xticks), self.xticks)])
+			self.figure.ax.yaxis.set_ticks([x for x in range(self.figure.xyrange[1][0]+(self.figure.xyrange[1][1]%self.yticks), self.figure.xyrange[1][1]+(self.figure.xyrange[1][1]%self.yticks), self.yticks)])
 
 		if self.top:
 			self.figure.ax.xaxis.set_label_position('top')

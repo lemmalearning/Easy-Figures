@@ -21,7 +21,6 @@ class Figures:
 		self.fig, self.ax = plt.subplots()
 		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
-		self.tickInterval = 0
 		self.tickLabelInterval = 1
 		self.tight_fit = True
 		self.padding = 0
