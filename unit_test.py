@@ -83,8 +83,8 @@ def unit_test():
 	# AXIS #
 	def axis(f):
 		#axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
-		axis = f.addAxis(arrows=True, grid=False, minorGrid='red', xlabel='x', ylabel='y')
-		axis.Ticks(xticks=2, yticks=3, xgrids=3, ygrids=5, fontsize=12, origin=False, top=True)
+		axis = f.addAxis(arrows=True, grid=False, minorGrid='green', xlabel='x', ylabel='y')
+		axis.Ticks(xticks=1, yticks=1, xgrids=1, ygrids=5, fontsize=12, origin=False, top=True)
 		#axis.Ticks(ticks=4, xgrids=8, ygrids=5)
 
 	# POINT #
@@ -137,7 +137,7 @@ def unit_test():
 
 	# INIT #
 	#f = figures.Figures([[-5,7],[-2,10]], height=400, width=400, bgcolor='w')
-	f = figures.Figures([[-10, 10],[-10, 10]], width=400, height=300)
+	f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
 
 	#f = figures.Figures([[-100, 500],[-4000, 400]], width=400, height=400)
 

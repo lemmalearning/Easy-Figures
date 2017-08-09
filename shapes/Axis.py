@@ -102,11 +102,11 @@ class Axis:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
-			head_len_x = 6*self.figure.UNITS_PER_PIXEL_x # 15 pixels
-			head_len_y = 6*self.figure.UNITS_PER_PIXEL_y # 15 pixels
+			head_len_x = 9*self.figure.UNITS_PER_PIXEL_x # 15 pixels
+			head_len_y = 9*self.figure.UNITS_PER_PIXEL_y # 15 pixels
 
-			head_width_x = 3*self.figure.UNITS_PER_PIXEL_y
-			head_width_y = 3*self.figure.UNITS_PER_PIXEL_x
+			head_width_x = 5*self.figure.UNITS_PER_PIXEL_y
+			head_width_y = 5*self.figure.UNITS_PER_PIXEL_x
 
 			self.figure.ax.arrow(
 				0,0, xmax+.053, 0, lw=self.lw,
@@ -127,7 +127,7 @@ class Axis:
 						edgecolor='none', pad=0.03
 					)
 				)
-				y_dim = self.figure.addText((15*self.figure.UNITS_PER_PIXEL_x, ymax), self.ylabel, latex=True,
+				y_dim = self.figure.addText((15*self.figure.UNITS_PER_PIXEL_x, ymax+(self.figure.UNITS_PER_PIXEL_y*5)), self.ylabel, latex=True,
 					fontsize=15, valignment='top', halignment='center',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
