@@ -136,8 +136,6 @@ class Figures:
 		pixelSize = self.width
 		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure=self)
 		self.drawOrder.append(axis)
-		self.ax.annotate('', xy=(0, -0.1), xycoords='axes fraction', xytext=(1, -0.1),
-            arrowprops=dict(arrowstyle="<->", color='b'))
 		return axis
 
 	def setPixelSize(self, width=400, height=None):
