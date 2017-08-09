@@ -172,8 +172,6 @@ class Axis:
 			xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
 			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
 
-			print xlabels, ylabels
-
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)
 
