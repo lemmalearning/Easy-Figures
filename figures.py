@@ -1,10 +1,11 @@
 import matplotlib
-matplotlib.rcParams['font.family'] = 'cmr10' # Change font to Computer Modern (LaTeX font)
-matplotlib.rcParams['mathtext.fontset'] = 'cm'
-matplotlib.use('Svg') # Change renderer so it doesn't use the GUI
+ # Change font to Computer Modern (LaTeX font)
+matplotlib.rcParams['font.family'] = 'cmr10'; matplotlib.rcParams['mathtext.fontset'] = 'cm';
+ # Change renderer so it doesn't use the GUI
+matplotlib.use('Svg')
+
 import matplotlib.pyplot as plt
 from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line, Box
-
 import numpy as np
 try:
 	from StringIO import StringIO
@@ -13,17 +14,16 @@ except ImportError:
 import math
 import re
 from sympy.utilities.lambdify import lambdify
-
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10], width=200, height=200, bgcolor='#f0feffff'):
+	def __init__(self, xyrange=None, ratio=[10,10], width=200, height=200, bgcolor='#f0feffff', padding=50):
 		self.fig, self.ax = plt.subplots()
 		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
 		self.tight_fit = True
-		self.padding = 0
+		self.padding = padding
 		self.height = None
 		self.xyrange = xyrange
 		self.drawOrder = []
@@ -35,8 +35,8 @@ class Figures:
 
 		# TODO: Move to __export__
 		if xyrange is not None:
-			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/(self.width if not isinstance(self.width, str) else self.height)
-			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/(self.width if not isinstance(self.width, str) else self.height)
+			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
+			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.height
 			self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
@@ -132,13 +132,15 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}):
+	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', lw=1.5, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}):
 		pixelSize = self.width
 		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure=self)
 		self.drawOrder.append(axis)
+		self.ax.annotate('', xy=(0, -0.1), xycoords='axes fraction', xytext=(1, -0.1),
+            arrowprops=dict(arrowstyle="<->", color='b'))
 		return axis
 
-	def setPixelSize(self, width=400, height=None, padding=0):
+	def setPixelSize(self, width=400, height=None):
 		"""Sets the pixel size of the figure.
 
 			Warning: Do NOT call this outside of the constructor
@@ -152,7 +154,7 @@ class Figures:
 		# a point is 1/72in;  12pt = 16px
 		px2in = lambda p: (p * 0.75 / 72.0)
 
-		self.padding = px2in(padding)
+		self.padding = px2in(self.padding)
 
 		if isinstance(width, str):
 			height_in = px2in(height)

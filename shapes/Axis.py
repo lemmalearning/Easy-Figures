@@ -12,7 +12,7 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', lw=2, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}, figure=None):
+	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', lw=1.5, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}, figure=None):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
@@ -85,6 +85,8 @@ class Axis:
 			self.figure.ax.spines['left'].set_position(('data', 0))
 			self.figure.ax.spines['bottom'].set_position(('data', 0))
 
+
+
 		[i.set_linewidth(self.lw) for i in self.figure.ax.spines.itervalues()]
 
 		if self.hideAxis:
@@ -100,25 +102,44 @@ class Axis:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
-			self.figure.ax.arrow(xmin, 0, (xmax*2)-(xmin+self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*5), 0, lw=self.lw,
-					 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
-					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
+			head_len_x = 6*self.figure.UNITS_PER_PIXEL_x # 15 pixels
+			head_len_y = 6*self.figure.UNITS_PER_PIXEL_y # 15 pixels
 
-			self.figure.ax.arrow(0, ymin, 0, (ymax*2)-(ymin+self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_x*5), lw=self.lw,
-					 head_width=self.lw*self.figure.UNITS_PER_PIXEL_x*3., head_length=self.lw*self.lw*self.figure.UNITS_PER_PIXEL_x*3.,
-					 length_includes_head=True, clip_on=False, color=self.color, **self.mplprops)
+			head_width_x = 3*self.figure.UNITS_PER_PIXEL_y
+			head_width_y = 3*self.figure.UNITS_PER_PIXEL_x
+
+			self.figure.ax.arrow(
+				0,0, xmax+.053, 0, lw=self.lw,
+				head_width=head_width_x, head_length=head_len_x, color=self.color,
+				length_includes_head=True, clip_on=False
+			)
+			self.figure.ax.arrow(
+				0,0, 0, ymax+.053, lw=self.lw,
+				head_width=head_width_y, head_length=head_len_y, color=self.color,
+				length_includes_head=True, clip_on=False
+			)
+
+			if self.label:
+				x_dim = self.figure.addText((xmax, 25*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True,
+					fontsize=15, valignment='top', halignment='right',
+					bbox=dict(
+						boxstyle='round', facecolor=self.figure.bgcolor,
+						edgecolor='none', pad=0.03
+					)
+				)
+				y_dim = self.figure.addText((15*self.figure.UNITS_PER_PIXEL_x, ymax), self.ylabel, latex=True,
+					fontsize=15, valignment='top', halignment='center',
+					bbox=dict(
+						boxstyle='round', facecolor=self.figure.bgcolor,
+						edgecolor='none', pad=0.03
+					)
+				)
+				x_dim.__draw__()
+				y_dim.__draw__()
 
 		# Control color
 		self.figure.ax.spines['bottom'].set_color(self.color)
 		self.figure.ax.spines['left'].set_color(self.color)
-
-		if self.label:
-			# size conversion: Should be 12 for every 400 pixels, or .003 per pixel
-			x_dims = self.figure.addText((self.figure.xyrange[0][1]-self.figure.UNITS_PER_PIXEL_x*9, -4.0*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True, fontsize=15, valignment='top', halignment='center', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
-			y_dims = self.figure.addText((-5*self.figure.UNITS_PER_PIXEL_x, self.figure.xyrange[1][1]-self.figure.UNITS_PER_PIXEL_y*20), self.ylabel, latex=True, fontsize=15, valignment='bottom', halignment='right', bbox=dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.03))
-
-			x_dims.__draw__()
-			y_dims.__draw__()
 
 		####### DRAW LABELS #######
 		# Control ticks
@@ -131,7 +152,6 @@ class Axis:
 			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 		elif self.ticks is None:
-			print self.figure.xyrange[1][1]/self.yticks
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
 			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xgrids))
@@ -151,6 +171,8 @@ class Axis:
 		else:
 			xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
 			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
+
+			print xlabels, ylabels
 
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)
