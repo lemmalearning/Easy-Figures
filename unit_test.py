@@ -1,22 +1,6 @@
-import matplotlib
-import figures
+import figures, os, sys
 import numpy as np
-from random import randint
 from sympy import sin
-import matplotlib.pyplot as plt
-
-def randint_except(a, b, c):
-	if not isinstance(c, list) and not isinstance(c, tuple):
-		return randint_except(a, b, [c])
-
-	if not c:
-		return randint(a, b)
-
-	x = c[0];
-	while x in c:
-		x = randint(a, b)
-
-	return x
 
 def unit_test():
 	# TRIANGLE #
@@ -48,8 +32,6 @@ def unit_test():
 	# CIRCLE #
 	def circle(f):
 		circ = f.addCircle(xy=(7,10), label="r", radius=10, fc='#f4ab7a', lw=5)
-		# OR #
-		#circ = f.addEllipse(xy=(7,10), label="r", r=10, fc='grey')
 
 	# ELLIPSE #
 	def ellipse(f):
@@ -82,10 +64,8 @@ def unit_test():
 
 	# AXIS #
 	def axis(f):
-		#axis = f.addAxis(hideAxis=False, grid=True, arrows=True, color='black', lw=2, minorGrid='red')
-		axis = f.addAxis(arrows=True, grid=False, minorGrid='green', xlabel='x', ylabel='y')
-		axis.Ticks(xticks=1, yticks=1, xgrids=1, ygrids=5, fontsize=12, origin=False, top=True)
-		#axis.Ticks(ticks=4, xgrids=8, ygrids=5)
+		axis = f.addAxis(arrows=True, grid=True, minorGrid='green', xlabel='x', ylabel='y')
+		axis.Ticks(fontsize=12, origin=False, top=True, xticks=5, yticks=6, xminorticks=2, yminorticks=1)
 
 	# POINT #
 	def point(f):
@@ -115,47 +95,50 @@ def unit_test():
 	# LINE #
 	def line(f):
 		f.addLine([5,10], [5,5], mplprops={'ls':'dotted'})
-		#f.addLine([0.02,0.02], [0.06,0.05], lw=2, mplprops={'color':'r'})
 
 
 	# BOX #
 	def box(f):
-		#f.addBox((0,20), (0,20), xlabel='hello', ylabel='yellow', title='This is the title', mplprops={'color':'k'})
 		f.addBox((0,0.3), (0,500), xlabel='Time (s)', ylabel='Velocity (m/s)', title='Velocity vs Time')
 
-		#f.addBox((0,20), (0,20))
-
-
 	# WRITE #
-	def write(f):
+	def write(f, a=""):
 		f.__draw_shapes__()
 		s = f.__export__()
-		f = open('images/test.svg', "w+")
+		f = open('images/{}test.svg'.format(a), "w+")
 		f.write(s)
 		f.flush()
 		f.close()
 
-	# INIT #
-	#f = figures.Figures([[-5,7],[-2,10]], height=400, width=400, bgcolor='w')
-	f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
+	def test(func, funcName):
+		import os
+		f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
+		func(f)
+		write(f, a=funcName)
+		os.system('open {}'.format('images/{}test.svg'.format(funcName)))
 
-	#f = figures.Figures([[-100, 500],[-4000, 400]], width=400, height=400)
+	list_funs = [
+		triangle,
+		function,
+		circle,
+		ellipse,
+		polygon,
+		regpoly,
+		point,
+		text,
+		arrow,
+		wedge,
+		line,
+		box,
+		axis,
+	]
 
-
-	#triangle(f)
-	#function(f)
-	#circle(f)
-	#ellipse(f)
-	#polygon(f)
-	#regpoly(f)
-	#point(f)
-	#text(f)
-	#arrow(f)
-	#wedge(f)
-	#line(f)
-	#box(f)
-	axis(f)
-	write(f)
+	if sys.argv[1] == 'all' or len(sys.argv) == 1:
+		for func in list_funs:
+			test(func, func.__name__)
+	else:
+		for func in sys.argv[1:]:
+			test(locals()[func], func)
 
 if __name__ == "__main__":
 	unit_test()

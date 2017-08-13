@@ -8,7 +8,7 @@ from sympy.utilities.lambdify import lambdify
 
 class Function:
 	matplotlib_obj = None
-	def __init__(self, functions, xyranges=None, color='black', lw=2, variable=None, mplprops={}, figure=None):
+	def __init__(self, functions, xyranges, color, lw, variable, mplprops, figure):
 		if not isinstance(functions, list):
 			functions = [functions]
 			lw = [lw] * len(functions)

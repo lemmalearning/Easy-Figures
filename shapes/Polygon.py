@@ -9,7 +9,7 @@ from matplotlib.patches import Arc
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, vertices, lw=2, mplprops={}, figure=None):
+	def __init__(self, vertices, lw, mplprops, figure):
 		self.vertices = np.matrix(vertices)
 		self.lw = lw
 		self.mplprops = mplprops

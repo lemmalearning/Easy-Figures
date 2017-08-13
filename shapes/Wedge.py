@@ -4,7 +4,7 @@ import matplotlib.patches as patches
 import numpy as np
 
 class Wedge:
-    def __init__(self, xy, r, theta1=0, theta2=0, width=None, mplprops={}, figure=None):
+    def __init__(self, xy, r, theta1, theta2, width, mplprops, figure):
         self.xy = xy
         self.r = r
         self.theta1 = theta1

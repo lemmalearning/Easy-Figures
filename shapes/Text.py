@@ -7,7 +7,7 @@ import numpy as np
 
 class Text:
 	matplotlib_obj = None
-	def __init__(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, latex=True, pixel=False, mplprops={}, figure=None):
+	def __init__(self, xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, figure):
 		if not isinstance(color, list):
 			color = [color]
 			xy = [xy]

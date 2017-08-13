@@ -4,7 +4,7 @@ import matplotlib.patches as patches
 import numpy as np
 
 class FancyArrowPatch:
-	def __init__(self, posA=None, posB=None, path=None, lw=1, arrowstyle='simple', connectionstyle='bar', mutation_scale=3, mplprops={}, figure=None):
+	def __init__(self, posA, posB, path, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, figure):
 		self.posA = posA
 		self.posB = posB
 		self.path = path

@@ -5,7 +5,7 @@ import numpy as np
 
 
 class RegularPolygon:
-    def __init__(self, xy, numVertices, radius=0, fill=False, lw=2, orientation=0.0, mplprops={}, figure=None):
+    def __init__(self, xy, numVertices, radius, fill, lw, orientation, mplprops, figure):
         self.xy = xy
         self.numVertices = numVertices
         self.radius = radius

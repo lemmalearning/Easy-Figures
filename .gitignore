@@ -3,7 +3,7 @@
 runner.py
 */*.pyc
 */*.DS_Store
-images/test.svg
+images/*test.svg
 ShapesDemo.py
 TODO.md
 unit_test.py

@@ -7,7 +7,7 @@ import numpy as np
 
 class Point:
 	matplotlib_obj = None
-	def __init__(self, xys, texts='\ ', pointsize=6, fontsize=12, color='black', latex=True, mplprops={}, figure=None):
+	def __init__(self, xys, texts, pointsize, fontsize, color, latex, mplprops, figure):
 		if not isinstance(color, list):
 			color = [color]
 			xys = [xys]

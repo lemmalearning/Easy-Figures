@@ -7,7 +7,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Ellipse:
-	def __init__(self, xy=[0,0], r=(1,1), fc=None, ec='none', angle=0.0, lw=2, mplprops={}, figure=None):
+	def __init__(self, xy, r, fc, ec, angle, lw, mplprops, figure):
 		self.r = r
 		self.angle=angle
 		self.lw=lw

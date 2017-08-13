@@ -1,6 +1,6 @@
 import matplotlib
  # Change font to Computer Modern (LaTeX font)
-matplotlib.rcParams['font.family'] = 'cmr10'; matplotlib.rcParams['mathtext.fontset'] = 'cm';
+matplotlib.rcParams['font.family'] = 'cmr10'; matplotlib.rcParams['mathtext.fontset'] = 'cm'
  # Change renderer so it doesn't use the GUI
 matplotlib.use('Svg')
 
@@ -17,7 +17,20 @@ from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 
 class Figures:
-	def __init__(self, xyrange=None, ratio=[10,10], width=200, height=200, bgcolor='#f0feffff', padding=50):
+	"""
+		Object to hold multiple shapes and objects.
+	"""
+	def __init__(self, xyrange=None, width=200, height=200, bgcolor='#f0feffff', padding=50):
+		"""
+			__init__ function for Figures class.
+        	Args:
+				xyrange (Optional[List[List(float), List(float)]]): The x and y minimum and maximum represnted by
+					[[xmin, xmax], [ymin, ymax]]. Default is None
+				width (Optional[int]): The width of the image in pixels. Default is 200 px.
+				height (Optional[int]): The heigt of the image in pixels. Default is 200 px.
+				bgcolor (Optional[str]): The color of the background (matplotlib string, or hex). Default is '#f0feffff'
+				padding (Optional[int]): Padding in pixels around the image. Default is 50 px
+        """
 		self.fig, self.ax = plt.subplots()
 		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
@@ -132,12 +145,6 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def addAxis(self, hideAxis=False, grid=False, arrows=True, color='black', lw=1.5, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}):
-		pixelSize = self.width
-		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure=self)
-		self.drawOrder.append(axis)
-		return axis
-
 	def setPixelSize(self, width=400, height=None):
 		"""Sets the pixel size of the figure.
 
@@ -178,48 +185,100 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
+
+	############################################################################
+	#							SHAPE DEFINITIONS
+	############################################################################
+
+
+	def addAxis(self, hideAxis=False, grid=True, arrows=True, color='black', lw=1.5, minorGrid=True, label=True, xlabel='x', ylabel='y', mplprops={}):
+		"""
+			addAxis - Adds the axis 'shape' to the Figures.
+		    Args:
+				hideAxis (Optional[bool]): Whether or not to hide the axis; takes either True which sets it to the color of the axis, or a color which defines it as its own color. Default is False.
+				grid (Optional[bool]): Whether or not to display grids on major ticks. Default is False.
+				arrows (Optional[bool]): Whether or not to display dimension arrows. Default is True.
+				color (Optional[str]): Color of the axis. Default is 'black'.
+				lw (Optional[float]): Lineweight of the axis. Default is 1.5.
+				minorGrid (Optional[bool]): Whether or not to display axis on minor ticks; takes either True which sets it to the color of the axis, or a color which defines it as its own color. Default is False.
+				label (Optional[bool]): Whether or not to label the dimensions. Default is True.
+				xlabel (Optional[str]): Label for the x-dimension. Default is 'x'.
+				ylabel (Optional[str]): Label for the y-dimension. Default is 'y'.
+				mplprops (Optional[dict]): Dictionary to pass directly to the matplotlib object. Default is {}.
+		    Returns:
+		        Axis.Axis object
+		"""
+		pixelSize = self.width
+		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, self)
+		self.drawOrder.append(axis)
+		return axis
+
 	def addPoint(self, xys, texts='\ ', pointsize=6, fontsize=12, color='black', latex=True, mplprops={}):
-		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, figure=self)
+		"""
+			addPoint - Adds a point 'shape' to the Figures.
+		    Args:
+				xys (List[float]): Whether or not to hide the axis; takes either True which sets it to the color of the axis, or a color which defines it as its own color. Default is False.
+				texts (Optional[str]): Text to display at point. Default is '\ '
+				pointsize (Optional[float]): Size of the point. Default is 6
+				fontsize (Optional[float]): Fontsize. Default is 12.
+				color (Optional[str]):  Color of the axis. Default is 'black'.
+				latex (Optional[bool]): Whether or not to use LaTeX to render text. Default is True.
+				mplprops (Optional[dict]): Dictionary to pass directly to the matplotlib object. Default is {}.
+		    Returns:
+		        Point.Point object
+		"""
+		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
 		return p
 
 	def addLine(self, pointA, pointB, lw=2, color='k', mplprops={}):
-		l = Line.Line(pointA, pointB, lw, color, mplprops, figure=self)
+		"""
+			addLine - Adds a line 'shape' to the Figures.
+		    Args:
+				pointA (List[float]): List or tuple, in x,y, of the first point.
+				pointB (List[float]): List or tuple, in x,y, of the second point.
+				lw (Optional[float]): Line width of the line. Default is 2.
+				color (Optional[str]): Color of the line. Default is 'k'
+				mplprops (Optional[dict]): Dictionary to pass directly to the matplotlib object. Default is {}.
+		    Returns:
+		        Line.Line object
+		"""
+		l = Line.Line(pointA, pointB, lw, color, mplprops, self)
 		self.drawOrder.append(l)
 		return l
 
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, mplprops={}, latex=True, pixel=False):
-		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, figure=self)
+		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, self)
 		self.drawOrder.append(t)
 		return t
 
 	def addFunction(self, functions, xyranges=None, color='black', lw=2, variable=None, mplprops={}):
 		xyranges= self.xyrange if xyranges == None else xyranges
-		f = Function.Function(functions, xyranges, color, lw, variable, mplprops, figure=self)
+		f = Function.Function(functions, xyranges, color, lw, variable, mplprops, self)
 		self.drawOrder.append(f)
 		return f
 
 	def addBox(self, x, y, xlabel='  ', ylabel='  ', title="  ", lw=2, mplprops={}):
 		pixelSize=self.width
-		b = Box.Box(x, y, xlabel, ylabel, title, lw, mplprops, figure=self)
+		b = Box.Box(x, y, xlabel, ylabel, title, lw, mplprops, self)
 		self.drawOrder.append(b)
 		return b
 
 	def addPolygon(self, vertices, lw=2, mplprops={}):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, lw, mplprops, figure=self)
+		polygon = Polygon.Polygon(vertices, lw, mplprops, self)
 		self.drawOrder.append(polygon)
 		return polygon
 
 	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, lw=2, orientation=0.0, mplprops={}):
 		pixelSize=self.width
-		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, lw, orientation, mplprops, figure=self)
+		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, lw, orientation, mplprops, self)
 		self.drawOrder.append(regpolygon)
 		return regpolygon
 
 	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', lw=2, mplprops={}):
 		pixelSize=self.width
-		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, lw, mplprops, figure=self)
+		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, lw, mplprops, self)
 		self.drawOrder.append(circle)
 		return circle
 
@@ -228,21 +287,39 @@ class Figures:
 			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, lw=lw, mplprops=mplprops)
 		else:
 			pixelSize=self.width
-			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, mplprops, figure=self)
+			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, mplprops, self)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
 	def addArc(self, xy=(0,0), width=0, height=0, lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
 		pixelSize=self.width
-		arc = Arc.Arc(xy, width, height, lw, angle, theta1, theta2, mplprops=mplprops, figure=self)
+		arc = Arc.Arc(xy, width, height, lw, angle, theta1, theta2, mplprops, self)
 		self.drawOrder.append(arc)
 		return arc
 
 	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, width=None, mplprops={}):
 		pixelSize=self.width
-		wedge = Wedge.Wedge(xy, r, theta1, theta2, width=width, mplprops=mplprops, figure=self)
+		wedge = Wedge.Wedge(xy, r, theta1, theta2, width, mplprops, self)
 		self.drawOrder.append(wedge)
 		return wedge
+
+	def addArrow(self, start, end, lw=2, headWidth=0.1, mplprops={}, **kwargs):
+		if 'arrowstyle' in kwargs:
+			self.addFancyArrow(posA=[start[0],start[1]], posB=[end[0],end[1]], lw=lw, path=None, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops=mplprops)
+
+		else:
+			arrow = Arrow.Arrow([start[0],start[1]], [end[0]-start[0],end[1]-start[1]], lw, headWidth, mplprops, self)
+			self.drawOrder.append(arrow)
+			return arrow
+
+	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mutation_scale=3, mplprops={}):
+		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle, connectionstyle, mplprops, mutation_scale, self)
+		self.drawOrder.append(fancyArrow)
+		return fancyArrow
+
+	############################################################################
+	#							HELPER DEFINITIONS
+	############################################################################
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
 		if isSide:
@@ -283,17 +360,3 @@ class Figures:
 			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
-
-	def addArrow(self, start, end, lw=2, headWidth=0.1, mplprops={}, **kwargs):
-		if 'arrowstyle' in kwargs:
-			self.addFancyArrow(posA=[start[0],start[1]], posB=[end[0],end[1]], lw=lw, path=None, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops=mplprops)
-
-		else:
-			arrow = Arrow.Arrow([start[0],start[1]], [end[0]-start[0],end[1]-start[1]], lw=lw, mplprops=mplprops, headWidth=headWidth, figure=self)
-			self.drawOrder.append(arrow)
-			return arrow
-
-	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mutation_scale=3, mplprops={}):
-		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle=arrowstyle, connectionstyle=connectionstyle, mplprops=mplprops, mutation_scale=mutation_scale, figure=self)
-		self.drawOrder.append(fancyArrow)
-		return fancyArrow

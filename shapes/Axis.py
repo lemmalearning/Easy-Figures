@@ -12,7 +12,7 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, hideAxis=False, grid=False, arrows=True, color='black', lw=1.5, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}, figure=None):
+	def __init__(self, hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
@@ -35,9 +35,9 @@ class Axis:
 		self.lw			= lw
 		self.mplprops 	= mplprops
 
-	def Ticks(self, ticks=None, xticks=1, yticks=1, xgrids=1, ygrids=1, fontsize=12, origin=False, top=True):
-		self.xgrids = xgrids
-		self.ygrids = ygrids
+	def Ticks(self, ticks=None, xticks=1, yticks=1, xminorticks=1, yminorticks=1, fontsize=12, origin=False, top=True):
+		self.xminorticks = xminorticks
+		self.yminorticks = yminorticks
 		self.xticks = xticks
 		self.yticks = yticks
 		self.ticks = ticks
@@ -147,15 +147,15 @@ class Axis:
 		if self.ticks is not None:
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
-			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xgrids))
-			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.ygrids))
+			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xminorticks))
+			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.yminorticks))
 			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 		elif self.ticks is None:
 			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
 			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
-			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xgrids))
-			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.ygrids))
+			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xminorticks))
+			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.yminorticks))
 			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 			self.figure.ax.xaxis.set_ticks([x for x in range(self.figure.xyrange[0][0]+(self.figure.xyrange[1][1]%self.xticks), self.figure.xyrange[0][1]+(self.figure.xyrange[1][1]%self.xticks), self.xticks)])
 			self.figure.ax.yaxis.set_ticks([x for x in range(self.figure.xyrange[1][0]+(self.figure.xyrange[1][1]%self.yticks), self.figure.xyrange[1][1]+(self.figure.xyrange[1][1]%self.yticks), self.yticks)])

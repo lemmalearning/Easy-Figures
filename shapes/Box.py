@@ -7,7 +7,7 @@ import numpy as np
 
 class Box:
 	matplotlib_obj = None
-	def __init__(self, x, y, xlabel='x', ylabel='y', title=None, lw=2, mplprops={}, figure=None):
+	def __init__(self, x, y, xlabel, ylabel, title, lw, mplprops, figure):
 		self.x          = x
 		self.y			= y
 		#self.data 		= data

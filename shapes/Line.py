@@ -7,7 +7,7 @@ import numpy as np
 
 class Line:
     matplotlib_obj = None
-    def __init__(self, pointA, pointB, lw=2, color='k', mplprops={}, figure=None):
+    def __init__(self, pointA, pointB, lw, color, mplprops, figure):
         self.matplotlib_obj = None
         self.pointA = pointA
         self.pointB = pointB
