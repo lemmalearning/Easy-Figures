@@ -9,13 +9,13 @@ from matplotlib.patches import Arc
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, vertices, lw, mplprops, figure):
+	def __init__(self, vertices, lw, fill, mplprops, figure):
 		self.vertices = np.matrix(vertices)
 		self.lw = lw
 		self.mplprops = mplprops
 
 		# Define the polygon
-		self.matplotlib_obj = plt.Polygon(vertices, fill=False, lw=lw, **self.mplprops)
+		self.matplotlib_obj = plt.Polygon(vertices, fill=fill, lw=lw, **self.mplprops)
 		self.figure = figure
 
 	def labelOppositeSides(self, labelList, **kwargs):

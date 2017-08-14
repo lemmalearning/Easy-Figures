@@ -34,16 +34,23 @@ class Axis:
 		self.figure     = figure
 		self.lw			= lw
 		self.mplprops 	= mplprops
+		self.ticks 		= None
+		self.tickRan	= False
 
-	def Ticks(self, ticks=None, xticks=1, yticks=1, xminorticks=1, yminorticks=1, fontsize=12, origin=False, top=True):
+	def Ticks(self, ticks=None, xticks=1, yticks=1, minorticks=1, xminorticks=1, yminorticks=1, fontsize=12, origin=False, top=True):
 		self.xminorticks = xminorticks
 		self.yminorticks = yminorticks
+		if xminorticks==yminorticks:
+			self.minorticks = minorticks
+		else:
+			self.minorticks = None
 		self.xticks = xticks
 		self.yticks = yticks
 		self.ticks = ticks
 		self.fontsize = fontsize
 		self.origin = origin
 		self.top = top
+		self.tickRan = True
 
 	def __draw__(self, zorder=1):
 		# Modify the plot view to scale, remove axis, and center our shape
@@ -144,30 +151,39 @@ class Axis:
 		####### DRAW LABELS #######
 		# Control ticks
 
-		if self.ticks is not None:
-			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
-			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
-			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xminorticks))
-			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.yminorticks))
-			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
+		if self.tickRan is True:
+			if self.ticks is not None:
+				self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
+				self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.ticks))
+				if self.minorticks is not None:
+					self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xminorticks))
+					self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.yminorticks))
+				else:
+					self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.minorticks))
+					self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.minorticks))
+				self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
-		elif self.ticks is None:
-			self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
-			self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
-			self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xminorticks))
-			self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.yminorticks))
-			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
-			self.figure.ax.xaxis.set_ticks([x for x in range(self.figure.xyrange[0][0]+(self.figure.xyrange[1][1]%self.xticks), self.figure.xyrange[0][1]+(self.figure.xyrange[1][1]%self.xticks), self.xticks)])
-			self.figure.ax.yaxis.set_ticks([x for x in range(self.figure.xyrange[1][0]+(self.figure.xyrange[1][1]%self.yticks), self.figure.xyrange[1][1]+(self.figure.xyrange[1][1]%self.yticks), self.yticks)])
+			elif self.ticks is None:
+				self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
+				self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
+				if self.minorticks is not None:
+					self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xminorticks))
+					self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.yminorticks))
+				else:
+					self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.minorticks))
+					self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.minorticks))
+				self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
+				self.figure.ax.xaxis.set_ticks([x for x in range(self.figure.xyrange[0][0]+(self.figure.xyrange[1][1]%self.xticks), self.figure.xyrange[0][1]+(self.figure.xyrange[1][1]%self.xticks), self.xticks)])
+				self.figure.ax.yaxis.set_ticks([x for x in range(self.figure.xyrange[1][0]+(self.figure.xyrange[1][1]%self.yticks), self.figure.xyrange[1][1]+(self.figure.xyrange[1][1]%self.yticks), self.yticks)])
 
-		if self.top:
-			self.figure.ax.xaxis.set_label_position('top')
+			if self.top:
+				self.figure.ax.xaxis.set_label_position('top')
 
-		if self.origin:
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
-			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks().tolist()]
-			self.figure.ax.set_yticklabels(ylabels)
-			self.figure.ax.set_xticklabels(xlabels)
+			if self.origin:
+				ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
+				xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks().tolist()]
+				self.figure.ax.set_yticklabels(ylabels)
+				self.figure.ax.set_xticklabels(xlabels)
 		else:
 			xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
 			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]

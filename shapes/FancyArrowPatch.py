@@ -14,6 +14,7 @@ class FancyArrowPatch:
 		self.mutation_scale = mutation_scale
 		self.mplprops = mplprops
 		self.figure = figure
+		print self.mplprops
 
 		fancyArrow = patches.FancyArrowPatch(posA, posB, path, arrowstyle, connectionstyle, mutation_scale = self.mutation_scale, lw=lw, **self.mplprops)
 		self.matplotlib_obj = fancyArrow

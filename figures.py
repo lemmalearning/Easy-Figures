@@ -20,17 +20,20 @@ class Figures:
 	"""
 		Object to hold multiple shapes and objects.
 	"""
+
+	head_len = 14.0
+	head_width = 5.0
 	def __init__(self, xyrange=None, width=200, height=200, bgcolor='#f0feffff', padding=50):
 		"""
 			__init__ function for Figures class.
-        	Args:
+			Args:
 				xyrange (Optional[List[List(float), List(float)]]): The x and y minimum and maximum represnted by
 					[[xmin, xmax], [ymin, ymax]]. Default is None
 				width (Optional[int]): The width of the image in pixels. Default is 200 px.
 				height (Optional[int]): The heigt of the image in pixels. Default is 200 px.
 				bgcolor (Optional[str]): The color of the background (matplotlib string, or hex). Default is '#f0feffff'
 				padding (Optional[int]): Padding in pixels around the image. Default is 50 px
-        """
+		"""
 		self.fig, self.ax = plt.subplots()
 		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
@@ -48,8 +51,8 @@ class Figures:
 
 		# TODO: Move to __export__
 		if xyrange is not None:
-			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/self.width
-			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/self.height
+			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/(self.width-20)
+			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/(self.height-20)
 			self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
@@ -185,6 +188,27 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
+	def get_ax_size(self):
+		print type(self.ax.spines['left']), self.ax.spines['left'].get_path(),self.ax.spines['bottom'].get_bounds()
+		for i in dir(self.ax.spines['left']):
+			print i
+		print self.ax.spines['right'].get_bounds()
+		print self.ax.spines['right'].get_path()
+		print self.ax.spines['right'].get_window_extent()
+		print self.ax.spines['right'].get_verts()
+		print self.ax.spines['right'].get_visible()
+		print self.ax.spines['right'].have_units()
+		#bbox = self.ax.spines.get_window_extent().transformed(self.fig.dpi_scale_trans.inverted())
+		#width, height = bbox.width, bbox.height
+		#in2px = lambda i: ((1/(72/.75)) * i)
+		#print width, height, self.ax.spines.get_bounds()
+
+		#print in2px(width), in2px(height)
+		#width *= self.fig.dpi
+		#height *= self.fig.dpi
+		#print width, height
+		return 800, 800
+
 
 	############################################################################
 	#							SHAPE DEFINITIONS
@@ -194,7 +218,7 @@ class Figures:
 	def addAxis(self, hideAxis=False, grid=True, arrows=True, color='black', lw=1.5, minorGrid=True, label=True, xlabel='x', ylabel='y', mplprops={}):
 		"""
 			addAxis - Adds the axis 'shape' to the Figures.
-		    Args:
+			Args:
 				hideAxis (Optional[bool]): Whether or not to hide the axis; takes either True which sets it to the color of the axis, or a color which defines it as its own color. Default is False.
 				grid (Optional[bool]): Whether or not to display grids on major ticks. Default is False.
 				arrows (Optional[bool]): Whether or not to display dimension arrows. Default is True.
@@ -205,8 +229,8 @@ class Figures:
 				xlabel (Optional[str]): Label for the x-dimension. Default is 'x'.
 				ylabel (Optional[str]): Label for the y-dimension. Default is 'y'.
 				mplprops (Optional[dict]): Dictionary to pass directly to the matplotlib object. Default is {}.
-		    Returns:
-		        Axis.Axis object
+			Returns:
+				Axis.Axis object
 		"""
 		pixelSize = self.width
 		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, self)
@@ -216,7 +240,7 @@ class Figures:
 	def addPoint(self, xys, texts='\ ', pointsize=6, fontsize=12, color='black', latex=True, mplprops={}):
 		"""
 			addPoint - Adds a point 'shape' to the Figures.
-		    Args:
+			Args:
 				xys (List[float]): Whether or not to hide the axis; takes either True which sets it to the color of the axis, or a color which defines it as its own color. Default is False.
 				texts (Optional[str]): Text to display at point. Default is '\ '
 				pointsize (Optional[float]): Size of the point. Default is 6
@@ -224,8 +248,8 @@ class Figures:
 				color (Optional[str]):  Color of the axis. Default is 'black'.
 				latex (Optional[bool]): Whether or not to use LaTeX to render text. Default is True.
 				mplprops (Optional[dict]): Dictionary to pass directly to the matplotlib object. Default is {}.
-		    Returns:
-		        Point.Point object
+			Returns:
+				Point.Point object
 		"""
 		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
@@ -234,14 +258,14 @@ class Figures:
 	def addLine(self, pointA, pointB, lw=2, color='k', mplprops={}):
 		"""
 			addLine - Adds a line 'shape' to the Figures.
-		    Args:
+			Args:
 				pointA (List[float]): List or tuple, in x,y, of the first point.
 				pointB (List[float]): List or tuple, in x,y, of the second point.
 				lw (Optional[float]): Line width of the line. Default is 2.
 				color (Optional[str]): Color of the line. Default is 'k'
 				mplprops (Optional[dict]): Dictionary to pass directly to the matplotlib object. Default is {}.
-		    Returns:
-		        Line.Line object
+			Returns:
+				Line.Line object
 		"""
 		l = Line.Line(pointA, pointB, lw, color, mplprops, self)
 		self.drawOrder.append(l)
@@ -264,9 +288,9 @@ class Figures:
 		self.drawOrder.append(b)
 		return b
 
-	def addPolygon(self, vertices, lw=2, mplprops={}):
+	def addPolygon(self, vertices, lw=2, fill=False, mplprops={}):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, lw, mplprops, self)
+		polygon = Polygon.Polygon(vertices, lw, fill, mplprops, self)
 		self.drawOrder.append(polygon)
 		return polygon
 
@@ -303,14 +327,49 @@ class Figures:
 		self.drawOrder.append(wedge)
 		return wedge
 
-	def addArrow(self, start, end, lw=2, headWidth=0.1, mplprops={}, **kwargs):
+	def addArrow(self, start, end, lw=25, headWidth=30, headLength=70, mplprops={}, **kwargs):
+		# x0,y0 start
+		# x1,y1 end
+		# xt,yt headlength point
+		# d distance
+		# dt headlength
+		# k slope
+		# l -1/k
+		# l0 point 1
+		# l1 point 2
+		# Everything until otherwise mentioned is in pixels
+		if isinstance(start, list) or isinstance(start, tuple):
+			start = np.matrix(start)
+		if isinstance(end, list) or isinstance(end, tuple):
+			end = np.matrix(end)
+
+		start = self.unit2px_c(start)
+		end = self.unit2px_c(end)
+		v = end-start
+		d = np.linalg.norm(v)
+		head_len = self.head_len
+		head_width = self.head_width
+		t = head_len/d
+		p_t = t*start + (1-t)*end
+		v_norm = math.sqrt(v[0,0]**2+v[0,1]**2)
+		l_1 = p_t + np.matrix([-v[0, 1], +v[0, 0]])/v_norm*head_width
+		l_2 = p_t + np.matrix([+v[0, 1], -v[0, 0]])/v_norm*head_width
+		p_t0 = (t-.01)*start + (1.01-t)*end # One pixel into the triangle to avoid any pixel breaks
+		self.addPolygon([self.px2unit_c(l_1).tolist()[0], self.px2unit_c(end).tolist()[0], self.px2unit_c(l_2).tolist()[0]], fill='k', mplprops={'fc':'k'})
+		self.addLine(self.px2unit_c(start).tolist()[0], self.px2unit_c(p_t0).tolist()[0])
+
+
+		"""
 		if 'arrowstyle' in kwargs:
-			self.addFancyArrow(posA=[start[0],start[1]], posB=[end[0],end[1]], lw=lw, path=None, arrowstyle=kwargs['arrowstyle'], connectionstyle=kwargs['connectionstyle'], mutation_scale=lw*5, mplprops=mplprops)
+			print 'fancy'
+			#self.addFancyArrow(posA=start, posB=end, lw=lw, path=None,arrowstyle=kwargs['arrowstyle'],connectionstyle=kwargs['connectionstyle'],mutation_scale=lw*5,mplprops=mplprops)
 
 		else:
-			arrow = Arrow.Arrow([start[0],start[1]], [end[0]-start[0],end[1]-start[1]], lw, headWidth, mplprops, self)
-			self.drawOrder.append(arrow)
+			print 'normal'
+			#arrow = Arrow.Arrow(start, end, lw, headWidth, headLength, mplprops, self)
+			#self.drawOrder.append(arrow)
 			return arrow
+		"""
 
 	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mutation_scale=3, mplprops={}):
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle, connectionstyle, mplprops, mutation_scale, self)
@@ -320,6 +379,55 @@ class Figures:
 	############################################################################
 	#							HELPER DEFINITIONS
 	############################################################################
+
+	def unit2px(self, i, dim):
+		"""
+			Converts units to pixel
+			Args:
+				i (int): Number of pixels
+				dim (str): dimension
+			Returns:
+				(float) number of units
+
+		"""
+		return self.UNITS_PER_PIXEL_x*i if dim=='x' else self.UNITS_PER_PIXEL_y*i
+
+	def px2unit(self, i, dim):
+		"""
+			Converts units to pixel
+			Args:
+				i (int): Number of pixels
+				dim (str): dimension
+			Returns:
+				(float) number of units
+
+		"""
+		return self.UNITS_PER_PIXEL_x*i if dim=='x' else self.UNITS_PER_PIXEL_y*i
+
+	def px2unit_c(self, p):
+		"""
+			Converts units to pixel
+			Args:
+				p (Tuple[float]): x and y coord in units
+			Returns:
+				(Tuple[float]) x and y coorfd in pixels
+
+		"""
+		return np.matrix([p[0,0]*self.UNITS_PER_PIXEL_x, p[0,1]*self.UNITS_PER_PIXEL_y])
+
+	def unit2px_c(self, p):
+		"""
+			Converts pixels to units
+			Args:
+				p (Tuple[float]): x and y coord in pixel
+			Returns:
+				(Tuple[float]) x and y coorfd in units
+
+		"""
+		return np.matrix([p[0,0]*(1.0/self.UNITS_PER_PIXEL_x), p[0,1]*(1.0/self.UNITS_PER_PIXEL_y)])
+
+	import matplotlib.pyplot as plt
+
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
 		if isSide:
