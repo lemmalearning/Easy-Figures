@@ -188,27 +188,6 @@ class Figures:
 
 		self.fig.set_size_inches((width_in, height_in))
 
-	def get_ax_size(self):
-		print type(self.ax.spines['left']), self.ax.spines['left'].get_path(),self.ax.spines['bottom'].get_bounds()
-		for i in dir(self.ax.spines['left']):
-			print i
-		print self.ax.spines['right'].get_bounds()
-		print self.ax.spines['right'].get_path()
-		print self.ax.spines['right'].get_window_extent()
-		print self.ax.spines['right'].get_verts()
-		print self.ax.spines['right'].get_visible()
-		print self.ax.spines['right'].have_units()
-		#bbox = self.ax.spines.get_window_extent().transformed(self.fig.dpi_scale_trans.inverted())
-		#width, height = bbox.width, bbox.height
-		#in2px = lambda i: ((1/(72/.75)) * i)
-		#print width, height, self.ax.spines.get_bounds()
-
-		#print in2px(width), in2px(height)
-		#width *= self.fig.dpi
-		#height *= self.fig.dpi
-		#print width, height
-		return 800, 800
-
 
 	############################################################################
 	#							SHAPE DEFINITIONS
