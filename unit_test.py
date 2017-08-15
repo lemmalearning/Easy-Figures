@@ -79,20 +79,15 @@ def unit_test():
 		f.addText((0,1), "Or plain text!", latex=False, color='green', fontsize=18)
 
 	# ARROW #
-	def arrow(f):
-		"""
-		axis = f.addAxis(arrows=True, grid=True, minorGrid='green', xlabel='x', ylabel='y')
-		axis.Ticks(fontsize=12, origin=False, top=True, xticks=5, yticks=6, xminorticks=2, yminorticks=1)
-		f.addArrow([0,0], [1,1], color='k', headWidth=0.05, width=0.005, lw=1)
-		"""
-		axis = f.addAxis(arrows=True, grid=True, minorGrid='green', xlabel='x', ylabel='y')
-		f.addArrow([4,2], [8,60])
-		"""
-		f2.addArrow([0,0.2], [1,0.2+1], color='k', headWidth=0.05, width=0.005, lw=1)
-		f2.addArrow([1.08,1.15], [1.08-1,1.15-1], color='k', headWidth=0.05, width=0.005, lw=1)
+	def arrow(f1):
+		f1.addArrow((-0.06,0.06), (-0.06 + 0.5,0.06 + 0.5), headWidth=0.05, lw=1)
+		f1.addArrow((0,0), (1.5,1.5), headWidth=0.05, lw=1)
+		f1.addArrow((0.1,-0.1), (0.1+2,-0.1+2), headWidth=0.05, lw=1)
 
-		f2.addArrow((-0.4,0.45), (-0.4+0.35, 0.45-0.25), color='k', lw=0.5,  arrowstyle='->', connectionstyle='arc3, rad=2')
-		"""
+		f1.addText((0.5, 0.85), ('a'), fontsize=13)
+		f1.addText((1.6, 1.8), ('b'), fontsize=13)
+		f1.addText((2, 1.2), ('a') + '+' + ('b'), fontsize=13)
+		f1.addArrow((0.2,-0.25), (0.2 + 2.05,-0.25+2.05), arrowstyle='|-|', connectionstyle='bar', lw=0.35)
 	# WEDGE #
 	def wedge(f):
 		for x in range(0,8):
@@ -122,7 +117,8 @@ def unit_test():
 
 	def test(func, funcName, silent=False):
 		import os
-		f = figures.Figures([[0, 10],[0, 100]], width=800, height=800)
+		#f = figures.Figures([[0, 10],[0, 100]], width=800, height=800)
+		f = figures.Figures([[-.5,2.6], [-.5, 2.6]], width=200, height=200)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))
@@ -146,7 +142,7 @@ def unit_test():
 	if sys.argv[1] == 'all' or len(sys.argv) == 1:
 		for func in list_funs:
 			test(func, func.__name__)
-	elif sys.argv[1] == 'silent':
+	elif 'silent' in sys.argv:
 		for func in sys.argv[2:]:
 			test(locals()[func], func, silent=True)
 	else:

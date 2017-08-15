@@ -307,51 +307,17 @@ class Figures:
 		return wedge
 
 	def addArrow(self, start, end, lw=25, headWidth=30, headLength=70, mplprops={}, **kwargs):
-		# x0,y0 start
-		# x1,y1 end
-		# xt,yt headlength point
-		# d distance
-		# dt headlength
-		# k slope
-		# l -1/k
-		# l0 point 1
-		# l1 point 2
-		# Everything until otherwise mentioned is in pixels
-		if isinstance(start, list) or isinstance(start, tuple):
-			start = np.matrix(start)
-		if isinstance(end, list) or isinstance(end, tuple):
-			end = np.matrix(end)
-
-		start = self.unit2px_c(start)
-		end = self.unit2px_c(end)
-		v = end-start
-		d = np.linalg.norm(v)
-		head_len = self.head_len
-		head_width = self.head_width
-		t = head_len/d
-		p_t = t*start + (1-t)*end
-		v_norm = math.sqrt(v[0,0]**2+v[0,1]**2)
-		l_1 = p_t + np.matrix([-v[0, 1], +v[0, 0]])/v_norm*head_width
-		l_2 = p_t + np.matrix([+v[0, 1], -v[0, 0]])/v_norm*head_width
-		p_t0 = (t-.01)*start + (1.01-t)*end # One pixel into the triangle to avoid any pixel breaks
-		self.addPolygon([self.px2unit_c(l_1).tolist()[0], self.px2unit_c(end).tolist()[0], self.px2unit_c(l_2).tolist()[0]], fill='k', mplprops={'fc':'k'})
-		self.addLine(self.px2unit_c(start).tolist()[0], self.px2unit_c(p_t0).tolist()[0])
-
-
-		"""
 		if 'arrowstyle' in kwargs:
-			print 'fancy'
-			#self.addFancyArrow(posA=start, posB=end, lw=lw, path=None,arrowstyle=kwargs['arrowstyle'],connectionstyle=kwargs['connectionstyle'],mutation_scale=lw*5,mplprops=mplprops)
+			self.addFancyArrow(
+				posA=start, posB=end, lw=lw, path=None, arrowstyle=kwargs['arrowstyle'],
+				connectionstyle=kwargs['connectionstyle'],mutation_scale=lw*5,mplprops=mplprops
+			)
 
 		else:
-			print 'normal'
-			#arrow = Arrow.Arrow(start, end, lw, headWidth, headLength, mplprops, self)
-			#self.drawOrder.append(arrow)
-			return arrow
-		"""
+			return Arrow.Arrow(start, end, headWidth, headLength, lw, mplprops, self)
 
 	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mutation_scale=3, mplprops={}):
-		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle, connectionstyle, mplprops, mutation_scale, self)
+		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)
 		self.drawOrder.append(fancyArrow)
 		return fancyArrow
 
