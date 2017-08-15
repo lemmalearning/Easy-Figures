@@ -65,7 +65,7 @@ def unit_test():
 	# AXIS #
 	def axis(f):
 		axis = f.addAxis(arrows=True, grid=True, minorGrid='green', xlabel='x', ylabel='y')
-		axis.Ticks(fontsize=12, origin=False, top=True, xticks=5, yticks=6, xminorticks=2, yminorticks=1)
+		axis.Ticks(fontsize=12, origin=False, top=True, xticks=7, yticks=2, xminorticks=2, yminorticks=1)
 
 	# POINT #
 	def point(f):
@@ -79,15 +79,24 @@ def unit_test():
 		f.addText((0,1), "Or plain text!", latex=False, color='green', fontsize=18)
 
 	# ARROW #
-	def arrow(f1):
-		f1.addArrow((-0.06,0.06), (-0.06 + 0.5,0.06 + 0.5), headWidth=0.05, lw=1)
-		f1.addArrow((0,0), (1.5,1.5), headWidth=0.05, lw=1)
-		f1.addArrow((0.1,-0.1), (0.1+2,-0.1+2), headWidth=0.05, lw=1)
+	def arrow(f2):
+		v1 = np.matrix([(0.55,0.8), (0.55 + 0.5,0.8 + 0.5)])
+		v2 = np.matrix([(-0.05,0.2), (-0.05 + 0.62, 0.2 + 0.62)])
+		print v1
+		print v2
+		print v1-v2
+		print v2-v1
 
-		f1.addText((0.5, 0.85), ('a'), fontsize=13)
-		f1.addText((1.6, 1.8), ('b'), fontsize=13)
-		f1.addText((2, 1.2), ('a') + '+' + ('b'), fontsize=13)
-		f1.addArrow((0.2,-0.25), (0.2 + 2.05,-0.25+2.05), arrowstyle='|-|', connectionstyle='bar', lw=0.35)
+		f2.addArrow(v1[0].tolist()[0], v1[1].tolist()[0], headWidth=0.05,  lw=1)
+
+		f2.addArrow((1.08,1.15), (1.08-1,1.15-1),  headWidth=0.05,  lw=1)
+		f2.addText((1.16, 1.48), ('a'), fontsize=13)
+		f2.addText((0.1, 0.04),('b'), fontsize=13)
+		f2.addText((-.4,0.8), ('a') + '-' + ('b'), fontsize=13)
+		f2.addArrow(v2[0].tolist()[0], v2[1].tolist()[0],  arrowstyle='|-|', connectionstyle='bar', lw=0.35)
+		#f2.addFancyArrow(posA=(v1-v2)[0].tolist()[0], posB=(v1-v2)[1].tolist()[0], arrowstyle='->', lw=0.5, mplprops={'connectionstyle':'arc, rad=0.9'})
+		print (v1-v2)
+
 	# WEDGE #
 	def wedge(f):
 		for x in range(0,8):
@@ -110,15 +119,15 @@ def unit_test():
 		f.__draw_shapes__()
 		s = f.__export__()
 		f = open('images/{}test.svg'.format(a), "w+")
-		f.write(s)
+		f.write(s.encode('ascii', 'ignore'))
 		f.flush()
 		f.close()
 
 
 	def test(func, funcName, silent=False):
 		import os
-		#f = figures.Figures([[0, 10],[0, 100]], width=800, height=800)
-		f = figures.Figures([[-.5,2.6], [-.5, 2.6]], width=200, height=200)
+		f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
+		#f = figures.Figures([[-1,2.1],[-1,2.1]], width=200, height=200)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))

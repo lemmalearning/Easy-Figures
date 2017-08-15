@@ -114,14 +114,15 @@ class Axis:
 
 			head_width_x = 5*self.figure.UNITS_PER_PIXEL_y
 			head_width_y = 5*self.figure.UNITS_PER_PIXEL_x
+			print xmin, xmax, ymin, ymax
 
 			self.figure.ax.arrow(
-				0,0, xmax+.053, 0, lw=self.lw,
+				0,0, xmax+(self.figure.px2unit(5, 'x')), 0, lw=self.lw,
 				head_width=head_width_x, head_length=head_len_x, color=self.color,
 				length_includes_head=True, clip_on=False
 			)
 			self.figure.ax.arrow(
-				0,0, 0, ymax+.053, lw=self.lw,
+				0,0, 0, 10, lw=self.lw,
 				head_width=head_width_y, head_length=head_len_y, color=self.color,
 				length_includes_head=True, clip_on=False
 			)
@@ -166,7 +167,7 @@ class Axis:
 			elif self.ticks is None:
 				self.figure.ax.xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.xticks))
 				self.figure.ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(self.yticks))
-				if self.minorticks is not None:
+				if self.minorticks is None:
 					self.figure.ax.xaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.xminorticks))
 					self.figure.ax.yaxis.set_minor_locator(matplotlib.ticker.MultipleLocator(self.yminorticks))
 				else:
@@ -184,9 +185,9 @@ class Axis:
 				xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks().tolist()]
 				self.figure.ax.set_yticklabels(ylabels)
 				self.figure.ax.set_xticklabels(xlabels)
-		else:
-			xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
+			else:
+				xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
+				ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
 
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)

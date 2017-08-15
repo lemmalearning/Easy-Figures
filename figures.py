@@ -335,7 +335,7 @@ class Figures:
 				(float) number of units
 
 		"""
-		return self.UNITS_PER_PIXEL_x*i if dim=='x' else self.UNITS_PER_PIXEL_y*i
+		return (1.0/self.UNITS_PER_PIXEL_x)*i if dim=='x' else (1.0/self.UNITS_PER_PIXEL_y)*i
 
 	def px2unit(self, i, dim):
 		"""
