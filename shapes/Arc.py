@@ -4,7 +4,7 @@ import matplotlib.patches as patches
 import numpy as np
 
 class Arc:
-    def __init__(self, xy, width, height, angle, theta1, theta2, lw, mplprops, figure):
+    def __init__(self, xy, width, height, lw, angle, theta1, theta2, mplprops, figure):
         self.xy = xy
         self.width = width
         self.height = height

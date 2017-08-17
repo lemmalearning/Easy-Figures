@@ -96,6 +96,9 @@ def unit_test():
 		#f2.addFancyArrow(posA=(v1-v2)[0].tolist()[0], posB=(v1-v2)[1].tolist()[0], arrowstyle='->', lw=0.5, mplprops={'connectionstyle':'arc, rad=0.9'})
 		print (v1-v2)
 
+	def arc(f):
+		arc = f.addArc(xy=(0,0), width=5, height=5,lw=2, theta1=0.0, theta2=180.0)
+
 	# WEDGE #
 	def wedge(f):
 		for x in range(0,8):

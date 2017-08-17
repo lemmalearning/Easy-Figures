@@ -297,6 +297,7 @@ class Figures:
 
 	def addArc(self, xy=(0,0), width=0, height=0, lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
 		pixelSize=self.width
+		print'a'
 		arc = Arc.Arc(xy, width, height, lw, angle, theta1, theta2, mplprops, self)
 		self.drawOrder.append(arc)
 		return arc
