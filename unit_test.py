@@ -111,6 +111,7 @@ def unit_test():
 	# LINE #
 	def line(f):
 		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
+		axis.Ticks(ticks=4, yminorticks=2, xminorticks=4)
 		f.addLine([5,10], [5,5], lw=5, mplprops={})
 
 
@@ -147,7 +148,7 @@ def unit_test():
 	def test(func, funcName, silent=False):
 		import os
 		#f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
-		f = figures.Figures([[-15,15 ], [ -15,15 ]], padding=100, width=800, height=800)
+		f = figures.Figures([[-15,15 ], [ -15,15 ]], padding=100, width=800, height=800, aspectRatio=2)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))

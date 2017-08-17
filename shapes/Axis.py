@@ -57,6 +57,8 @@ class Axis:
 		self.tickRan = True
 
 	def __draw__(self, zorder=1):
+		# set the aspect ratio
+		self.figure.ax.set_aspect(self.figure.aspectRatio)
 		# Modify the plot view to scale, remove axis, and center our shape
 		def adjust_spines(ax, spines):
 			for loc, spine in ax.spines.items():
@@ -159,7 +161,6 @@ class Axis:
 
 		if self.tickRan is True:
 			tick_props = [self.ticks, self.xticks, self.yticks, self.minorticks, self.xminorticks, self.yminorticks]
-			print tick_props
 			plt.gca().xaxis.set_major_locator(plt.MultipleLocator(self.xticks) if self.xticks is not False else plt.NullLocator())
 			plt.gca().xaxis.set_minor_locator(plt.MultipleLocator(self.xminorticks) if self.xminorticks is not False else plt.NullLocator())
 			plt.gca().yaxis.set_major_locator(plt.MultipleLocator(self.yticks) if self.yticks is not False else plt.NullLocator())
@@ -174,7 +175,6 @@ class Axis:
 					self.figure.ax.set_yticklabels(ylabels)
 					self.figure.ax.set_xticklabels(xlabels)
 				else:
-					print self.figure.ax.get_xticks().tolist(), self.figure.ax.get_yticks().tolist()
 					xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
 					ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
 

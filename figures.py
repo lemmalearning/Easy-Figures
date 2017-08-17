@@ -42,6 +42,7 @@ class Figures:
 		self.padding = padding
 		self.height = None
 		self.xyrange = xyrange
+		self.aspectRatio = aspectRatio
 		self.drawOrder = []
 		self.width = width
 		self.height = height
@@ -59,8 +60,8 @@ class Figures:
 
 		# TODO: Move to __export__
 		if xyrange is not None:
-			self.UNITS_PER_PIXEL_x = float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/(self.width-20)
-			self.UNITS_PER_PIXEL_y = float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/(self.height-20)
+			self.UNITS_PER_PIXEL_x =self.aspectRatio  * float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/(self.width-20)
+			self.UNITS_PER_PIXEL_y =self.aspectRatio  * float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/(self.height-20)
 			self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
