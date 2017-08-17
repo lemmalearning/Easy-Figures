@@ -112,6 +112,7 @@ def unit_test():
 	def line(f):
 		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
 		axis.Ticks(ticks=4, yminorticks=2, xminorticks=4)
+		f.addPolygon(([ 0, 0 ], [ 0, 5 ], [5, 0]), mplprops={'color':'red', 'ec':None})
 		f.addLine([5,10], [5,5], lw=5, mplprops={})
 
 
