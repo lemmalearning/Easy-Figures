@@ -16,6 +16,7 @@ import math
 import re
 from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
+from fractions import Fraction
 
 class Figures:
 	"""
@@ -24,7 +25,7 @@ class Figures:
 
 	head_len = 14.0
 	head_width = 5.0
-	def __init__(self, xyrange=None, aspectRatio=1, width=200, height=200, bgcolor='#f0feffff', padding=50):
+	def __init__(self, xyrange=[[-10,10],[-10,10]], aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
 		"""
 			__init__ function for Figures class.
 			Args:
@@ -42,7 +43,7 @@ class Figures:
 		self.padding = padding
 		self.height = None
 		self.xyrange = xyrange
-		self.aspectRatio = aspectRatio
+		self.aspectRatio = 1.0/aspectRatio
 		self.drawOrder = []
 		self.width = width
 		self.height = height
@@ -60,8 +61,10 @@ class Figures:
 
 		# TODO: Move to __export__
 		if xyrange is not None:
-			self.UNITS_PER_PIXEL_x =self.aspectRatio  * float(((0-self.xyrange[0][0]) + (self.xyrange[0][1])))/(self.width-20)
-			self.UNITS_PER_PIXEL_y =self.aspectRatio  * float(((0-self.xyrange[1][0]) + (self.xyrange[1][1])))/(self.height-20)
+			num, den = Fraction(aspectRatio).numerator, Fraction(aspectRatio).denominator
+			self.UNITS_PER_PIXEL_x = den * ((0.0-self.xyrange[0][0]) + self.xyrange[0][1]) / (self.width-20.0)
+			self.UNITS_PER_PIXEL_y = den * ((0.0-self.xyrange[1][0]) + self.xyrange[1][1]) / (self.width-20.0)
+			print self.UNITS_PER_PIXEL_x, self.UNITS_PER_PIXEL_y
 			self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 

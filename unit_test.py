@@ -149,7 +149,7 @@ def unit_test():
 	def test(func, funcName, silent=False):
 		import os
 		#f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
-		f = figures.Figures([[-15,15 ], [ -15,15 ]], padding=100, width=800, height=800, aspectRatio=2)
+		f = figures.Figures([[-15,15 ], [ -15,15 ]], padding=100, width=400, height=800, aspectRatio=.5)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))

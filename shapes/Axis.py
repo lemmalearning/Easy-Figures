@@ -134,7 +134,7 @@ class Axis:
 			)
 
 			if self.label:
-				x_dim = self.figure.addText((xmax, 25*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True,
+				x_dim = self.figure.addText((xmax+self.figure.px2unit(10, 'x'), 25*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True,
 					fontsize=15, valignment='top', halignment='right',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
