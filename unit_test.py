@@ -110,7 +110,7 @@ def unit_test():
 
 	# LINE #
 	def line(f):
-		f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
+		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
 		f.addLine([5,10], [5,5], lw=5, mplprops={})
 
 

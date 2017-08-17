@@ -49,16 +49,6 @@ class Figures:
 		self.ax.set_facecolor(bgcolor)
 		self.fig.patch.set_facecolor(bgcolor)
 
-		def figure_shit_out():
-			# Figure out the missing piece:
-			if aspectRatio is None:
-				return # if the height == width then padding all around. If the height > width
-			elif aspectRatio is 'auto':
-				return
-			elif width is 'auto':
-				return
-			elif height is 'auto':
-				return
 
 
 
