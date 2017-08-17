@@ -38,7 +38,7 @@ class Axis:
 		self.ticks 		= None
 		self.tickRan	= False
 
-	def Ticks(self, ticks=None, xticks=None, yticks=None, minorticks=None, xminorticks=None, yminorticks=None, fontsize=12, origin=False, top=True):
+	def Ticks(self, ticks=False, xticks=None, yticks=None, minorticks=False, xminorticks=None, yminorticks=None, fontsize=12, origin=False, top=True):
 		self.minorticks = minorticks
 		self.xminorticks = xminorticks
 		self.yminorticks = yminorticks
@@ -50,6 +50,9 @@ class Axis:
 			self.xticks = self.yticks = self.ticks
 		if self.minorticks is not None:
 			self.xminorticks = self.yminorticks = self.minorticks
+
+		if self.minorticks is None and self.ticks is not False:
+			self.minorticks = self.xminorticks = self.yminorticks = self.ticks/2.0
 
 		self.fontsize = fontsize
 		self.origin = origin

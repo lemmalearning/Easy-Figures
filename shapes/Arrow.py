@@ -36,7 +36,7 @@ class Arrow:
 		l_1 = p_t + np.matrix([-v[0, 1], +v[0, 0]])/v_norm*head_width
 		l_2 = p_t + np.matrix([+v[0, 1], -v[0, 0]])/v_norm*head_width
 		p_t0 = (t-.01)*start + (1.01-t)*end # One pixel into the triangle to avoid any pixel breaks
-		self.head = self.figure.addPolygon([self.figure.px2unit_c(l_1).tolist()[0], self.figure.px2unit_c(end).tolist()[0], self.figure.px2unit_c(l_2).tolist()[0]], fill='k', mplprops={'fc':'k'})
+		self.head = self.figure.addPolygon([self.figure.px2unit_c(l_1).tolist()[0], self.figure.px2unit_c(end).tolist()[0], self.figure.px2unit_c(l_2).tolist()[0]], mplprops={'color': 'k', 'fc':'k'})
 		self.line = self.figure.addLine(self.figure.px2unit_c(start).tolist()[0], self.figure.px2unit_c(p_t0).tolist()[0], lw=lw)
 
 	def __draw__(self, zorder=1):
