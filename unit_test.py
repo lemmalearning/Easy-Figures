@@ -1,6 +1,6 @@
 import figures, os, sys
 import numpy as np
-from sympy import sin
+
 
 def unit_test():
 	# TRIANGLE #
@@ -12,7 +12,7 @@ def unit_test():
 
 	# FUNCTION #
 	def function(f):
-		func = lambda x: np.sin(x)
+		func = lambda x: np.np.sin(x)
 		func2 = lambda x: x**2
 
 		f.addFunction(
@@ -45,16 +45,14 @@ def unit_test():
 	def polygon(f):
 		poly = f.addPolygon(
 			[
-				[8.5, 2.5],
-				[1.5, 6.1],
-				[7.2, 12.3],
-				[12.0, 12.3],
-				[15.4, 6.1]
+				[2, 3],
+				[9, 3],
+				[2, 10]
 			],
 			lw=3
 		)
-		poly.labelVertices(['a', 'b', 'c', 'd', 'e'])
-		poly.labelAngles([r'\alpha', r'\beta', r'\gamma', r'\delta', r'\epsilon'])
+		poly.labelVertices(['a', 'd', 'e'])
+		poly.labelAngles([r'\alpha',r'\delta', r'\epsilon'], arcs=['sq2uare', 2, 1])
 
 	# REGULAR POLYGON #
 	def regpoly(f):
@@ -64,8 +62,9 @@ def unit_test():
 
 	# AXIS #
 	def axis(f):
-		axis = f.addAxis(arrows=True, grid=True, minorGrid='green', xlabel='x', ylabel='y')
-		axis.Ticks(fontsize=12, origin=False, top=True, xticks=7, yticks=2, xminorticks=2, yminorticks=1)
+		axis = f.addAxis(hideAxis=False, minorGrid=True, arrows=True, color='black', lw=2)
+		#axis.Ticks(xticks=5, yticks=5, xminorticks=2, yminorticks=2, fontsize=12, origin=False, top=True)
+		axis.Ticks(ticks=False)
 
 	# POINT #
 	def point(f):
@@ -114,6 +113,47 @@ def unit_test():
 	def box(f):
 		f.addBox((0,0.3), (0,500), xlabel='Time (s)', ylabel='Velocity (m/s)', title='Velocity vs Time')
 
+
+
+
+
+	def asdf(f):
+		angleLabels = ['\\gamma', '\\alpha=\\frac{\\pi}{4}', '\\beta']
+
+		sideLabels = ['c', 'a', 'b=1']
+
+
+		angles = ['\\alpha', '\\beta', '\\gamma']
+		sides = ['c', 'a', 'b']
+		wa = 1
+		ws = 2
+
+		angle = np.pi/4
+		side = 1
+
+		if wa == 1:
+			if ws == 0:
+				c, alpha = side,angle
+				s1 = a = c*np.sin(alpha)
+				s2 = b = c*np.cos(alpha)
+			if ws == 1:
+				a, alpha = side,angle
+				s1 = b = a*cot(alpha)
+				s2 = c = a/np.sin(alpha)
+			if ws == 2:
+				b, alpha = side,angle
+				s1 = c = b/np.cos(alpha)
+				s2 = a = b*np.tan(alpha)
+
+		tri = f.addPolygon([ [0, 0], [ float(b)/side, 0 ], [ 0, float(a)/side ] ])
+		sideLabels = ['c', 'a', 'b']
+		sideLabels[ws] += '=' + str(side)
+		angleLabels = [r'\gamma', r'\alpha', r'\beta']
+		angleLabels[wa] += '=' + str(angle)
+		tri.labelVertices(['C', 'A', 'B'])
+		tri.labelOppositeSides(sideLabels)
+		tri.labelAngles(angleLabels, arcs=['Square', 1, 2]) # 'square' or 'SQUARE' or 'SqUaRe'
+
 	# WRITE #
 	def write(f, a=""):
 		f.__draw_shapes__()
@@ -126,8 +166,8 @@ def unit_test():
 
 	def test(func, funcName, silent=False):
 		import os
-		f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
-		#f = figures.Figures([[-1,2.1],[-1,2.1]], width=200, height=200)
+		#f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
+		f = figures.Figures([[-15,15 ], [ -15,15 ]], padding=100, width=800, height=800)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))

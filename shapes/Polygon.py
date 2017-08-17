@@ -138,8 +138,10 @@ class Polygon:
 					aa = [2*np.mean([ac, ab], axis=0)[0].tolist()[0], 2*np.mean([ac, ab], axis=0)[0].tolist()[0]]
 
 					verts = [self.vertices[i, :].tolist()[0], ab.tolist()[0], aa, ac.tolist()[0]]
+					print verts
 					cent = np.mean(verts, axis=0)
 					verts.sort(key=lambda q: np.arctan2(q[1]-cent[1],q[0]-cent[0]))
+					print verts
 					self.figure.addPolygon(verts, lw=1)
 
 				pmin = r_x + 4*self.figure.UNITS_PER_PT_x

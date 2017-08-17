@@ -1,6 +1,7 @@
 import matplotlib
  # Change font to Computer Modern (LaTeX font)
 matplotlib.rcParams['font.family'] = 'cmr10'; matplotlib.rcParams['mathtext.fontset'] = 'cm'
+matplotlib.rcParams['axes.unicode_minus'] = False
  # Change renderer so it doesn't use the GUI
 matplotlib.use('Svg')
 
@@ -371,8 +372,6 @@ class Figures:
 		"""
 		return np.matrix([p[0,0]*(1.0/self.UNITS_PER_PIXEL_x), p[0,1]*(1.0/self.UNITS_PER_PIXEL_y)])
 
-	import matplotlib.pyplot as plt
-
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
 		if isSide:
@@ -390,7 +389,7 @@ class Figures:
 			vertexC = [x,y,1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, None, mplprops, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
 
@@ -410,6 +409,6 @@ class Figures:
 			vertexC = [C+xy[0], 0+xy[1], 1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, mplprops, figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, None, mplprops, figure=self)
 			self.drawOrder.append(triangle)
 			return triangle
