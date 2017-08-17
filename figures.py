@@ -24,7 +24,7 @@ class Figures:
 
 	head_len = 14.0
 	head_width = 5.0
-	def __init__(self, xyrange=None, width=200, height=200, bgcolor='#f0feffff', padding=50):
+	def __init__(self, xyrange=None, aspectRatio=1, width=200, height=200, bgcolor='#f0feffff', padding=50):
 		"""
 			__init__ function for Figures class.
 			Args:
@@ -36,7 +36,6 @@ class Figures:
 				padding (Optional[int]): Padding in pixels around the image. Default is 50 px
 		"""
 		self.fig, self.ax = plt.subplots()
-		#self.fig, self.ax = plt.subplots(figsize=(20, 10))
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
 		self.tight_fit = True
@@ -49,6 +48,24 @@ class Figures:
 		self.bgcolor = bgcolor
 		self.ax.set_facecolor(bgcolor)
 		self.fig.patch.set_facecolor(bgcolor)
+
+		def figure_shit_out():
+			# Figure out the missing piece:
+			if aspectRatio is None:
+				return # if the height == width then padding all around. If the height > width
+			elif aspectRatio is 'auto':
+				return
+			elif width is 'auto':
+				return
+			elif height is 'auto':
+				return
+
+
+
+		"""
+		aspect ratio is length of y unit by x unit in pixels
+		aspect ratio is one by default, if 'auto' then do what you were doing where image fills box. If it's one and the width/height != 1 then the x or y needs to be shorter than the actual image
+		"""
 
 		# TODO: Move to __export__
 		if xyrange is not None:
@@ -297,7 +314,6 @@ class Figures:
 
 	def addArc(self, xy=(0,0), width=0, height=0, lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
 		pixelSize=self.width
-		print'a'
 		arc = Arc.Arc(xy, width, height, lw, angle, theta1, theta2, mplprops, self)
 		self.drawOrder.append(arc)
 		return arc

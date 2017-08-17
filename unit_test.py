@@ -97,6 +97,7 @@ def unit_test():
 		print (v1-v2)
 
 	def arc(f):
+		axis = f.addAxis(hideAxis=False, minorGrid=True, arrows=True, color='black', lw=2)
 		arc = f.addArc(xy=(0,0), width=5, height=5,lw=2, theta1=0.0, theta2=180.0)
 
 	# WEDGE #
@@ -109,7 +110,8 @@ def unit_test():
 
 	# LINE #
 	def line(f):
-		f.addLine([5,10], [5,5], mplprops={'ls':'dotted'})
+		f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
+		f.addLine([5,10], [5,5], lw=5, mplprops={})
 
 
 	# BOX #
@@ -121,41 +123,16 @@ def unit_test():
 
 
 	def asdf(f):
-		angleLabels = ['\\gamma', '\\alpha=\\frac{\\pi}{4}', '\\beta']
+		alpha = pi/3
+		r = 2
+		W = 5
+		fig = figures.Figures([[-W, W],[-W, W]], width=300, height=300)
+		axis = fig.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
+		axis.Ticks(ticks=2, minorticks=1)
 
-		sideLabels = ['c', 'a', 'b=1']
-
-
-		angles = ['\\alpha', '\\beta', '\\gamma']
-		sides = ['c', 'a', 'b']
-		wa = 1
-		ws = 2
-
-		angle = np.pi/4
-		side = 1
-
-		if wa == 1:
-			if ws == 0:
-				c, alpha = side,angle
-				s1 = a = c*np.sin(alpha)
-				s2 = b = c*np.cos(alpha)
-			if ws == 1:
-				a, alpha = side,angle
-				s1 = b = a*cot(alpha)
-				s2 = c = a/np.sin(alpha)
-			if ws == 2:
-				b, alpha = side,angle
-				s1 = c = b/np.cos(alpha)
-				s2 = a = b*np.tan(alpha)
-
-		tri = f.addPolygon([ [0, 0], [ float(b)/side, 0 ], [ 0, float(a)/side ] ])
-		sideLabels = ['c', 'a', 'b']
-		sideLabels[ws] += '=' + str(side)
-		angleLabels = [r'\gamma', r'\alpha', r'\beta']
-		angleLabels[wa] += '=' + str(angle)
-		tri.labelVertices(['C', 'A', 'B'])
-		tri.labelOppositeSides(sideLabels)
-		tri.labelAngles(angleLabels, arcs=['Square', 1, 2]) # 'square' or 'SQUARE' or 'SqUaRe'
+		fig.addCircle(xy=[0,0], radius=r, lw=1)
+		fig.addArc(xy=(0,0), width=2*r, height=2*r, lw=3, theta1=0.0, theta2=90.0)
+		fig.addLine([-2, 2], [0, 2], lw=3)
 
 	# WRITE #
 	def write(f, a=""):
