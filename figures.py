@@ -203,7 +203,7 @@ class Figures:
 	############################################################################
 
 
-	def addAxis(self, hideAxis=False, grid=True, arrows=True, color='black', lw=1.5, minorGrid=True, label=True, xlabel='x', ylabel='y', mplprops={}):
+	def addAxis(self, hideAxis=False, grid=True, arrows=True, color='black', lw=1, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}):
 		"""
 			addAxis - Adds the axis 'shape' to the Figures.
 			Args:

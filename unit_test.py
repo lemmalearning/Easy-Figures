@@ -82,11 +82,12 @@ def unit_test():
 		#arrow = f.addArrow((0,0), (5, 5), color='r', lw=1)
 		#farrow = f.addArrow((0,0), (5, 5), color='b', lw=1, arrowstyle='|-|', connectionstyle='arc')
 		r=2
+		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
+
 		bbox = f.addRectangle_rounded([-2, -4], [5, 6], ec='green', r=r)
 
 		#bbox = f.addRectangle_rounded([-2, -4], [5, 6], fc='red', ec='green', r=0)
-		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
-		axis.Ticks(ticks=1, minorticks=.5)
+		axis.Ticks(ticks=1, minorticks=1)
 
 
 	def arc(f):

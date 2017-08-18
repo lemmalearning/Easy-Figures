@@ -109,11 +109,6 @@ class Axis:
 			plt.axis('off')
 			return
 
-		if self.grid is not False:
-			self.figure.ax.grid(which='major', color='k' if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=0.5)
-		if self.minorGrid is not False:
-			self.figure.ax.grid(which='minor', color='k' if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
-
 		if self.arrows:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
@@ -161,37 +156,50 @@ class Axis:
 		####### DRAW LABELS #######
 		# Control ticks
 
+		if self.tickRan == False:
+			self.ticks = self.xticks = self.yticks = 1
+			self.minorticks = self.xminorticks = self.yminorticks = 1
+			self.origin=False
+			self.top=True
+			self.fontsize=12
+		if isinstance(self.ticks, int) and isinstance(self.minorticks, int) and self.ticks > self.minorticks:
+			self.minorGrid = True
 
-		if self.tickRan is True:
-			tick_props = [self.ticks, self.xticks, self.yticks, self.minorticks, self.xminorticks, self.yminorticks]
-			plt.gca().xaxis.set_major_locator(plt.MultipleLocator(self.xticks) if self.xticks is not False else plt.NullLocator())
-			plt.gca().xaxis.set_minor_locator(plt.MultipleLocator(self.xminorticks) if self.xminorticks is not False else plt.NullLocator())
-			plt.gca().yaxis.set_major_locator(plt.MultipleLocator(self.yticks) if self.yticks is not False else plt.NullLocator())
-			plt.gca().yaxis.set_minor_locator(plt.MultipleLocator(self.yminorticks) if self.yminorticks is not False else plt.NullLocator())
+		tick_props = [self.ticks, self.xticks, self.yticks, self.minorticks, self.xminorticks, self.yminorticks]
+		plt.gca().xaxis.set_major_locator(plt.MultipleLocator(self.xticks) if self.xticks is not False else plt.NullLocator())
+		plt.gca().xaxis.set_minor_locator(plt.MultipleLocator(self.xminorticks) if self.xminorticks is not False else plt.NullLocator())
+		plt.gca().yaxis.set_major_locator(plt.MultipleLocator(self.yticks) if self.yticks is not False else plt.NullLocator())
+		plt.gca().yaxis.set_minor_locator(plt.MultipleLocator(self.yminorticks) if self.yminorticks is not False else plt.NullLocator())
 
-			self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
+		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
-			if any([True for tick in tick_props if tick!=False]):
-				if self.origin:
-					ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
-					xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks().tolist()]
-					self.figure.ax.set_yticklabels(ylabels)
-					self.figure.ax.set_xticklabels(xlabels)
-				else:
-					xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
-					ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
-
+		if any([True for tick in tick_props if tick!=False]):
+			if self.origin:
+				ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
+				xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks().tolist()]
 				self.figure.ax.set_yticklabels(ylabels)
 				self.figure.ax.set_xticklabels(xlabels)
+			else:
+				xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
+				ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
 
-				for label in self.figure.ax.xaxis.get_ticklabels():
-					label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
+			self.figure.ax.set_yticklabels(ylabels)
+			self.figure.ax.set_xticklabels(xlabels)
 
-				for label in self.figure.ax.yaxis.get_ticklabels():
-					label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
+			for label in self.figure.ax.xaxis.get_ticklabels():
+				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
 
-			if self.top:
-				self.figure.ax.xaxis.set_label_position('top')
+			for label in self.figure.ax.yaxis.get_ticklabels():
+				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
+
+		if self.top:
+			self.figure.ax.xaxis.set_label_position('top')
+
+		if self.grid is not False:
+			self.figure.ax.grid(which='major', color='k' if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=0.5)
+		if self.minorGrid is not False:
+			self.figure.ax.grid(which='minor', color='k' if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
+
 
 		####### END DRAW LABELS #######
 
