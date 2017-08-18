@@ -17,6 +17,7 @@ import re
 from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 from fractions import Fraction
+from six import string_types
 
 class Figures:
 	"""
@@ -25,17 +26,39 @@ class Figures:
 
 	head_len = 14.0
 	head_width = 5.0
-	def __init__(self, xyrange=[[-10,10],[-10,10]], aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
+	def __init__(self, xyrange=None, aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
 		"""
 			__init__ function for Figures class.
 			Args:
 				xyrange (Optional[List[List(float), List(float)]]): The x and y minimum and maximum represnted by
 					[[xmin, xmax], [ymin, ymax]]. Default is None
 				width (Optional[int]): The width of the image in pixels. Default is 200 px.
-				height (Optional[int]): The heigt of the image in pixels. Default is 200 px.
+				height (Optional[int]): The height of the image in pixels. Default is 200 px.
 				bgcolor (Optional[str]): The color of the background (matplotlib string, or hex). Default is '#f0feffff'
 				padding (Optional[int]): Padding in pixels around the image. Default is 50 px
 		"""
+
+		if xyrange == None:
+			raise ValueError('xyrange must be specified explictly for figures')
+
+		unconstrained = 0
+		if isinstance(height, string_types):
+			height = height.lower()
+			if height == 'auto':
+				unconstrained += 1
+			else:
+				raise ValueError('Unknown value for height: ' + height)
+		if isinstance(width, string_types):
+			width = width.lower()
+			if width == 'auto':
+				unconstrained += 1
+			else:
+				raise ValueError('Unknown value for width: ' + width)
+
+		if unconstrained > 1:
+			raise ValueError('Underconstrained dimensions of figure')
+
+
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
@@ -60,8 +83,13 @@ class Figures:
 
 		# TODO: Move to __export__
 		num, den = Fraction(aspectRatio).numerator, Fraction(aspectRatio).denominator
-		self.UNITS_PER_PIXEL_x = num * ((0.0-self.xyrange[0][0]) + self.xyrange[0][1]) / (self.width-20.0)
-		self.UNITS_PER_PIXEL_y = den * ((0.0-self.xyrange[1][0]) + self.xyrange[1][1]) / (self.width-20.0)
+		val = self.width
+		if self.width == 'auto':
+			val = self.height
+			num, den = (den, num)
+
+		self.UNITS_PER_PIXEL_x = num * ((0.0-self.xyrange[0][0]) + self.xyrange[0][1]) / (val-20.0)
+		self.UNITS_PER_PIXEL_y = den * ((0.0-self.xyrange[1][0]) + self.xyrange[1][1]) / (val-20.0)
 		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
@@ -125,6 +153,20 @@ class Figures:
 			viewBox[3] = (maxY - minY)
 			s = re.sub(viewBoxReg, 'viewBox="' + ' '.join([str(x) for x in viewBox]) + '"', s)
 
+		if self.width == 'auto':
+			bb = self.ax.get_tightbbox(self.fig._cachedRenderer) #get_renderer()))
+
+			minX = math.floor(bb.x0)
+			maxX = math.ceil(bb.x1)
+
+			s = re.sub(r'width="[0-9]+pt"', 'width="%dpt"' % (maxX - minX), s)
+
+			viewBoxReg = r'viewBox="([0-9]+ [0-9]+ [0-9]+ [0-9]+)"';
+			viewBox = [int(x) for x in re.search(viewBoxReg, s).group(1).split(' ')]
+			viewBox[0] = viewBox[2] - maxX
+			viewBox[2] = (maxX - minX)
+			s = re.sub(viewBoxReg, 'viewBox="' + ' '.join([str(x) for x in viewBox]) + '"', s)
+
 		return s
 
 	def __writeFile__(self, fileLocation, **kwargs):
@@ -157,7 +199,7 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def setPixelSize(self, height, width):
+	def setPixelSize(self, width, height):
 		"""Sets the pixel size of the figure.
 
 			Warning: Do NOT call this outside of the constructor
@@ -173,27 +215,25 @@ class Figures:
 
 		self.padding = px2in(self.padding)
 
-		if isinstance(width, str):
-			height_in = px2in(height)
-			width_in = height_in
-		else:
+		height_in = None
+		width_in = None
+
+		if not isinstance(width, string_types):
 			width_in = px2in(width)
-			height_in = width_in
+		if not isinstance(height, string_types):
+			height_in = px2in(height)
 
 		if height == 'auto':
-			self.height = height
 			self.tight_fit = False
 			#self.fig.set_tight_layout({ "pad": 1.08 })
 			height_in = 2*width_in
 		elif width == 'auto':
-			self.width = height
 			self.tight_fit = False
 			#self.fig.set_tight_layout({ "pad": 1.08 })
-			height_in = 2*height_in
+			width_in = 2*height_in
 		elif height != None:
 			self.tight_fit = False
 			#self.fig.set_tight_layout({ "pad": self.padding })
-			height_in = px2in(height)
 
 		self.fig.set_size_inches((width_in, height_in))
 
