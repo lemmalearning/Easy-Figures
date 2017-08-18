@@ -30,7 +30,7 @@ class FancyBox:
 		self.matplotlib_obj = patches.FancyBboxPatch(
 								(bb.xmin, bb.ymin),
 								abs(bb.width), abs(bb.height),
-                            	boxstyle=boxstyle,
+                            	boxstyle=boxstyle, fc=fc, ec=ec,
 								**mplprops
 							)
 

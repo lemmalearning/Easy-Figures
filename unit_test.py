@@ -82,7 +82,7 @@ def unit_test():
 		#arrow = f.addArrow((0,0), (5, 5), color='r', lw=1)
 		#farrow = f.addArrow((0,0), (5, 5), color='b', lw=1, arrowstyle='|-|', connectionstyle='arc')
 		r =0
-		bbox = f.addRectangle([3, 4], [9, 8], fc='blue', ec='green', style='round', r=r)
+		bbox = f.addRectangle([3, 4], [9, 8], fc='red', ec='green', style='round', r=r)
 		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
 		axis.Ticks(ticks=1, minorticks=.5)
 
