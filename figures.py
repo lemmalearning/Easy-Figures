@@ -329,8 +329,11 @@ class Figures:
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)
 		self.drawOrder.append(fancyArrow)
 		return fancyArrow
-	def addRectangle(self, ll_point, ur_point, r=0, fc='black', ec='black', style="square", mplprops={}):
-		FancyBBox = FancyBox.FancyBox([i+r for i in ll_point], [i-r for i in ur_point], fc, ec, style+',pad='+str(r), mplprops, self)
+
+	def addRectangle(self, ll_point, ur_point, r=0, fc='None', ec='black', mplprops={}):
+		if r!=0:
+			return self.addRectangle_rounded(ll_point, ur_point, r=r, fc=fc, ec=ec, mplprops=mplprops)
+		FancyBBox = FancyBox.FancyBox(ll_point, ur_point, fc, ec, "square,pad=0", mplprops, self)
 		self.drawOrder.append(FancyBBox)
 		return FancyBBox
 
@@ -393,6 +396,28 @@ class Figures:
 			lines.append(self.addLine(point, points[i+1], lw=lw, color=color, mplprops=mplprops))
 		return lines
 
+	def addRectangle_rounded(self, ll_point, ur_point, r=0, fc='None', ec='black', mplprops={}):
+
+		self.addLine([ll_point[0]+r, ll_point[1]], [ur_point[0]-r, ll_point[1]], color=ec)
+		self.addLine([ll_point[0], ll_point[1]+r], [ll_point[0], ur_point[1]-r], color=ec)
+		self.addLine([ll_point[0]+r, ur_point[1]], [ur_point[0]-r, ur_point[1]], color=ec)
+		self.addLine([ur_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], color=ec)
+
+		if r != 0:
+			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], width=2*r, height=2*r, theta1=180, theta2=270, mplprops={'color': ec})
+			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], width=2*r, height=2*r, theta1=-90, theta2=0, mplprops={'color': ec})
+			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], width=2*r, height=2*r, theta1=0, theta2=90, mplprops={'color': ec})
+			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], width=2*r, height=2*r, theta1=90, theta2=180, mplprops={'color': ec})
+
+		#Coloring:
+		ul_point = [ll_point[0], ur_point[1]]
+		lr_point = [ur_point[0], ll_point[1]]
+		self.addCircle(xy=[ll_point[0]+r, ll_point[1]+r], fc=fc, radius=r, lw=0)
+		self.addCircle(xy=[ur_point[0]-r, ll_point[1]+r], fc=fc, radius=r, lw=0)
+		self.addCircle(xy=[ll_point[0]+r, ur_point[1]-r], fc=fc, radius=r, lw=0)
+		self.addCircle(xy=[ur_point[0]-r, ur_point[1]-r], fc=fc, radius=r, lw=0)
+		self.addRectangle([ll_point[0]+r, ll_point[1]], [ur_point[0]-r, ur_point[1]], fc=fc, ec='none')
+		self.addRectangle([ll_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], fc=fc, ec='none')
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
 		if isSide:
