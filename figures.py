@@ -315,18 +315,18 @@ class Figures:
 		self.drawOrder.append(wedge)
 		return wedge
 
-	def addArrow(self, start, end, lw=25, headWidth=30, headLength=70, mplprops={}, **kwargs):
+	def addArrow(self, start, end, lw=25, color='k', headWidth=30, headLength=70, mplprops={}, **kwargs):
 		if 'arrowstyle' in kwargs:
 			self.addFancyArrow(
-				posA=start, posB=end, lw=lw, path=None, arrowstyle=kwargs['arrowstyle'],
+				posA=start, posB=end, color=color, lw=lw, path=None, arrowstyle=kwargs['arrowstyle'],
 				connectionstyle=kwargs['connectionstyle'],mutation_scale=lw*5,mplprops=mplprops
 			)
 
 		else:
-			return Arrow.Arrow(start, end, headWidth, headLength, lw, mplprops, self)
+			return Arrow.Arrow(start, end, color, headWidth, headLength, lw, mplprops, self)
 
-	def addFancyArrow(self, posA, posB, path=None, lw=2, arrowstyle=None, connectionstyle=None, mutation_scale=3, mplprops={}):
-		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)
+	def addFancyArrow(self, posA, posB, path=None, color='k', lw=2, arrowstyle=None, connectionstyle=None, mutation_scale=3, mplprops={}):
+		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)
 		self.drawOrder.append(fancyArrow)
 		return fancyArrow
 
