@@ -41,9 +41,8 @@ class Figures:
 		self.tickLabelInterval = 1
 		self.tight_fit = True
 		self.padding = padding
-		self.height = None
 		self.xyrange = xyrange
-		self.aspectRatio = 1.0/aspectRatio
+		self.aspectRatio = aspectRatio
 		self.drawOrder = []
 		self.width = width
 		self.height = height
@@ -60,15 +59,13 @@ class Figures:
 		"""
 
 		# TODO: Move to __export__
-		if xyrange is not None:
-			num, den = Fraction(aspectRatio).numerator, Fraction(aspectRatio).denominator
-			self.UNITS_PER_PIXEL_x = den * ((0.0-self.xyrange[0][0]) + self.xyrange[0][1]) / (self.width-20.0)
-			self.UNITS_PER_PIXEL_y = den * ((0.0-self.xyrange[1][0]) + self.xyrange[1][1]) / (self.width-20.0)
-			print self.UNITS_PER_PIXEL_x, self.UNITS_PER_PIXEL_y
-			self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
-			self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
+		num, den = Fraction(aspectRatio).numerator, Fraction(aspectRatio).denominator
+		self.UNITS_PER_PIXEL_x = num * ((0.0-self.xyrange[0][0]) + self.xyrange[0][1]) / (self.width-20.0)
+		self.UNITS_PER_PIXEL_y = den * ((0.0-self.xyrange[1][0]) + self.xyrange[1][1]) / (self.width-20.0)
+		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
+		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
-		self.setPixelSize(width, height=height)
+		self.setPixelSize(width, height)
 
 		self.__init_canvas__()
 
@@ -160,7 +157,7 @@ class Figures:
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 
-	def setPixelSize(self, width=400, height=None):
+	def setPixelSize(self, height, width):
 		"""Sets the pixel size of the figure.
 
 			Warning: Do NOT call this outside of the constructor
@@ -262,7 +259,7 @@ class Figures:
 		self.drawOrder.append(l)
 		return l
 
-	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='top', bbox={}, mplprops={}, latex=True, pixel=False):
+	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='center', bbox={}, mplprops={}, latex=True, pixel=False):
 		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, self)
 		self.drawOrder.append(t)
 		return t
