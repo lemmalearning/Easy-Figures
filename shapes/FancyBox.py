@@ -8,7 +8,7 @@ import numpy as np
 
 class FancyBox:
 	matplotlib_obj = None
-	def __init__(self, ll_point, ur_point, boxstyle, mplprops, figure):
+	def __init__(self, ll_point, ur_point, fc, ec, boxstyle, mplprops, figure):
 		#ll_point - lower left Point
 		#ur_point - upper right Point
 		"""
@@ -33,7 +33,7 @@ class FancyBox:
                             	boxstyle=boxstyle,
 								**mplprops
 							)
-							
+
 
 	def __draw__(self, zorder=1):
 		p = self.figure.ax.add_patch(self.matplotlib_obj)

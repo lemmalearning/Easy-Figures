@@ -329,8 +329,8 @@ class Figures:
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)
 		self.drawOrder.append(fancyArrow)
 		return fancyArrow
-	def addFancyBox(self, ll_point, ur_point, boxstyle="square,pad=0.", mplprops={}):
-		FancyBBox = FancyBox.FancyBox(ll_point, ur_point, boxstyle, mplprops, self)
+	def addRectangle(self, ll_point, ur_point, r=0, fc='black', ec='black', style="square", mplprops={}):
+		FancyBBox = FancyBox.FancyBox([i+r for i in ll_point], [i-r for i in ur_point], fc, ec, style+',pad='+str(r), mplprops, self)
 		self.drawOrder.append(FancyBBox)
 		return FancyBBox
 
@@ -383,6 +383,15 @@ class Figures:
 
 		"""
 		return np.matrix([p[0,0]*(1.0/self.UNITS_PER_PIXEL_x), p[0,1]*(1.0/self.UNITS_PER_PIXEL_y)])
+
+	def addZigzag(self, points, lw=2, color='k', mplprops={}):
+		lines = []
+		for i, point in enumerate(points):
+			if i == len(points)-1:
+				break
+
+			lines.append(self.addLine(point, points[i+1], lw=lw, color=color, mplprops=mplprops))
+		return lines
 
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):

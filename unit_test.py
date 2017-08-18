@@ -81,7 +81,8 @@ def unit_test():
 	def arrow(f):
 		#arrow = f.addArrow((0,0), (5, 5), color='r', lw=1)
 		#farrow = f.addArrow((0,0), (5, 5), color='b', lw=1, arrowstyle='|-|', connectionstyle='arc')
-		bbox = f.addFancyBox([0.3, 0.4], [0.7, 0.6], boxstyle="round,pad=0.1", mplprops={'fc':'red','ec':'blue'})
+		r =0
+		bbox = f.addRectangle([3, 4], [9, 8], fc='blue', ec='green', style='round', r=r)
 		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
 		axis.Ticks(ticks=1, minorticks=.5)
 
@@ -110,9 +111,16 @@ def unit_test():
 	def box(f):
 		f.addBox((0,0.3), (0,500), xlabel='Time (s)', ylabel='Velocity (m/s)', title='Velocity vs Time')
 
-
-
-
+	def zigzag(f):
+		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
+		axis.Ticks(ticks=5, minorticks=2.5)
+		points = [
+			[0,0],
+			[2,2],
+			[1,3],
+			[5,5]
+		]
+		lines = f.addZigzag(points, lw=2, color='b', mplprops={'ls':'dashed'})
 
 	def asdf(f):
 		alpha = pi/3
@@ -139,7 +147,7 @@ def unit_test():
 	def test(func, funcName, silent=False):
 		import os
 		#f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
-		f = figures.Figures([[-1,1 ], [ -1,1 ]], padding=100, width=800, height=800, aspectRatio=1)
+		f = figures.Figures([[-10,10 ], [ -10,10 ]], padding=100, width=800, height=800, aspectRatio=1)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))
