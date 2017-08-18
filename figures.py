@@ -6,7 +6,7 @@ matplotlib.rcParams['axes.unicode_minus'] = False
 matplotlib.use('Svg')
 
 import matplotlib.pyplot as plt
-from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line, Box
+from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line, Box, FancyBox
 import numpy as np
 try:
 	from StringIO import StringIO
@@ -325,10 +325,14 @@ class Figures:
 		else:
 			return Arrow.Arrow(start, end, color, headWidth, headLength, lw, mplprops, self)
 
-	def addFancyArrow(self, posA, posB, path=None, color='k', lw=2, arrowstyle=None, connectionstyle=None, mutation_scale=3, mplprops={}):
+	def addFancyArrow(self, posA, posB, path=None, color='k', lw=2, arrowstyle=None, connectionstyle='bar', mutation_scale=3, mplprops={}):
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)
 		self.drawOrder.append(fancyArrow)
 		return fancyArrow
+	def addFancyBox(self, ll_point, ur_point, boxstyle="square,pad=0.", mplprops={}):
+		FancyBBox = FancyBox.FancyBox(ll_point, ur_point, boxstyle, mplprops, self)
+		self.drawOrder.append(FancyBBox)
+		return FancyBBox
 
 	############################################################################
 	#							HELPER DEFINITIONS

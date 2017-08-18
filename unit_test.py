@@ -79,7 +79,11 @@ def unit_test():
 
 	# ARROW #
 	def arrow(f):
-		arrow = f.addArrow((-4,-8), (0, 14), color='r', lw=1)
+		#arrow = f.addArrow((0,0), (5, 5), color='r', lw=1)
+		#farrow = f.addArrow((0,0), (5, 5), color='b', lw=1, arrowstyle='|-|', connectionstyle='arc')
+		bbox = f.addFancyBox([0.3, 0.4], [0.7, 0.6], boxstyle="round,pad=0.1", mplprops={'fc':'red','ec':'blue'})
+		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
+		axis.Ticks(ticks=1, minorticks=.5)
 
 
 	def arc(f):
@@ -135,7 +139,7 @@ def unit_test():
 	def test(func, funcName, silent=False):
 		import os
 		#f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
-		f = figures.Figures([[-15,15 ], [ -15,15 ]], padding=100, width=400, height=800, aspectRatio=.5)
+		f = figures.Figures([[-1,1 ], [ -1,1 ]], padding=100, width=800, height=800, aspectRatio=1)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))
