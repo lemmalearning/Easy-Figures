@@ -149,6 +149,8 @@ def unit_test():
 
 	def test(func, funcName, silent=False):
 		import os
+
+		print figures.Figures._BG
 		#f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
 		f = figures.Figures([[-10,10 ], [ -10,10 ]], padding=100, width=800, height=800, aspectRatio=1)
 		func(f)
