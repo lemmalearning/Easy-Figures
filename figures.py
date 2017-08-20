@@ -31,7 +31,7 @@ class Figures:
 
 	_BG = _BG_COLOR()
 
-	def __init__(self, xyrange=[[-10,10],[-10,10]], aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
+	def __init__(self, xyrange=None, aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
 		"""
 			__init__ function for Figures class.
 			Args:
