@@ -26,7 +26,12 @@ class Figures:
 
 	head_len = 14.0
 	head_width = 5.0
-	def __init__(self, xyrange=None, aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
+	def _BG_COLOR():
+		return "#f0feffff"
+
+	_BG = _BG_COLOR()
+
+	def __init__(self, xyrange=[[-10,10],[-10,10]], aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
 		"""
 			__init__ function for Figures class.
 			Args:
