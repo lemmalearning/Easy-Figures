@@ -30,12 +30,8 @@ class Figures:
 		return "#f0feffff"
 
 	_BG = _BG_COLOR()
-<<<<<<< HEAD
 
-	def __init__(self, xyrange=None, aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
-=======
 	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=50):
->>>>>>> development
 		"""
 			__init__ function for Figures class.
 			Args:
@@ -46,7 +42,6 @@ class Figures:
 				bgcolor (Optional[str]): The color of the background (matplotlib string, or hex). Default is '#f0feffff'
 				padding (Optional[int]): Padding in pixels around the image. Default is 50 px
 		"""
-<<<<<<< HEAD
 
 		if xyrange == None:
 			raise ValueError('xyrange must be specified explictly for figures')
@@ -69,10 +64,8 @@ class Figures:
 			raise ValueError('Underconstrained dimensions of figure')
 
 
-=======
 		abs_range_x = xyrange[0][1]- xyrange[0][0]
 		abs_range_y = xyrange[1][1]- xyrange[1][0]
->>>>>>> development
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
