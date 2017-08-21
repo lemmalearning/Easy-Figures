@@ -46,12 +46,12 @@ class Axis:
 		self.yticks = yticks
 		self.ticks = ticks
 
-		if self.ticks is not None:
+		if self.ticks:
 			self.xticks = self.yticks = self.ticks
-		if self.minorticks is not None:
+		if self.minorticks:
 			self.xminorticks = self.yminorticks = self.minorticks
 
-		if self.minorticks is None and self.ticks is not False:
+		if not self.minorticks and self.ticks:
 			self.minorticks = self.xminorticks = self.yminorticks = self.ticks/2.0
 
 		self.fontsize = fontsize
@@ -93,7 +93,7 @@ class Axis:
 			plt.autoscale(enable=True, axis='y', tight=None)
 
 			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[0][0], right=self.figure.xyrange[0][1]-.1, **self.mplprops)
-			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1, **self.mplprops)
+			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[1][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1, **self.mplprops)
 
 			self.figure.ax.spines['right'].set_color('none')
 			self.figure.ax.spines['top'].set_color('none')
@@ -164,6 +164,7 @@ class Axis:
 			self.fontsize=12
 		if isinstance(self.ticks, int) and isinstance(self.minorticks, int) and self.ticks > self.minorticks:
 			self.minorGrid = True
+
 
 		tick_props = [self.ticks, self.xticks, self.yticks, self.minorticks, self.xminorticks, self.yminorticks]
 		plt.gca().xaxis.set_major_locator(plt.MultipleLocator(self.xticks) if self.xticks is not False else plt.NullLocator())

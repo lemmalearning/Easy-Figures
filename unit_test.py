@@ -126,16 +126,9 @@ def unit_test():
 		lines = f.addZigzag(points, lw=2, color='b', mplprops={'ls':'dashed'})
 
 	def asdf(f):
-		alpha = pi/3
-		r = 2
-		W = 5
-		fig = figures.Figures([[-W, W],[-W, W]], width=300, height=300)
-		axis = fig.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=2)
-		axis.Ticks(ticks=2, minorticks=1)
-
-		fig.addCircle(xy=[0,0], radius=r, lw=1)
-		fig.addArc(xy=(0,0), width=2*r, height=2*r, lw=3, theta1=0.0, theta2=90.0)
-		fig.addLine([-2, 2], [0, 2], lw=3)
+		#axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True,label=False, arrows=True, color='black', lw=1)
+		#axis.Ticks(xticks=2, yticks=2, minorticks=1, fontsize=12, origin=False, top=True)
+		1==1
 
 	# WRITE #
 	def write(f, a=""):
@@ -150,9 +143,8 @@ def unit_test():
 	def test(func, funcName, silent=False):
 		import os
 
-		print figures.Figures._BG
-		#f = figures.Figures([[-10, 10],[-10, 10]], width=800, height=800)
-		f = figures.Figures([[-10,10 ], [ -10,10 ]], padding=100, width=800, height=800, aspectRatio=1)
+		#f = figures.Figures([[-10,10 ], [ -10,10 ]], padding=100, width=800, height=800, aspectRatio=1)
+		f = figures.Figures([ [ 0, 4], [ .8, 1.8 ] ], width=400, height=1) #)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))
