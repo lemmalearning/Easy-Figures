@@ -30,8 +30,12 @@ class Figures:
 		return "#f0feffff"
 
 	_BG = _BG_COLOR()
+<<<<<<< HEAD
 
 	def __init__(self, xyrange=None, aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
+=======
+	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=50):
+>>>>>>> development
 		"""
 			__init__ function for Figures class.
 			Args:
@@ -42,6 +46,7 @@ class Figures:
 				bgcolor (Optional[str]): The color of the background (matplotlib string, or hex). Default is '#f0feffff'
 				padding (Optional[int]): Padding in pixels around the image. Default is 50 px
 		"""
+<<<<<<< HEAD
 
 		if xyrange == None:
 			raise ValueError('xyrange must be specified explictly for figures')
@@ -64,13 +69,17 @@ class Figures:
 			raise ValueError('Underconstrained dimensions of figure')
 
 
+=======
+		abs_range_x = xyrange[0][1]- xyrange[0][0]
+		abs_range_y = xyrange[1][1]- xyrange[1][0]
+>>>>>>> development
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
 		self.tight_fit = True
 		self.padding = padding
 		self.xyrange = xyrange
-		self.aspectRatio = aspectRatio
+		self.aspectRatio = aspectRatio if aspectRatio else  (float(abs_range_y)/abs_range_x) / (float(height)/width)
 		self.drawOrder = []
 		self.width = width
 		self.height = height
@@ -87,7 +96,7 @@ class Figures:
 		"""
 
 		# TODO: Move to __export__
-		num, den = Fraction(aspectRatio).numerator, Fraction(aspectRatio).denominator
+		num, den = Fraction(str(self.aspectRatio)).numerator, Fraction(str(self.aspectRatio)).denominator
 		val = self.width
 		if self.width == 'auto':
 			val = self.height
@@ -199,7 +208,7 @@ class Figures:
 
 	def __draw_shapes__(self, order=None):
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]) and not any([isinstance(obj, Box.Box) for obj in self.drawOrder]):
-			self.addAxis(hideAxis=True)
+			self.addAxis(hideAxis=True, label=False)
 
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
