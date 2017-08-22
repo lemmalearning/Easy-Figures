@@ -130,12 +130,12 @@ class Axis:
 			head_width_y = self.figure.px2unit(5, 'y')
 
 			self.figure.ax.arrow(
-				0,0, xmax+(self.figure.px2unit(5, 'x')), 0, lw=self.lw,
+				xmin if xmin>0 else 0,ymin if ymin>0 else 0, xmax+(self.figure.px2unit(5, 'x')), ymin if ymin>0 else 0, lw=self.lw,
 				head_width=head_width_y, head_length=head_len_x, color=self.color,
 				length_includes_head=True, clip_on=False
 			)
 			self.figure.ax.arrow(
-				0,0, 0, ymax+(self.figure.px2unit(5, 'y')), lw=self.lw,
+				xmin if xmin>0 else 0,ymin if ymin>0 else 0, xmin if xmin>0 else 0, ymax+(self.figure.px2unit(5, 'y')), lw=self.lw,
 				head_width=head_width_x, head_length=head_len_y, color=self.color,
 				length_includes_head=True, clip_on=False
 			)

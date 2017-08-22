@@ -1,8 +1,8 @@
 import matplotlib
  # Change font to Computer Modern (LaTeX font)
 matplotlib.rcParams['font.family'] = 'cmr10'; matplotlib.rcParams['mathtext.fontset'] = 'cm'
-matplotlib.rcParams['font.size'] = 10
 matplotlib.rcParams['axes.unicode_minus'] = False
+matplotlib.rcParams["font.size"] = 72
  # Change renderer so it doesn't use the GUI
 matplotlib.use('Svg')
 
@@ -20,6 +20,8 @@ from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 from fractions import Fraction
 from six import string_types
 
+px2in = lambda p: (p * 0.75 / 72.0)
+
 class Figures:
 	"""
 		Object to hold multiple shapes and objects.
@@ -29,10 +31,9 @@ class Figures:
 	head_width = 5.0
 	def _BG_COLOR():
 		return "#f0feffff"
-
 	_BG = _BG_COLOR()
 
-	def __init__(self, xyrange=None, aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=50):
+	def __init__(self, xyrange=None, aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=10):
 		"""
 			__init__ function for Figures class.
 			Args:
@@ -65,9 +66,13 @@ class Figures:
 			raise ValueError('Underconstrained dimensions of figure')
 
 		if width == 'auto':
-			width = height * 1.0/float(aspectRatio)
+			width_temp = height * 1.0/float(aspectRatio)
+		else:
+			width_temp = width
 		if height == 'auto':
-			height = width * float(aspectRatio)
+			height_temp = width * float(aspectRatio)
+		else:
+			height_temp = height
 
 
 		abs_range_x = xyrange[0][1]- xyrange[0][0]
@@ -79,7 +84,7 @@ class Figures:
 		self.padding = padding
 		self.true_pad = (0.75 * self.padding)/10.0
 		self.xyrange = xyrange
-		self.aspectRatio = aspectRatio if aspectRatio else (float(height-2*self.true_pad)/(width-2*self.true_pad)) / (float(abs_range_y)/abs_range_x)
+		self.aspectRatio = aspectRatio if aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(abs_range_y)/abs_range_x)
 		self.drawOrder = []
 		self.width = width
 		self.height = height
@@ -103,8 +108,8 @@ class Figures:
 			num, den = (den, num)
 
 		# if aspect > 1, multiply width
-		self.UNITS_PER_PIXEL_x = abs_range_x / float(self.width-2*self.true_pad)
-		self.UNITS_PER_PIXEL_y = abs_range_y / float(self.height-2*self.true_pad)
+		self.UNITS_PER_PIXEL_x = abs_range_x / float(width_temp-2*self.true_pad)
+		self.UNITS_PER_PIXEL_y = abs_range_y / float(height_temp-2*self.true_pad)
 		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
@@ -132,8 +137,8 @@ class Figures:
 
 		# We will perform the tight layout ourselves
 		self.fig.set_tight_layout(False)
-		true_pad = (0.75 * self.padding)/10.0
-		self.fig.tight_layout(pad=true_pad) # TODO: Give the author control other padding on all sides
+		true_pad = (0.75 * self.padding)/12.0
+		self.fig.tight_layout(pad=(px2in(self.padding))) # TODO: Give the author control other padding on all sides
 
 		# compute pixel/pt/unit conversations based on axis limits and known padding
 		# TODO
@@ -143,6 +148,7 @@ class Figures:
 		# TODO
 
 		# Do the actual drawing onto the svg
+		#1inch = 72 pts
 		# Adapted from https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_svg.py : print_svg
 		self.fig.draw(self.renderer)
 		self.renderer.finalize()
@@ -227,7 +233,6 @@ class Figures:
 		self.width = width
 
 		# a point is 1/72in;  12pt = 16px
-		px2in = lambda p: (p * 0.75 / 72.0)
 
 
 		height_in = None
@@ -404,7 +409,6 @@ class Figures:
 				dim (str): dimension
 			Returns:
 				(float) number of units
-
 		"""
 		return (1.0/self.UNITS_PER_PIXEL_x)*i if dim=='x' else (1.0/self.UNITS_PER_PIXEL_y)*i
 
