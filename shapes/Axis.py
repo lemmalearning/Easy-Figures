@@ -51,6 +51,9 @@ class Axis:
 		if self.minorticks:
 			self.xminorticks = self.yminorticks = self.minorticks
 
+		if not self.minorticks and not self.xminorticks and not self.yminorticks:
+			self.xminorticks = self.yminorticks = self.minorticks
+
 		if not self.minorticks and self.ticks:
 			self.minorticks = self.xminorticks = self.yminorticks = self.ticks/2.0
 
@@ -125,8 +128,6 @@ class Axis:
 
 			head_width_x = self.figure.px2unit(5, 'x')
 			head_width_y = self.figure.px2unit(5, 'y')
-			print xmin, xmax, ymin, ymax
-			print head_len_x, head_len_y, head_width_x, head_width_y
 
 			self.figure.ax.arrow(
 				0,0, xmax+(self.figure.px2unit(5, 'x')), 0, lw=self.lw,
@@ -173,16 +174,20 @@ class Axis:
 		if isinstance(self.ticks, int) and isinstance(self.minorticks, int) and self.ticks > self.minorticks:
 			self.minorGrid = True
 
+		tick_props = [self.ticks, self.xticks, self.yticks, self.minorticks, self.xminorticks, self.yminorticks]
+		for tick in tick_props:
+			if tick == False or tick is False:
+				tick = 0
+
 		MAXTICKS = 10000 # Matplotlib specified
 
-		if (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.xticks > MAXTICKS or \
-		(self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.yticks > MAXTICKS or \
-		(self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.xminorticks > MAXTICKS or \
-		(self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.yminorticks > MAXTICKS:
+
+		if  self.xticks !=0 and (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.xticks 		> MAXTICKS or \
+			self.yticks !=0 and (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.yticks 		> MAXTICKS or \
+			self.xminorticks !=0 and (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.xminorticks  > MAXTICKS or \
+			self.yminorticks !=0 and (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.yminorticks  > MAXTICKS:
 			raise "Tick count too high"
 
-
-		tick_props = [self.ticks, self.xticks, self.yticks, self.minorticks, self.xminorticks, self.yminorticks]
 		plt.gca().xaxis.set_major_locator(plt.MultipleLocator(self.xticks) if self.xticks is not False else plt.NullLocator())
 		plt.gca().xaxis.set_minor_locator(plt.MultipleLocator(self.xminorticks) if self.xminorticks is not False else plt.NullLocator())
 		plt.gca().yaxis.set_major_locator(plt.MultipleLocator(self.yticks) if self.yticks is not False else plt.NullLocator())

@@ -127,7 +127,7 @@ def unit_test():
 
 	def asdf(f):
 		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=1)
-		axis.Ticks(xticks=1, yticks=1, minorticks=.5, fontsize=12, origin=False, top=True)
+		axis.Ticks(xticks=1, yticks=1, fontsize=12, origin=False, top=True)
 
 	# WRITE #
 	def write(f, a=""):
