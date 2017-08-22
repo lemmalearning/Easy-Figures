@@ -47,6 +47,12 @@ class Figures:
 		if xyrange == None:
 			raise ValueError('xyrange must be specified explictly for figures')
 
+		self.constant = [0,0]
+		if xyrange[0][0] > 0: #matplotlib bug
+			self.constant[0] = xyrange[0][0]
+		if xyrange[1][0] > 0: #matplotlib bug
+			self.constant[1] = xyrange[1][0]
+
 		unconstrained = 0
 		if isinstance(height, string_types):
 			height = height.lower()
@@ -295,6 +301,13 @@ class Figures:
 			Returns:
 				Point.Point object
 		"""
+		if isinstance(xys, list):
+			for xy in xys:
+				xy[0] += self.constant[0]
+				xy[1] += self.constant[1]
+		else:
+			xys[0] += self.constant[0]
+			xys[1] += self.constant[1]
 		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
 		return p

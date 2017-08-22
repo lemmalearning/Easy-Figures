@@ -126,7 +126,7 @@ def unit_test():
 		lines = f.addZigzag(points, lw=2, color='b', mplprops={'ls':'dashed'})
 
 	def asdf(f):
-		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True,label=False, arrows=True, color='black', lw=1)
+		axis = f.addAxis(hideAxis=False, grid=True, minorGrid=True, arrows=True, color='black', lw=1)
 		axis.Ticks(xticks=1, yticks=1, minorticks=.5, fontsize=12, origin=False, top=True)
 
 	# WRITE #
@@ -142,8 +142,8 @@ def unit_test():
 	def test(func, funcName, silent=False):
 		import os
 
-		f = figures.Figures([[-10,10 ], [ -10,10 ]], padding=100, width=543, height='auto', aspectRatio=.5)
-		#f = figures.Figures([ [ .8, 1.8 ], [ .8, 1.8 ] ], width=800, height=800) #)
+		#f = figures.Figures([[-10,10 ], [ -10,10 ]], padding=100, width=543, height='auto', aspectRatio=.5)
+		f = figures.Figures([ [ 0, 4], [ 0.8, 1.8 ]  ], width=800, height=800, padding=100) #)
 		func(f)
 		write(f, a=funcName)
 		if not silent: os.system('open {}'.format('images/{}test.svg'.format(funcName)))

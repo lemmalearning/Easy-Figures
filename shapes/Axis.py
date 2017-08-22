@@ -91,14 +91,22 @@ class Axis:
 
 		else:
 			plt.autoscale(enable=True, axis='y', tight=None)
-			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[0][0], right=self.figure.xyrange[0][1]-.1, **self.mplprops)
-			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[1][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1, **self.mplprops)
+			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0], right=self.figure.xyrange[0][1], **self.mplprops)
+			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0], top=self.figure.xyrange[1][1], **self.mplprops)
 
 			self.figure.ax.spines['right'].set_color('none')
 			self.figure.ax.spines['top'].set_color('none')
 
-			self.figure.ax.spines['left'].set_position(('data', 0))
-			self.figure.ax.spines['bottom'].set_position(('data', 0))
+			if self.figure.xyrange[0][0] > 0:
+				self.figure.ax.spines['left'].set_position(('data', self.figure.xyrange[0][0]))
+			else:
+				self.figure.ax.spines['left'].set_position(('data', 0))
+
+			if self.figure.xyrange[1][0] > 0:
+				self.figure.ax.spines['bottom'].set_position(('data', self.figure.xyrange[1][0]))
+			else:
+				self.figure.ax.spines['bottom'].set_position(('data', 0))
+
 
 
 
@@ -117,7 +125,8 @@ class Axis:
 
 			head_width_x = self.figure.px2unit(5, 'x')
 			head_width_y = self.figure.px2unit(5, 'y')
-			#print xmin, xmax, ymin, ymax
+			print xmin, xmax, ymin, ymax
+			print head_len_x, head_len_y, head_width_x, head_width_y
 
 			self.figure.ax.arrow(
 				0,0, xmax+(self.figure.px2unit(5, 'x')), 0, lw=self.lw,
