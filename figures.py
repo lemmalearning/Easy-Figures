@@ -63,6 +63,11 @@ class Figures:
 		if unconstrained > 1:
 			raise ValueError('Underconstrained dimensions of figure')
 
+		if width == 'auto':
+			width = height * 1.0/float(aspectRatio)
+		if height == 'auto':
+			height = width * float(aspectRatio)
+
 
 		abs_range_x = xyrange[0][1]- xyrange[0][0]
 		abs_range_y = xyrange[1][1]- xyrange[1][0]
@@ -72,7 +77,7 @@ class Figures:
 		self.tight_fit = True
 		self.padding = padding
 		self.xyrange = xyrange
-		self.aspectRatio = aspectRatio if aspectRatio else  (float(abs_range_y)/abs_range_x) / (float(height)/width)
+		self.aspectRatio = aspectRatio if aspectRatio else (float(height)/width) / (float(abs_range_y)/abs_range_x)
 		self.drawOrder = []
 		self.width = width
 		self.height = height
@@ -95,8 +100,10 @@ class Figures:
 			val = self.height
 			num, den = (den, num)
 
-		self.UNITS_PER_PIXEL_x = num * ((0.0-self.xyrange[0][0]) + self.xyrange[0][1]) / (val-20.0)
-		self.UNITS_PER_PIXEL_y = den * ((0.0-self.xyrange[1][0]) + self.xyrange[1][1]) / (val-20.0)
+		# if aspect > 1, multiply width
+		self.UNITS_PER_PIXEL_x = abs_range_x / float(self.width)
+		self.UNITS_PER_PIXEL_y = abs_range_y / float(self.height)
+		print self.UNITS_PER_PIXEL_x, self.UNITS_PER_PIXEL_y
 		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 

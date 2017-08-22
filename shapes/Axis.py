@@ -91,7 +91,6 @@ class Axis:
 
 		else:
 			plt.autoscale(enable=True, axis='y', tight=None)
-
 			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0]+.1 if self.figure.xyrange[0][0]!=0 else self.figure.xyrange[0][0], right=self.figure.xyrange[0][1]-.1, **self.mplprops)
 			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0]+.1 if self.figure.xyrange[1][0]!=0 else self.figure.xyrange[1][0], top=self.figure.xyrange[1][1]-.1, **self.mplprops)
 
@@ -113,21 +112,21 @@ class Axis:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
-			head_len_x = 9*self.figure.UNITS_PER_PIXEL_x # 15 pixels
-			head_len_y = 9*self.figure.UNITS_PER_PIXEL_y # 15 pixels
+			head_len_x = self.figure.px2unit(9, 'x')
+			head_len_y = self.figure.px2unit(9, 'y')
 
-			head_width_x = 5*self.figure.UNITS_PER_PIXEL_y
-			head_width_y = 5*self.figure.UNITS_PER_PIXEL_x
+			head_width_x = self.figure.px2unit(5, 'x')
+			head_width_y = self.figure.px2unit(5, 'y')
 			#print xmin, xmax, ymin, ymax
 
 			self.figure.ax.arrow(
 				0,0, xmax+(self.figure.px2unit(5, 'x')), 0, lw=self.lw,
-				head_width=head_width_x, head_length=head_len_x, color=self.color,
+				head_width=head_width_y, head_length=head_len_x, color=self.color,
 				length_includes_head=True, clip_on=False
 			)
 			self.figure.ax.arrow(
-				0,0, 0, ymax+(self.figure.px2unit(5, 'x')), lw=self.lw,
-				head_width=head_width_y, head_length=head_len_y, color=self.color,
+				0,0, 0, ymax+(self.figure.px2unit(5, 'y')), lw=self.lw,
+				head_width=head_width_x, head_length=head_len_y, color=self.color,
 				length_includes_head=True, clip_on=False
 			)
 
@@ -139,7 +138,7 @@ class Axis:
 						edgecolor='none', pad=0.03
 					)
 				)
-				y_dim = self.figure.addText((15*self.figure.UNITS_PER_PIXEL_x, ymax+(self.figure.UNITS_PER_PIXEL_y*5)), self.ylabel, latex=True,
+				y_dim = self.figure.addText((self.figure.px2unit(15, 'y'), ymax+(self.figure.px2unit(5, 'y'))), self.ylabel, latex=True,
 					fontsize=15, valignment='top', halignment='center',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
@@ -164,6 +163,14 @@ class Axis:
 			self.fontsize=12
 		if isinstance(self.ticks, int) and isinstance(self.minorticks, int) and self.ticks > self.minorticks:
 			self.minorGrid = True
+
+		MAXTICKS = 10000 # Matplotlib specified
+
+		if (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.xticks > MAXTICKS or \
+		(self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.yticks > MAXTICKS or \
+		(self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.xminorticks > MAXTICKS or \
+		(self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.yminorticks > MAXTICKS:
+			raise "Tick count too high"
 
 
 		tick_props = [self.ticks, self.xticks, self.yticks, self.minorticks, self.xminorticks, self.yminorticks]
