@@ -1,6 +1,7 @@
 import matplotlib
  # Change font to Computer Modern (LaTeX font)
 matplotlib.rcParams['font.family'] = 'cmr10'; matplotlib.rcParams['mathtext.fontset'] = 'cm'
+matplotlib.rcParams['font.size'] = 10
 matplotlib.rcParams['axes.unicode_minus'] = False
  # Change renderer so it doesn't use the GUI
 matplotlib.use('Svg')
@@ -76,8 +77,9 @@ class Figures:
 		self.tickLabelInterval = 1
 		self.tight_fit = True
 		self.padding = padding
+		self.true_pad = (0.75 * self.padding)/10.0
 		self.xyrange = xyrange
-		self.aspectRatio = aspectRatio if aspectRatio else (float(height)/width) / (float(abs_range_y)/abs_range_x)
+		self.aspectRatio = aspectRatio if aspectRatio else (float(height-2*self.true_pad)/(width-2*self.true_pad)) / (float(abs_range_y)/abs_range_x)
 		self.drawOrder = []
 		self.width = width
 		self.height = height
@@ -101,9 +103,8 @@ class Figures:
 			num, den = (den, num)
 
 		# if aspect > 1, multiply width
-		self.UNITS_PER_PIXEL_x = abs_range_x / float(self.width)
-		self.UNITS_PER_PIXEL_y = abs_range_y / float(self.height)
-		print self.UNITS_PER_PIXEL_x, self.UNITS_PER_PIXEL_y
+		self.UNITS_PER_PIXEL_x = abs_range_x / float(self.width-2*self.true_pad)
+		self.UNITS_PER_PIXEL_y = abs_range_y / float(self.height-2*self.true_pad)
 		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
@@ -131,7 +132,8 @@ class Figures:
 
 		# We will perform the tight layout ourselves
 		self.fig.set_tight_layout(False)
-		self.fig.tight_layout(pad=self.padding) # TODO: Give the author control other padding on all sides
+		true_pad = (0.75 * self.padding)/10.0
+		self.fig.tight_layout(pad=true_pad) # TODO: Give the author control other padding on all sides
 
 		# compute pixel/pt/unit conversations based on axis limits and known padding
 		# TODO

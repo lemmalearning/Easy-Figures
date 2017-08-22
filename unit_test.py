@@ -142,7 +142,7 @@ def unit_test():
 	def test(func, funcName, silent=False):
 		import os
 
-		f = figures.Figures([[-10,10 ], [ -10,10 ]], padding=0, width=500, height=800)
+		f = figures.Figures([[-10,10 ], [ -10,10 ]], padding=100, width=543, height='auto', aspectRatio=.5)
 		#f = figures.Figures([ [ .8, 1.8 ], [ .8, 1.8 ] ], width=800, height=800) #)
 		func(f)
 		write(f, a=funcName)
