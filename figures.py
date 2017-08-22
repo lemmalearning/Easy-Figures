@@ -229,7 +229,6 @@ class Figures:
 		# a point is 1/72in;  12pt = 16px
 		px2in = lambda p: (p * 0.75 / 72.0)
 
-		self.padding = px2in(self.padding)
 
 		height_in = None
 		width_in = None
