@@ -33,7 +33,7 @@ class Figures:
 		return "#f0feffff"
 	_BG = _BG_COLOR()
 
-	def __init__(self, xyrange=None, aspectRatio=1, width=300, height=300, bgcolor='#f0feffff', padding=10):
+	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=10, xPad=None, yPad=None):
 		"""
 			__init__ function for Figures class.
 			Args:
@@ -74,7 +74,8 @@ class Figures:
 		else:
 			height_temp = height
 
-
+		self.xPad = xPad if xPad != None else padding
+		self.yPad = yPad if yPad != None else padding
 		self.abs_range_x = xyrange[0][1]- xyrange[0][0]
 		self.abs_range_y = xyrange[1][1]- xyrange[1][0]
 		self.fig, self.ax = plt.subplots()
@@ -84,16 +85,13 @@ class Figures:
 		self.padding = padding
 		self.true_pad = (0.75 * self.padding)/10.0
 		self.xyrange = xyrange
-		self.aspectRatio = aspectRatio if aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
+		self.aspectRatio = 1 if aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
 		self.drawOrder = []
 		self.width = width
 		self.height = height
 		self.bgcolor = bgcolor
 		self.ax.set_facecolor(bgcolor)
 		self.fig.patch.set_facecolor(bgcolor)
-
-
-
 
 		"""
 		aspect ratio is length of y unit by x unit in pixels
@@ -138,10 +136,8 @@ class Figures:
 		# We will perform the tight layout ourselves
 		self.fig.set_tight_layout(False)
 		true_pad = (0.75 * self.padding)/12.0
-		self.fig.tight_layout(pad=(px2in(self.padding))) # TODO: Give the author control other padding on all sides
 
-		# compute pixel/pt/unit conversations based on axis limits and known padding
-		# TODO
+		self.fig.tight_layout(pad=px2in(self.padding))
 
 		# post draw
 		# do all drawing that depends on unit metrics
@@ -216,7 +212,7 @@ class Figures:
 
 	def __draw_shapes__(self, order=None):
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]) and not any([isinstance(obj, Box.Box) for obj in self.drawOrder]):
-			self.addAxis(hideAxis=True, label=False)
+			axis = self.addAxis(hideAxis=True, label=False, arrows=False, grid=False, minorGrid=False)
 
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
@@ -303,7 +299,7 @@ class Figures:
 		self.drawOrder.append(p)
 		return p
 
-	def addLine(self, pointA, pointB, lw=2, color='k', mplprops={}):
+	def addLine(self, pointA, pointB, lw=2, color='k', clip=True, mplprops={}):
 		"""
 			addLine - Adds a line 'shape' to the Figures.
 			Args:
@@ -315,7 +311,7 @@ class Figures:
 			Returns:
 				Line.Line object
 		"""
-		l = Line.Line(pointA, pointB, lw, color, mplprops, self)
+		l = Line.Line(pointA, pointB, lw, color, clip, mplprops, self)
 		self.drawOrder.append(l)
 		return l
 
@@ -336,9 +332,9 @@ class Figures:
 		self.drawOrder.append(b)
 		return b
 
-	def addPolygon(self, vertices, lw=2, mplprops={}):
+	def addPolygon(self, vertices, lw=2, clip=True, mplprops={}):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, lw, True if 'color' in mplprops else False, mplprops, self)
+		polygon = Polygon.Polygon(vertices, lw, True if 'color' in mplprops else False, clip, mplprops, self)
 		self.drawOrder.append(polygon)
 		return polygon
 
@@ -375,7 +371,7 @@ class Figures:
 		self.drawOrder.append(wedge)
 		return wedge
 
-	def addArrow(self, start, end, lw=25, color='k', headWidth=30, headLength=70, mplprops={}, **kwargs):
+	def addArrow(self, start, end, lw=25, color='k', headWidth=30, headLength=70, mplprops={}, clip=True, **kwargs):
 		if 'arrowstyle' in kwargs:
 			self.addFancyArrow(
 				posA=start, posB=end, color=color, lw=lw, path=None, arrowstyle=kwargs['arrowstyle'],
@@ -383,7 +379,7 @@ class Figures:
 			)
 
 		else:
-			return Arrow.Arrow(start, end, color, headWidth, headLength, lw, mplprops, self)
+			return Arrow.Arrow(start, end, color, headWidth, headLength, lw, mplprops, clip, self)
 
 	def addFancyArrow(self, posA, posB, path=None, color='k', lw=2, arrowstyle=None, connectionstyle='bar', mutation_scale=3, mplprops={}):
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)

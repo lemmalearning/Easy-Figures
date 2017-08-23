@@ -27,4 +27,4 @@ class Point:
 			plt.plot(xy[0], xy[1], 'o', color=color, ms=self.pointsize, zorder=zorder)
 			self.figure.ax.annotate("$"+text+"$" if self.latex else text, xytext=xy, xy=xy,
 			fontsize=self.fontsize, horizontalalignment='center',
-			textcoords='offset points', zorder=zorder, **self.mplprops)
+			textcoords='offset points', zorder=zorder, clip_on=False,**self.mplprops)

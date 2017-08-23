@@ -76,7 +76,7 @@ class Axis:
 			raise "Tick count too high"
 		if self.yticks and self.figure.abs_range_y / self.yticks > MAXTICKS:
 			raise "Tick count too high"
-		if self.yminorticksg and self.figure.abs_range_y / self.yminorticks > MAXTICKS:
+		if self.yminorticks and self.figure.abs_range_y / self.yminorticks > MAXTICKS:
 			raise "Tick count too high"
 
 	def __draw__(self, zorder=1):
@@ -105,40 +105,35 @@ class Axis:
 				# no xaxis ticks
 				ax.xaxis.set_ticks([])
 
-		if self.figure.xyrange is None:
-			plt.axis('off')
-			plt.axis('scaled')
 
+		plt.autoscale(enable=True, axis='y', tight=None)
+		self.figure.ax.set_xlim(left=self.figure.xyrange[0][0], right=self.figure.xyrange[0][1], **self.mplprops)
+		self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0], top=self.figure.xyrange[1][1], **self.mplprops)
+
+		self.figure.ax.spines['right'].set_color('none')
+		self.figure.ax.spines['top'].set_color('none')
+
+		if self.figure.xyrange[0][0] > 0:
+			self.figure.ax.spines['left'].set_position(('data', self.figure.xyrange[0][0]))
 		else:
-			plt.autoscale(enable=True, axis='y', tight=None)
-			self.figure.ax.set_xlim(left=self.figure.xyrange[0][0], right=self.figure.xyrange[0][1], **self.mplprops)
-			self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0], top=self.figure.xyrange[1][1], **self.mplprops)
+			self.figure.ax.spines['left'].set_position(('data', 0))
 
-			self.figure.ax.spines['right'].set_color('none')
-			self.figure.ax.spines['top'].set_color('none')
-
-			if self.figure.xyrange[0][0] > 0:
-				self.figure.ax.spines['left'].set_position(('data', self.figure.xyrange[0][0]))
-			else:
-				self.figure.ax.spines['left'].set_position(('data', 0))
-
-			if self.figure.xyrange[1][0] > 0:
-				self.figure.ax.spines['bottom'].set_position(('data', self.figure.xyrange[1][0]))
-			else:
-				self.figure.ax.spines['bottom'].set_position(('data', 0))
+		if self.figure.xyrange[1][0] > 0:
+			self.figure.ax.spines['bottom'].set_position(('data', self.figure.xyrange[1][0]))
+		else:
+			self.figure.ax.spines['bottom'].set_position(('data', 0))
 
 
 
 
 		[i.set_linewidth(self.lw) for i in self.figure.ax.spines.itervalues()]
 
-		if self.hideAxis:
-			plt.axis('off')
-			return
 
 		if self.arrows:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
+
+			print xmin, xmax, ymin, ymax
 
 			head_len_x = self.figure.px2unit(9, 'x')
 			head_len_y = self.figure.px2unit(9, 'y')
@@ -146,26 +141,26 @@ class Axis:
 			head_width_x = self.figure.px2unit(5, 'x')
 			head_width_y = self.figure.px2unit(5, 'y')
 
-			self.figure.ax.arrow(
-				xmin if xmin>0 else 0,ymin if ymin>0 else 0, xmax+(self.figure.px2unit(5, 'x')), ymin if ymin>0 else 0, lw=self.lw,
-				head_width=head_width_y, head_length=head_len_x, color=self.color,
-				length_includes_head=True, clip_on=False
+			self.figure.addArrow(
+				(xmin if xmin>0 else 0,ymin if ymin>0 else 0), (xmax+(self.figure.px2unit(5, 'x')), ymin if ymin>0 else 0),
+				lw=self.lw, head_width=head_width_y, head_length=head_len_x, color=self.color, length_includes_head=True, clip_on=False,
+				mplprops={'zorder':1}, clip=False,
 			)
-			self.figure.ax.arrow(
-				xmin if xmin>0 else 0,ymin if ymin>0 else 0, xmin if xmin>0 else 0, ymax+(self.figure.px2unit(5, 'y')), lw=self.lw,
-				head_width=head_width_x, head_length=head_len_y, color=self.color,
-				length_includes_head=True, clip_on=False
+			self.figure.addArrow(
+				(xmin if xmin>0 else 0,ymin if ymin>0 else 0), (xmin if xmin>0 else 0, ymax+(self.figure.px2unit(5, 'y'))),
+				lw=self.lw,	head_width=head_width_x, head_length=head_len_y, color=self.color, length_includes_head=True, clip_on=False,
+				mplprops={'zorder':1}, clip=False,
 			)
 
 			if self.label:
-				x_dim = self.figure.addText((xmax+self.figure.px2unit(10, 'x'), self.figure.px2unit(25, 'y')), self.xlabel, latex=True,
+				x_dim = self.figure.addText((xmax+self.figure.px2unit(5, 'x'), ymin+self.figure.px2unit(35, 'y')), self.xlabel, latex=True,
 					fontsize=15, valignment='top', halignment='right',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
 						edgecolor='none', pad=0.03
 					)
 				)
-				y_dim = self.figure.addText((self.figure.px2unit(15, 'x'), ymax+(self.figure.px2unit(5, 'y'))), self.ylabel, latex=True,
+				y_dim = self.figure.addText(xmin+(self.figure.px2unit(15, 'x'), ymax+(self.figure.px2unit(5, 'y'))), self.ylabel, latex=True,
 					fontsize=15, valignment='top', halignment='center',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
@@ -229,6 +224,18 @@ class Axis:
 
 
 		####### END DRAW LABELS #######
+
+		if self.hideAxis:
+			self.figure.ax.spines['bottom'].set_color(self.figure._BG)
+			self.figure.ax.spines['left'].set_color(self.figure._BG)
+			xlabels = ["" for item in self.figure.ax.get_xticks()]
+			ylabels = ["" for item in self.figure.ax.get_yticks()]
+			self.figure.ax.set_yticklabels(ylabels)
+			self.figure.ax.set_xticklabels(xlabels)
+			plt.gca().xaxis.set_major_locator(plt.NullLocator())
+			plt.gca().xaxis.set_minor_locator(plt.NullLocator())
+			plt.gca().yaxis.set_major_locator(plt.NullLocator())
+			plt.gca().yaxis.set_minor_locator(plt.NullLocator())
 
 		self.figure.ax.xaxis.set_zorder(zorder)
 		self.figure.ax.yaxis.set_zorder(zorder)

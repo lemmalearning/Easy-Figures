@@ -7,7 +7,7 @@ import numpy as np
 
 class Line:
 	matplotlib_obj = None
-	def __init__(self, pointA, pointB, lw, color, mplprops, figure):
+	def __init__(self, pointA, pointB, lw, color, clip, mplprops, figure):
 		self.matplotlib_obj = None
 		self.pointA = pointA
 		self.pointB = pointB
@@ -15,6 +15,7 @@ class Line:
 		self.color = color
 		self.mplprops = mplprops
 		self.figure = figure
+		self.clip = clip
 		if 'solid_capstyle' not in self.mplprops:
 			self.mplprops['solid_capstyle'] = 'butt'
 
@@ -22,4 +23,5 @@ class Line:
 		x = [self.pointA[0], self.pointB[0]]
 		y = [self.pointA[1], self.pointB[1]]
 		self.matplotlib_obj = plt.plot(x, y, linewidth=self.lw, color=self.color, **self.mplprops)[0]
+		self.matplotlib_obj.set_clip_on(self.clip)
 		self.matplotlib_obj.set_zorder(zorder)
