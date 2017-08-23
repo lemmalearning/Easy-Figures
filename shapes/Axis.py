@@ -38,7 +38,7 @@ class Axis:
 		self.ticks 		= None
 		self.tickRan	= False
 
-	def Ticks(self, ticks=False, xticks=None, yticks=None, minorticks=False, xminorticks=None, yminorticks=None, fontsize=12, origin=False, top=True):
+	def Ticks(self, ticks=False, xticks=False, yticks=False, minorticks=False, xminorticks=False, yminorticks=False, fontsize=12, origin=False, top=True):
 		self.minorticks = minorticks
 		self.xminorticks = xminorticks
 		self.yminorticks = yminorticks
@@ -51,9 +51,6 @@ class Axis:
 		if self.minorticks:
 			self.xminorticks = self.yminorticks = self.minorticks
 
-		if not self.minorticks and not self.xminorticks and not self.yminorticks:
-			self.xminorticks = self.yminorticks = self.minorticks
-
 		if not self.minorticks and self.ticks:
 			self.minorticks = self.xminorticks = self.yminorticks = self.ticks/2.0
 
@@ -61,6 +58,26 @@ class Axis:
 		self.origin = origin
 		self.top = top
 		self.tickRan = True
+
+	def check_MAXTICK(self):
+		"""
+		Checks the tick amounts to ensure they aren't generating greater than MAXTICKS
+		:return: NONE
+		"""
+		MAXTICKS = 10000 # Matplotlib specified
+
+		if self.ticks and self.figure.abs_range_x / self.ticks > MAXTICKS and self.figure.abs_range_y / self.ticks > MAXTICKS:
+			raise "Tick count too high"
+		if self.minorticks and self.figure.abs_range_x / self.minorticks > MAXTICKS and self.figure.abs_range_y / self.minorticks > MAXTICKS:
+			raise "Tick count too high"
+		if self.xticks and self.figure.abs_range_x / self.xticks > MAXTICKS:
+			raise "Tick count too high"
+		if self.xticks and self.figure.abs_range_x / self.xminorticks > MAXTICKS:
+			raise "Tick count too high"
+		if self.yticks and self.figure.abs_range_y / self.yticks > MAXTICKS:
+			raise "Tick count too high"
+		if self.yticks and self.figure.abs_range_y / self.yminorticks > MAXTICKS:
+			raise "Tick count too high"
 
 	def __draw__(self, zorder=1):
 		# set the aspect ratio
@@ -141,14 +158,14 @@ class Axis:
 			)
 
 			if self.label:
-				x_dim = self.figure.addText((xmax+self.figure.px2unit(10, 'x'), 25*self.figure.UNITS_PER_PIXEL_y), self.xlabel, latex=True,
+				x_dim = self.figure.addText((xmax+self.figure.px2unit(10, 'x'), self.figure.px2unit(25, 'y')), self.xlabel, latex=True,
 					fontsize=15, valignment='top', halignment='right',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
 						edgecolor='none', pad=0.03
 					)
 				)
-				y_dim = self.figure.addText((self.figure.px2unit(15, 'y'), ymax+(self.figure.px2unit(5, 'y'))), self.ylabel, latex=True,
+				y_dim = self.figure.addText((self.figure.px2unit(15, 'x'), ymax+(self.figure.px2unit(5, 'y'))), self.ylabel, latex=True,
 					fontsize=15, valignment='top', halignment='center',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
@@ -174,19 +191,8 @@ class Axis:
 		if isinstance(self.ticks, int) and isinstance(self.minorticks, int) and self.ticks > self.minorticks:
 			self.minorGrid = True
 
-		tick_props = [self.ticks, self.xticks, self.yticks, self.minorticks, self.xminorticks, self.yminorticks]
-		for tick in tick_props:
-			if tick == False or tick is False:
-				tick = 0
 
-		MAXTICKS = 10000 # Matplotlib specified
-
-
-		if  self.xticks !=0 and (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.xticks 		> MAXTICKS or \
-			self.yticks !=0 and (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.yticks 		> MAXTICKS or \
-			self.xminorticks !=0 and (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.xminorticks  > MAXTICKS or \
-			self.yminorticks !=0 and (self.figure.xyrange[0][1]-self.figure.xyrange[0][0])/self.yminorticks  > MAXTICKS:
-			raise "Tick count too high"
+		self.check_MAXTICK() # check to make sure there aren't too many ticks
 
 		plt.gca().xaxis.set_major_locator(plt.MultipleLocator(self.xticks) if self.xticks is not False else plt.NullLocator())
 		plt.gca().xaxis.set_minor_locator(plt.MultipleLocator(self.xminorticks) if self.xminorticks is not False else plt.NullLocator())
@@ -195,24 +201,23 @@ class Axis:
 
 		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
-		if any([True for tick in tick_props if tick!=False]):
-			if self.origin:
-				ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
-				xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks().tolist()]
-				self.figure.ax.set_yticklabels(ylabels)
-				self.figure.ax.set_xticklabels(xlabels)
-			else:
-				xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks().tolist()]
-				ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks().tolist()]
-
+		if self.origin:
+			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
+			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks()]
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)
+		else:
+			xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks()]
+			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
 
-			for label in self.figure.ax.xaxis.get_ticklabels():
-				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
+		self.figure.ax.set_yticklabels(ylabels)
+		self.figure.ax.set_xticklabels(xlabels)
 
-			for label in self.figure.ax.yaxis.get_ticklabels():
-				label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
+		for label in self.figure.ax.xaxis.get_ticklabels():
+			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
+
+		for label in self.figure.ax.yaxis.get_ticklabels():
+			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
 
 		if self.top:
 			self.figure.ax.xaxis.set_label_position('top')

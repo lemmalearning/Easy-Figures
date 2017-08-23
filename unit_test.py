@@ -64,7 +64,7 @@ def unit_test():
 	def axis(f):
 		axis = f.addAxis(hideAxis=False, minorGrid=True, arrows=True, color='black', lw=2)
 		#axis.Ticks(xticks=5, yticks=5, xminorticks=2, yminorticks=2, fontsize=12, origin=False, top=True)
-		axis.Ticks(ticks=False)
+		axis.Ticks(xticks=2, yticks=3, yminorticks=2, xminorticks=1)
 
 	# POINT #
 	def point(f):
@@ -142,7 +142,7 @@ def unit_test():
 	def test(func, funcName, silent=False):
 		import os
 
-		f = figures.Figures([[-5,5 ], [ -5,5 ]], width=800, height=800, aspectRatio=1)
+		f = figures.Figures([[1,5 ], [ 1,5 ]], width=800, height=800, aspectRatio=1)
 		#f = figures.Figures([ [ 0, 4], [ 0.8, 1.8 ]  ], width=800, height=800, padding=1000) #)
 		func(f)
 		write(f, a=funcName)

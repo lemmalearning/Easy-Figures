@@ -75,8 +75,8 @@ class Figures:
 			height_temp = height
 
 
-		abs_range_x = xyrange[0][1]- xyrange[0][0]
-		abs_range_y = xyrange[1][1]- xyrange[1][0]
+		self.abs_range_x = xyrange[0][1]- xyrange[0][0]
+		self.abs_range_y = xyrange[1][1]- xyrange[1][0]
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
@@ -84,7 +84,7 @@ class Figures:
 		self.padding = padding
 		self.true_pad = (0.75 * self.padding)/10.0
 		self.xyrange = xyrange
-		self.aspectRatio = aspectRatio if aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(abs_range_y)/abs_range_x)
+		self.aspectRatio = aspectRatio if aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
 		self.drawOrder = []
 		self.width = width
 		self.height = height
@@ -108,8 +108,8 @@ class Figures:
 			num, den = (den, num)
 
 		# if aspect > 1, multiply width
-		self.UNITS_PER_PIXEL_x = abs_range_x / float(width_temp-2*self.true_pad)
-		self.UNITS_PER_PIXEL_y = abs_range_y / float(height_temp-2*self.true_pad)
+		self.UNITS_PER_PIXEL_x = self.abs_range_x / float(width_temp-2*self.true_pad)
+		self.UNITS_PER_PIXEL_y = self.abs_range_y / float(height_temp-2*self.true_pad)
 		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
