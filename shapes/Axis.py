@@ -76,7 +76,7 @@ class Axis:
 			raise "Tick count too high"
 		if self.yticks and self.figure.abs_range_y / self.yticks > MAXTICKS:
 			raise "Tick count too high"
-		if self.yminorticks and self.figure.abs_range_y / self.yminorticks > MAXTICKS:
+		if self.yminorticksg and self.figure.abs_range_y / self.yminorticks > MAXTICKS:
 			raise "Tick count too high"
 
 	def __draw__(self, zorder=1):
