@@ -66,9 +66,9 @@ class Axis:
 		"""
 		MAXTICKS = 10000 # Matplotlib specified
 
-		if self.ticks and self.figure.abs_range_x / self.ticks > MAXTICKS and self.figure.abs_range_y / self.ticks > MAXTICKS:
+		if self.ticks and (self.figure.abs_range_x / self.ticks > MAXTICKS or self.figure.abs_range_y / self.ticks > MAXTICKS):
 			raise "Tick count too high"
-		if self.minorticks and self.figure.abs_range_x / self.minorticks > MAXTICKS and self.figure.abs_range_y / self.minorticks > MAXTICKS:
+		if self.minorticks and (self.figure.abs_range_x / self.minorticks > MAXTICKS or self.figure.abs_range_y / self.minorticks > MAXTICKS):
 			raise "Tick count too high"
 		if self.xticks and self.figure.abs_range_x / self.xticks > MAXTICKS:
 			raise "Tick count too high"
@@ -197,13 +197,13 @@ class Axis:
 		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 		if self.origin:
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
-			xlabels = [int(item) if int(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks()]
+			ylabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
+			xlabels = [float(item) if float(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks()]
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)
 		else:
-			xlabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_xticks()]
-			ylabels = [int(item) if int(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
+			xlabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_xticks()]
+			ylabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
 
 		self.figure.ax.set_yticklabels(ylabels)
 		self.figure.ax.set_xticklabels(xlabels)
