@@ -153,14 +153,14 @@ class Axis:
 			)
 
 			if self.label:
-				x_dim = self.figure.addText((xmax+self.figure.px2unit(5, 'x'), ymin if ymin > 0 else 0+self.figure.px2unit(35, 'y')), self.xlabel, latex=True,
+				x_dim = self.figure.addText((xmax+self.figure.px2unit(25, 'x'), ymin if ymin > 0 else 0+self.figure.px2unit(25, 'y')), self.xlabel, latex=True,
 					fontsize=15, valignment='top', halignment='right',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
 						edgecolor='none', pad=0.03
 					)
 				)
-				y_dim = self.figure.addText((xmin if xmin > 0 else 0+self.figure.px2unit(15, 'x'), ymax+(self.figure.px2unit(5, 'y'))), self.ylabel, latex=True,
+				y_dim = self.figure.addText((xmin if xmin > 0 else 0+self.figure.px2unit(15, 'x'), ymax+(self.figure.px2unit(25, 'y'))), self.ylabel, latex=True,
 					fontsize=15, valignment='top', halignment='center',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,

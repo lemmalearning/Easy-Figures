@@ -83,13 +83,13 @@ class Figures:
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
+		self.padding = padding
+		self.true_pad = (0.75 * self.padding)/10.0
 		self.tight_fit = True
 		if width!='auto' and height!='auto':
 			self.aspectRatio=(float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x) if not aspectRatio else aspectRatio
 		elif width=='auto' or height=='auto':
 			self.aspectRatio = 1 if not aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
-		self.padding = padding
-		self.true_pad = (0.75 * self.padding)/10.0
 		self.xyrange = xyrange
 		self.drawOrder = []
 		self.width = width
