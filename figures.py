@@ -65,6 +65,9 @@ class Figures:
 		if unconstrained > 1:
 			raise ValueError('Underconstrained dimensions of figure')
 
+
+		self.aspectRatio = 1 if aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
+
 		if width == 'auto':
 			width_temp = height * 1.0/float(aspectRatio)
 		else:
@@ -85,7 +88,6 @@ class Figures:
 		self.padding = padding
 		self.true_pad = (0.75 * self.padding)/10.0
 		self.xyrange = xyrange
-		self.aspectRatio = 1 if aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
 		self.drawOrder = []
 		self.width = width
 		self.height = height

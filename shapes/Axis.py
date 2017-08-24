@@ -183,6 +183,7 @@ class Axis:
 			self.origin=False
 			self.top=True
 			self.fontsize=12
+			self.customLabels = False
 		if isinstance(self.ticks, int) and isinstance(self.minorticks, int) and self.ticks > self.minorticks:
 			self.minorGrid = True
 
@@ -213,10 +214,6 @@ class Axis:
 				xlabels.append(int(item))
 			else:
 				xlabels.append(float(item))
-
-			self.figure.ax.set_yticklabels(ylabels)
-			self.figure.ax.set_xticklabels(xlabels)
-
 
 		self.figure.ax.set_yticklabels(ylabels)
 		self.figure.ax.set_xticklabels(xlabels)
