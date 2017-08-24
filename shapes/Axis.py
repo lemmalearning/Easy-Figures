@@ -5,6 +5,7 @@ import matplotlib.patches as patches
 from random import randint, choice
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
+import math
 class Axis:
 	"""
 	Creates an Axis object which contains ticks, spine arrows, and grids.
@@ -38,13 +39,14 @@ class Axis:
 		self.ticks 		= None
 		self.tickRan	= False
 
-	def Ticks(self, ticks=False, xticks=False, yticks=False, minorticks=False, xminorticks=False, yminorticks=False, fontsize=12, origin=False, top=True):
+	def Ticks(self, ticks=False, xticks=False, yticks=False, minorticks=False, xminorticks=False, yminorticks=False, fontsize=12, origin=False, top=True, customLabels=None):
 		self.minorticks = minorticks
 		self.xminorticks = xminorticks
 		self.yminorticks = yminorticks
 		self.xticks = xticks
 		self.yticks = yticks
 		self.ticks = ticks
+		self.customLabels = customLabels
 
 		if self.ticks:
 			self.xticks = self.yticks = self.ticks
@@ -197,6 +199,12 @@ class Axis:
 		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 		if self.origin:
+			ylabels = []
+			for item in self.figure.ax.get_yticks():
+				if math.floor(float(item)) == float(item): # it's an int
+					ylabels.append(int(item))
+				else:
+					ylabels.append(float(item))
 			ylabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
 			xlabels = [float(item) if float(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks()]
 			self.figure.ax.set_yticklabels(ylabels)
@@ -205,8 +213,15 @@ class Axis:
 			xlabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_xticks()]
 			ylabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
 
+
 		self.figure.ax.set_yticklabels(ylabels)
 		self.figure.ax.set_xticklabels(xlabels)
+
+		if self.customLabels:
+			if self.customLabels[0]:
+				self.figure.ax.set_xticklabels(self.customLabels[0])
+			if self.customLabels[1]:
+				self.figure.ax.set_xticklabels(self.customLabels[1])
 
 		for label in self.figure.ax.xaxis.get_ticklabels():
 			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
