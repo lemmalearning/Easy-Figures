@@ -195,6 +195,8 @@ class Axis:
 		plt.gca().yaxis.set_major_locator(plt.MultipleLocator(self.yticks) if self.yticks is not False else plt.NullLocator())
 		plt.gca().yaxis.set_minor_locator(plt.MultipleLocator(self.yminorticks) if self.yminorticks is not False else plt.NullLocator())
 
+
+
 		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
 		ylabels = []

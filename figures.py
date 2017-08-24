@@ -65,15 +65,14 @@ class Figures:
 		if unconstrained > 1:
 			raise ValueError('Underconstrained dimensions of figure')
 
-
-		self.aspectRatio = 1 if aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
-
 		if width == 'auto':
-			width_temp = height * 1.0/float(aspectRatio)
+			aspectRatio_temp = 1 if not aspectRatio else aspectRatio
+			width_temp = height * 1.0/float(aspectRatio_temp)
 		else:
 			width_temp = width
 		if height == 'auto':
-			height_temp = width * float(aspectRatio)
+			aspectRatio_temp = 1 if not aspectRatio else aspectRatio
+			height_temp = width * float(aspectRatio_temp)
 		else:
 			height_temp = height
 
@@ -85,6 +84,10 @@ class Figures:
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
 		self.tight_fit = True
+		if width!='auto' and height!='auto':
+			self.aspectRatio=(float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x) if not aspectRatio else aspectRatio
+		elif width=='auto' or height=='auto':
+			self.aspectRatio = 1 if not aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
 		self.padding = padding
 		self.true_pad = (0.75 * self.padding)/10.0
 		self.xyrange = xyrange
