@@ -135,8 +135,6 @@ class Axis:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
-			print xmin, xmax, ymin, ymax
-
 			head_len_x = self.figure.px2unit(9, 'x')
 			head_len_y = self.figure.px2unit(9, 'y')
 
@@ -155,14 +153,14 @@ class Axis:
 			)
 
 			if self.label:
-				x_dim = self.figure.addText((xmax+self.figure.px2unit(5, 'x'), ymin+self.figure.px2unit(35, 'y')), self.xlabel, latex=True,
+				x_dim = self.figure.addText((xmax+self.figure.px2unit(5, 'x'), ymin if ymin > 0 else 0+self.figure.px2unit(35, 'y')), self.xlabel, latex=True,
 					fontsize=15, valignment='top', halignment='right',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
 						edgecolor='none', pad=0.03
 					)
 				)
-				y_dim = self.figure.addText(xmin+(self.figure.px2unit(15, 'x'), ymax+(self.figure.px2unit(5, 'y'))), self.ylabel, latex=True,
+				y_dim = self.figure.addText((xmin if xmin > 0 else 0+self.figure.px2unit(15, 'x'), ymax+(self.figure.px2unit(5, 'y'))), self.ylabel, latex=True,
 					fontsize=15, valignment='top', halignment='center',
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
@@ -198,20 +196,26 @@ class Axis:
 
 		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
 
-		if self.origin:
-			ylabels = []
-			for item in self.figure.ax.get_yticks():
-				if math.floor(float(item)) == float(item): # it's an int
-					ylabels.append(int(item))
-				else:
-					ylabels.append(float(item))
-			ylabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
-			xlabels = [float(item) if float(item) is not 0 else "        (0,0)" for item in self.figure.ax.get_xticks()]
+		ylabels = []
+		for item in self.figure.ax.get_yticks():
+			if float(item) == 0:
+				ylabels.append("")
+			elif math.floor(float(item)) == float(item): # it's an int
+				ylabels.append(int(item))
+			else:
+				ylabels.append(float(item))
+
+		xlabels = []
+		for item in self.figure.ax.get_xticks():
+			if float(item) == 0:
+				xlabels.append("        (0,0)" if self.origin else "")
+			elif math.floor(float(item)) == float(item):  # it's an int
+				xlabels.append(int(item))
+			else:
+				xlabels.append(float(item))
+
 			self.figure.ax.set_yticklabels(ylabels)
 			self.figure.ax.set_xticklabels(xlabels)
-		else:
-			xlabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_xticks()]
-			ylabels = [float(item) if float(item) is not 0 else "" for item in self.figure.ax.get_yticks()]
 
 
 		self.figure.ax.set_yticklabels(ylabels)
