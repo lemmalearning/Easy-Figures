@@ -1,5 +1,5 @@
 import matplotlib
-matplotlib.rcParams['axes.unicode_minus'] = False
+#matplotlib.rcParams['axes.unicode_minus'] = True
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from random import randint, choice
@@ -255,8 +255,8 @@ class Axis:
 				else:
 					ylabels[i] = ''
 
-		self.figure.ax.set_yticklabels(ylabels)
-		self.figure.ax.set_xticklabels(xlabels)
+		self.figure.ax.set_yticklabels([str(label).replace("-", "$-$") for label in ylabels])
+		self.figure.ax.set_xticklabels([str(label).replace("-", "$-$") for label in xlabels])
 
 		for label in self.figure.ax.xaxis.get_ticklabels():
 			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
