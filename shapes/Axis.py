@@ -217,25 +217,46 @@ class Axis:
 				xlabels.append(float(item))
 
 		if self.customLabels:
-			for key in self.customLabels[0]:
-				if float(key) in xlabels:
-					xlabels[xlabels.index(float(key))] = self.customLabels[key]
-					pass
-				if self.customLabels[0][key] in xlabels and self.customLabels[0][key] != 'auto':
-					xlabels[xlabels.index(float(key))] = ''
-			for key in self.customLabels[1]:
-				if float(key) in ylabels:
-					ylabels[ylabels.index(float(key))] = self.customLabels[key]
-					pass
-				if self.customLabels[1][key] in ylabels and self.customLabels[1][key] != 'auto':
-					ylabels[ylabels.index(float(key))] = ''
+			for i,label in enumerate(xlabels):
+				if label == '':
+					continue
+				key = None
+				if int(label) in self.customLabels[0]:
+					key = int(label)
+				if float(label) in self.customLabels[0]:
+					key = float(label)
+				if str(label) in self.customLabels[0]:
+					key = str(label)
+
+				if key != None:
+					if self.customLabels[0][key] == 'auto':
+						continue
+					else:
+						xlabels[i] = self.customLabels[0][key]
+				else:
+					xlabels[i] = ''
+
+			for i, label in enumerate(ylabels):
+				if label == '':
+					continue
+				key = None
+				if int(label) in self.customLabels[1]:
+					key = int(label)
+				if float(label) in self.customLabels[1]:
+					key = float(label)
+				if str(label) in self.customLabels[1]:
+					key = str(label)
+
+				if key != None:
+					if self.customLabels[1][key] == 'auto':
+						continue
+					else:
+						ylabels[i] = self.customLabels[1][key]
+				else:
+					ylabels[i] = ''
 
 		self.figure.ax.set_yticklabels(ylabels)
 		self.figure.ax.set_xticklabels(xlabels)
-			# if self.customLabels[0]:
-			# 	self.figure.ax.set_xticklabels(self.customLabels[0])
-			# if self.customLabels[1]:
-			# 	self.figure.ax.set_xticklabels(self.customLabels[1])
 
 		for label in self.figure.ax.xaxis.get_ticklabels():
 			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
