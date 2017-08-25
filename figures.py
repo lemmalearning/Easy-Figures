@@ -33,7 +33,7 @@ class Figures:
 		return "#f0feffff"
 	_BG = _BG_COLOR()
 
-	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=10, xPad=None, yPad=None):
+	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=20, xPad=None, yPad=None):
 		"""
 			__init__ function for Figures class.
 			Args:
