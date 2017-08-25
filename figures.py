@@ -217,8 +217,8 @@ class Figures:
 
 	def __draw_shapes__(self, order=None):
 		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]) and not any([isinstance(obj, Box.Box) for obj in self.drawOrder]):
-			axis = self.addAxis(hideAxis=True, label=False, arrows=False, grid=False, minorGrid=False)
-
+			axis = self.addAxis(hideAxis=True, label=False, arrows=False, grid=False, minorGrid=False, lw=0)
+			#self.drawOrder = [axis]+self.drawOrder[:-1]
 		for i, shape in enumerate(self.drawOrder if order is None else order):
 			shape.__draw__(zorder=i)
 

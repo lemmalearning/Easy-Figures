@@ -34,7 +34,7 @@ class Axis:
 		self.xlabel		= xlabel
 		self.ylabel		= ylabel
 		self.figure     = figure
-		self.lw			= lw
+		self.lw			= lw if not self.hideAxis else 0
 		self.mplprops 	= mplprops
 		self.ticks 		= None
 		self.tickRan	= False
@@ -131,7 +131,7 @@ class Axis:
 		[i.set_linewidth(self.lw) for i in self.figure.ax.spines.itervalues()]
 
 
-		if self.arrows:
+		if self.arrows and not self.hideAxis:
 			xmin, xmax = self.figure.ax.get_xlim()
 			ymin, ymax = self.figure.ax.get_ylim()
 
@@ -152,7 +152,7 @@ class Axis:
 				mplprops={'zorder':1}, clip=False,
 			)
 
-			if self.label:
+			if self.label and not self.hideAxis:
 				x_dim = self.figure.addText((xmax+self.figure.px2unit(25, 'x'), ymin if ymin > 0 else 0+self.figure.px2unit(25, 'y')), self.xlabel, latex=True,
 					fontsize=15, valignment='top', halignment='right',
 					bbox=dict(
@@ -176,7 +176,6 @@ class Axis:
 
 		####### DRAW LABELS #######
 		# Control ticks
-
 		if self.tickRan == False:
 			self.ticks = self.xticks = self.yticks = 1
 			self.minorticks = self.xminorticks = self.yminorticks = 1
@@ -217,14 +216,26 @@ class Axis:
 			else:
 				xlabels.append(float(item))
 
+		if self.customLabels:
+			for key in self.customLabels[0]:
+				if float(key) in xlabels:
+					xlabels[xlabels.index(float(key))] = self.customLabels[key]
+					pass
+				if self.customLabels[0][key] in xlabels and self.customLabels[0][key] != 'auto':
+					xlabels[xlabels.index(float(key))] = ''
+			for key in self.customLabels[1]:
+				if float(key) in ylabels:
+					ylabels[ylabels.index(float(key))] = self.customLabels[key]
+					pass
+				if self.customLabels[1][key] in ylabels and self.customLabels[1][key] != 'auto':
+					ylabels[ylabels.index(float(key))] = ''
+
 		self.figure.ax.set_yticklabels(ylabels)
 		self.figure.ax.set_xticklabels(xlabels)
-
-		if self.customLabels:
-			if self.customLabels[0]:
-				self.figure.ax.set_xticklabels(self.customLabels[0])
-			if self.customLabels[1]:
-				self.figure.ax.set_xticklabels(self.customLabels[1])
+			# if self.customLabels[0]:
+			# 	self.figure.ax.set_xticklabels(self.customLabels[0])
+			# if self.customLabels[1]:
+			# 	self.figure.ax.set_xticklabels(self.customLabels[1])
 
 		for label in self.figure.ax.xaxis.get_ticklabels():
 			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
