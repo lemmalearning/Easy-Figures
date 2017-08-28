@@ -366,12 +366,16 @@ class Figures:
 			return ellipse
 
 	def addArc(self, xy=(0,0), width=0, height=0, fc='None', color='k', lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
+		theta1=math.radians(theta1)
+		theta2=math.radians(theta2)
 		pixelSize=self.width
 		arc = Arc.Arc(xy, width, height, fc, color, lw, angle, theta1, theta2, mplprops, self)
 		self.drawOrder.append(arc)
 		return arc
 
 	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, fc='None', color='k', width=None, mplprops={}):
+		theta1=math.radians(theta1)
+		theta2=math.radians(theta2)
 		pixelSize=self.width
 		wedge = Wedge.Wedge(xy, r, theta1, theta2, fc, color, width, mplprops, self)
 		self.drawOrder.append(wedge)
