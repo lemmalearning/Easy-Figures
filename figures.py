@@ -337,9 +337,9 @@ class Figures:
 		self.drawOrder.append(b)
 		return b
 
-	def addPolygon(self, vertices, lw=2, clip=True, mplprops={}):
+	def addPolygon(self, vertices, lw=2, fc='None', ec='k', clip=True, mplprops={}):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, lw, True if 'color' in mplprops else False, clip, mplprops, self)
+		polygon = Polygon.Polygon(vertices, lw, True if fc!='None' else False, fc, ec, clip, mplprops, self)
 		self.drawOrder.append(polygon)
 		return polygon
 

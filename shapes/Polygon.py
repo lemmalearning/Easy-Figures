@@ -9,13 +9,13 @@ from matplotlib.patches import Arc
 
 class Polygon:
 	matplotlib_obj = None
-	def __init__(self, vertices, lw, fill, clip, mplprops, figure):
+	def __init__(self, vertices, lw, fill, fc, ec, clip, mplprops, figure):
 		self.vertices = np.matrix(vertices)
 		self.lw = lw
 		self.mplprops = mplprops
 
 		# Define the polygon
-		self.matplotlib_obj = plt.Polygon(vertices, fill=fill, lw=lw, **self.mplprops)
+		self.matplotlib_obj = plt.Polygon(vertices, fc=fc, ec=ec, fill=fill, lw=lw, **self.mplprops)
 		self.matplotlib_obj.set_clip_on(clip)
 		self.figure = figure
 
