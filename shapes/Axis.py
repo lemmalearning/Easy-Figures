@@ -206,7 +206,7 @@ class Axis:
 		for item in self.figure.ax.get_yticks():
 			if float(item) == 0:
 				ylabels.append("")
-			elif math.floor(float(item)) == float(item): # it's an int
+			elif math.floor(float(item)) == float(item):  # it's an int
 				ylabels.append(int(item))
 			else:
 				ylabels.append(float(item))
@@ -268,17 +268,24 @@ class Axis:
 
 		for label in self.figure.ax.xaxis.get_ticklabels():
 			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
+			if '$' not in label.get_text():
+				label.set_horizontalalignment('left')
 
 		for label in self.figure.ax.yaxis.get_ticklabels():
 			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
+			if '$' not in label.get_text():
+				label.set_verticalalignment('bottom')
 
 		if self.top:
 			self.figure.ax.xaxis.set_label_position('top')
 
+		# Parse the grid color:
+		gridColor=self.figure.GRID[:-2]
+		gridAlpha=int(self.figure.GRID[-2:],16)/256.0
 		if self.grid is not False:
-			self.figure.ax.grid(which='major', color='k' if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=0.5)
+			self.figure.ax.grid(which='major', color=gridColor if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=gridAlpha)
 		if self.minorGrid is not False:
-			self.figure.ax.grid(which='minor', color='k' if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=0.25)
+			self.figure.ax.grid(which='minor', color=gridColor if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=gridAlpha)
 
 
 		####### END DRAW LABELS #######

@@ -31,8 +31,14 @@ class Figures:
 	head_width = 5.0
 	def _BG_COLOR():
 		return "#f0feffff"
+
+	def _GRID_COLOR():
+		return "#00000080"
+
+	GRID  = _GRID_COLOR()
+	_GRID = _GRID_COLOR()
 	_BG = _BG_COLOR()
-	BG = _BG_COLOR()
+	BG  = _BG_COLOR()
 
 	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=20, xPad=None, yPad=None):
 		"""
