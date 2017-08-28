@@ -32,6 +32,7 @@ class Figures:
 	def _BG_COLOR():
 		return "#f0feffff"
 	_BG = _BG_COLOR()
+	BG = _BG_COLOR()
 
 	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=20, xPad=None, yPad=None):
 		"""
@@ -221,7 +222,7 @@ class Figures:
 			axis = self.addAxis(hideAxis=True, label=False, arrows=False, grid=False, minorGrid=False, lw=0)
 
 		for i, shape in enumerate(local_order):
-			shape.__draw__(zorder=i)
+			shape.__draw__(zorder=i*10+1)
 
 	def setPixelSize(self, width, height):
 		"""Sets the pixel size of the figure.
