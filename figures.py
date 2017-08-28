@@ -216,10 +216,11 @@ class Figures:
 		return (width, height, descent)
 
 	def __draw_shapes__(self, order=None):
-		if not any([isinstance(obj, Axis.Axis) for obj in self.drawOrder]) and not any([isinstance(obj, Box.Box) for obj in self.drawOrder]):
+		local_order = self.drawOrder if order is None else order
+		if not any([isinstance(obj, Axis.Axis) for obj in local_order]) and not any([isinstance(obj, Box.Box) for obj in local_order]):
 			axis = self.addAxis(hideAxis=True, label=False, arrows=False, grid=False, minorGrid=False, lw=0)
-			#self.drawOrder = [axis]+self.drawOrder[:-1]
-		for i, shape in enumerate(self.drawOrder if order is None else order):
+
+		for i, shape in enumerate(local_order):
 			shape.__draw__(zorder=i)
 
 	def setPixelSize(self, width, height):
@@ -304,7 +305,7 @@ class Figures:
 		self.drawOrder.append(p)
 		return p
 
-	def addLine(self, pointA, pointB, lw=2, color='k', clip=True, mplprops={}):
+	def addLine(self, pointA, pointB, lw=2, color='k', clip=True, add=True, mplprops={}):
 		"""
 			addLine - Adds a line 'shape' to the Figures.
 			Args:
@@ -317,12 +318,12 @@ class Figures:
 				Line.Line object
 		"""
 		l = Line.Line(pointA, pointB, lw, color, clip, mplprops, self)
-		self.drawOrder.append(l)
+		if add: self.drawOrder.append(l)
 		return l
 
-	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='center', bbox={}, mplprops={}, latex=True, pixel=False):
+	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='center', bbox={}, mplprops={}, latex=True, pixel=False, add=True):
 		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, self)
-		self.drawOrder.append(t)
+		if add: self.drawOrder.append(t)
 		return t
 
 	def addFunction(self, functions, xyranges=None, color='black', lw=2, variable=None, mplprops={}):
@@ -337,10 +338,10 @@ class Figures:
 		self.drawOrder.append(b)
 		return b
 
-	def addPolygon(self, vertices, lw=2, fc='None', ec='k', clip=True, mplprops={}):
+	def addPolygon(self, vertices, lw=2, fc='None', ec='k', clip=True, add=True, mplprops={}):
 		pixelSize=self.width
 		polygon = Polygon.Polygon(vertices, lw, True if fc!='None' else False, fc, ec, clip, mplprops, self)
-		self.drawOrder.append(polygon)
+		if add: self.drawOrder.append(polygon)
 		return polygon
 
 	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, lw=2, orientation=0.0, mplprops={}):
@@ -376,7 +377,7 @@ class Figures:
 		self.drawOrder.append(wedge)
 		return wedge
 
-	def addArrow(self, start, end, lw=25, color='k', headWidth=30, headLength=70, mplprops={}, clip=True, **kwargs):
+	def addArrow(self, start, end, lw=25, color='k', headWidth=30, headLength=70, mplprops={}, clip=True, add=True, **kwargs):
 		if 'arrowstyle' in kwargs:
 			self.addFancyArrow(
 				posA=start, posB=end, color=color, lw=lw, path=None, arrowstyle=kwargs['arrowstyle'],
@@ -384,7 +385,7 @@ class Figures:
 			)
 
 		else:
-			return Arrow.Arrow(start, end, color, headWidth, headLength, lw, mplprops, clip, self)
+			return Arrow.Arrow(start, end, color, headWidth, headLength, lw, mplprops, clip, add, self)
 
 	def addFancyArrow(self, posA, posB, path=None, color='k', lw=2, arrowstyle=None, connectionstyle='bar', mutation_scale=3, mplprops={}):
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)

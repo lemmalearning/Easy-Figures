@@ -31,6 +31,8 @@ class Axis:
 		self.color 		= color
 		self.minorGrid 	= minorGrid
 		self.label		= label
+		if not self.label:
+			figure.padding=0
 		self.xlabel		= xlabel
 		self.ylabel		= ylabel
 		self.figure     = figure
@@ -141,34 +143,36 @@ class Axis:
 			head_width_x = self.figure.px2unit(5, 'x')
 			head_width_y = self.figure.px2unit(5, 'y')
 
-			self.figure.addArrow(
+			arrow_x = self.figure.addArrow(
 				(xmin if xmin>0 else 0,ymin if ymin>0 else 0), (xmax+(self.figure.px2unit(5, 'x')), ymin if ymin>0 else 0),
 				lw=self.lw, head_width=head_width_y, head_length=head_len_x, color=self.color, length_includes_head=True, clip_on=False,
-				mplprops={'zorder':1}, clip=False,
+				mplprops={'zorder':1}, clip=False, add=False
 			)
-			self.figure.addArrow(
+			arrow_x.__draw__(zorder=zorder)
+			arrow_y = self.figure.addArrow(
 				(xmin if xmin>0 else 0,ymin if ymin>0 else 0), (xmin if xmin>0 else 0, ymax+(self.figure.px2unit(5, 'y'))),
 				lw=self.lw,	head_width=head_width_x, head_length=head_len_y, color=self.color, length_includes_head=True, clip_on=False,
-				mplprops={'zorder':1}, clip=False,
+				mplprops={'zorder':1}, clip=False, add=False
 			)
+			arrow_y.__draw__(zorder=zorder)
 
 			if self.label and not self.hideAxis:
 				x_dim = self.figure.addText((xmax+self.figure.px2unit(25, 'x'), ymin if ymin > 0 else 0+self.figure.px2unit(25, 'y')), self.xlabel, latex=True,
-					fontsize=15, valignment='top', halignment='right',
+					fontsize=15, valignment='top', halignment='right', add=False,
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
 						edgecolor='none', pad=0.03
 					)
 				)
 				y_dim = self.figure.addText((xmin if xmin > 0 else 0+self.figure.px2unit(15, 'x'), ymax+(self.figure.px2unit(25, 'y'))), self.ylabel, latex=True,
-					fontsize=15, valignment='top', halignment='center',
+					fontsize=15, valignment='top', halignment='center', add=False,
 					bbox=dict(
 						boxstyle='round', facecolor=self.figure.bgcolor,
 						edgecolor='none', pad=0.03
 					)
 				)
-				x_dim.__draw__()
-				y_dim.__draw__()
+				x_dim.__draw__(zorder=zorder)
+				y_dim.__draw__(zorder=zorder)
 
 		# Control color
 		self.figure.ax.spines['bottom'].set_color(self.color)
@@ -287,5 +291,5 @@ class Axis:
 			plt.gca().yaxis.set_major_locator(plt.NullLocator())
 			plt.gca().yaxis.set_minor_locator(plt.NullLocator())
 
-		self.figure.ax.xaxis.set_zorder(zorder)
-		self.figure.ax.yaxis.set_zorder(zorder)
+		for k, spine in self.figure.ax.spines.items():  # ax.spines is a dictionary
+			spine.set_zorder(zorder)
