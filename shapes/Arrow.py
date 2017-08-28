@@ -40,5 +40,6 @@ class Arrow:
 		self.line = self.figure.addLine(self.figure.px2unit_c(start).tolist()[0], self.figure.px2unit_c(p_t0).tolist()[0], lw=lw, color=color, add=add, clip=clip)
 
 	def __draw__(self, zorder=1):
+		print zorder
 		self.line.__draw__(zorder=zorder)
 		self.head.__draw__(zorder=zorder)

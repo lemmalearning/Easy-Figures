@@ -338,42 +338,42 @@ class Figures:
 		self.drawOrder.append(b)
 		return b
 
-	def addPolygon(self, vertices, lw=2, fc='None', ec='k', clip=True, add=True, mplprops={}):
+	def addPolygon(self, vertices, lw=2, fc='None', color='k', clip=True, add=True, mplprops={}):
 		pixelSize=self.width
-		polygon = Polygon.Polygon(vertices, lw, True if fc!='None' else False, fc, ec, clip, mplprops, self)
+		polygon = Polygon.Polygon(vertices, lw, True if fc!='None' else False, fc, color, clip, mplprops, self)
 		if add: self.drawOrder.append(polygon)
 		return polygon
 
-	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fill=False, lw=2, orientation=0.0, mplprops={}):
+	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fc='None', color='k', lw=2, orientation=0.0, mplprops={}):
 		pixelSize=self.width
-		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, fill, lw, orientation, mplprops, self)
+		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, True if fc!='None' else False, fc, color, lw, orientation, mplprops, self)
 		self.drawOrder.append(regpolygon)
 		return regpolygon
 
-	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', ec='k', lw=2, mplprops={}):
+	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', color='k', lw=2, mplprops={}):
 		pixelSize=self.width
-		circle = Circle.Circle(xy, diameter, radius, label, fc, ec, lw, mplprops, self)
+		circle = Circle.Circle(xy, diameter, radius, label, fc, color, lw, mplprops, self)
 		self.drawOrder.append(circle)
 		return circle
 
-	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', ec='k', angle=0.0, lw=2, mplprops={}):
+	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', color='k', angle=0.0, lw=2, mplprops={}):
 		if isinstance(r, int):
 			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, lw=lw, mplprops=mplprops)
 		else:
 			pixelSize=self.width
-			ellipse = Ellipse.Ellipse(xy, r, fc, ec, angle, lw, mplprops, self)
+			ellipse = Ellipse.Ellipse(xy, r, fc, color, angle, lw, mplprops, self)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addArc(self, xy=(0,0), width=0, height=0, lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
+	def addArc(self, xy=(0,0), width=0, height=0, fc='None', color='k', lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
 		pixelSize=self.width
-		arc = Arc.Arc(xy, width, height, lw, angle, theta1, theta2, mplprops, self)
+		arc = Arc.Arc(xy, width, height, fc, color, lw, angle, theta1, theta2, mplprops, self)
 		self.drawOrder.append(arc)
 		return arc
 
-	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, width=None, mplprops={}):
+	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, fc='None', color='k', width=None, mplprops={}):
 		pixelSize=self.width
-		wedge = Wedge.Wedge(xy, r, theta1, theta2, width, mplprops, self)
+		wedge = Wedge.Wedge(xy, r, theta1, theta2, fc, color, width, mplprops, self)
 		self.drawOrder.append(wedge)
 		return wedge
 
