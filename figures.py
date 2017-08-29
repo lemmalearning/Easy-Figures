@@ -475,7 +475,9 @@ class Figures:
 		return lines
 
 	def addRectangle_rounded(self, ll_point, ur_point, r=0, fc='None', color='black', mplprops={}):
-
+		ll_point=float(ll_point)
+		ur_point=float(ur_point)
+		r=float(r)
 		self.addLine([ll_point[0]+r, ll_point[1]], [ur_point[0]-r, ll_point[1]], color=color)
 		self.addLine([ll_point[0], ll_point[1]+r], [ll_point[0], ur_point[1]-r], color=color)
 		self.addLine([ll_point[0]+r, ur_point[1]], [ur_point[0]-r, ur_point[1]], color=color)
