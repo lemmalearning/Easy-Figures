@@ -534,7 +534,7 @@ class Figures:
 			vertexC = [x,y,1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation)
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, None, mplprops, figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, None, 'None', 'k', False, mplprops, self)
 			self.drawOrder.append(triangle)
 			return triangle
 
@@ -554,6 +554,6 @@ class Figures:
 			vertexC = [C+xy[0], 0+xy[1], 1]
 
 			transformation = matplotlib.transforms.Affine2D().rotate_around(xy[0], xy[1], rotation) # + self.ax.transData
-			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, None, mplprops, figure=self)
+			triangle = Polygon.Polygon(np.delete((transformation * np.matrix([vertexA, vertexB, vertexC]).transpose()).transpose(), 2, axis=1), lw, None, 'None', 'k', False, mplprops, self)
 			self.drawOrder.append(triangle)
 			return triangle
