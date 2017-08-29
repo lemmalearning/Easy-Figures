@@ -31,7 +31,7 @@ class Figures:
 		"""
 		Check if i is iterable, if so apply float to everything, else just call normal float
 		"""
-		if hasattr(obj, '__contains__'):
+		if hasattr(i, '__contains__'):
 			return [float(j) for j in i]
 		else:
 			return float(i)
@@ -49,7 +49,7 @@ class Figures:
 	_BG = _BG_COLOR()
 	BG  = _BG_COLOR()
 
-	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=20, xPad=None, yPad=None):
+	def __init__(self, xyrange=None, aspectRatio=None, width=300, height=300, bgcolor='#f0feffff', padding=20):
 		"""
 			__init__ function for Figures class.
 			Args:
@@ -92,11 +92,12 @@ class Figures:
 		else:
 			height_temp = height
 
-		self.xPad = xPad if xPad != None else padding
-		self.yPad = yPad if yPad != None else padding
+		# self.xPad = xPad if xPad != None else padding
+		# self.yPad = yPad if yPad != None else padding
 		self.abs_range_x = xyrange[0][1]- xyrange[0][0]
 		self.abs_range_y = xyrange[1][1]- xyrange[1][0]
 		self.fig, self.ax = plt.subplots()
+		self.ax.margins(0.5)
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
 		self.padding = padding
@@ -156,8 +157,8 @@ class Figures:
 
 		# We will perform the tight layout ourselves
 		self.fig.set_tight_layout(False)
-		true_pad = (0.75 * self.padding)/12.0
 
+		self.ax.set_clip_box(dict(boxstyle='square', fc='red', ec='none'))
 		self.fig.tight_layout(pad=px2in(self.padding))
 
 		# post draw
@@ -505,8 +506,8 @@ class Figures:
 		self.addCircle(xy=[ur_point[0]-r, ll_point[1]+r], fc=fc, radius=r, lw=0)
 		self.addCircle(xy=[ll_point[0]+r, ur_point[1]-r], fc=fc, radius=r, lw=0)
 		self.addCircle(xy=[ur_point[0]-r, ur_point[1]-r], fc=fc, radius=r, lw=0)
-		self.addRectangle([ll_point[0]+r, ll_point[1]], [ur_point[0]-r, ur_point[1]], fc=fc, ec='none')
-		self.addRectangle([ll_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], fc=fc, ec='none')
+		self.addRectangle([ll_point[0]+r, ll_point[1]], [ur_point[0]-r, ur_point[1]], fc=fc, color='none')
+		self.addRectangle([ll_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], fc=fc, color='none')
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
 		xy = [float(i) for i in xy]

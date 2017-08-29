@@ -259,8 +259,8 @@ class Axis:
 				else:
 					ylabels[i] = ''
 		else:
-			xlabels=xlabels[:-2]
-			ylabels=ylabels[:-2]
+			xlabels=xlabels[:-1]
+			ylabels=ylabels[:-1]
 
 
 		self.figure.ax.set_yticklabels([str(label).replace("-", "$-$") for label in ylabels])
