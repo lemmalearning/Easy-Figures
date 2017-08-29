@@ -312,7 +312,7 @@ class Figures:
 		if isinstance(xys, list):
 			xys = [float(xy) for xy in xys]
 		else:
-			xy=float(xy)
+			xys=float(xys)
 		p = Point.Point(xys, texts, pointsize if not lw else lw, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
 		return p
