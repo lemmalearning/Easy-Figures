@@ -289,6 +289,7 @@ class Figures:
 			Returns:
 				Axis.Axis object
 		"""
+
 		pixelSize = self.width
 		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, self)
 		self.drawOrder.append(axis)
@@ -308,6 +309,10 @@ class Figures:
 			Returns:
 				Point.Point object
 		"""
+		if isinstance(xys, list):
+			xys = [float(xy) for xy in xys]
+		else:
+			xy=float(xy)
 		p = Point.Point(xys, texts, pointsize if not lw else lw, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
 		return p
@@ -324,12 +329,12 @@ class Figures:
 			Returns:
 				Line.Line object
 		"""
-		l = Line.Line(pointA, pointB, lw, color, clip, mplprops, self)
+		l = Line.Line([float(a) for a in pointA], [float(b) for b in pointB], lw, color, clip, mplprops, self)
 		if add: self.drawOrder.append(l)
 		return l
 
 	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='center', bbox={}, mplprops={}, latex=True, pixel=False, add=True):
-		t = Text.Text(xy, text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, self)
+		t = Text.Text([float(i) for i in xy], text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, self)
 		if add: self.drawOrder.append(t)
 		return t
 
@@ -347,28 +352,29 @@ class Figures:
 
 	def addPolygon(self, vertices, lw=2, fc='None', color='k', clip=True, add=True, mplprops={}):
 		pixelSize=self.width
+		# for vertix in v
 		polygon = Polygon.Polygon(vertices, lw, True if fc!='None' else False, fc, color, clip, mplprops, self)
 		if add: self.drawOrder.append(polygon)
 		return polygon
 
 	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fc='None', color='k', lw=2, orientation=0.0, mplprops={}):
 		pixelSize=self.width
-		regpolygon = RegularPolygon.RegularPolygon(xy, numVertices, radius, True if fc!='None' else False, fc, color, lw, orientation, mplprops, self)
+		regpolygon = RegularPolygon.RegularPolygon([float(i) for i in xy], numVertices, radius, True if fc!='None' else False, fc, color, lw, orientation, mplprops, self)
 		self.drawOrder.append(regpolygon)
 		return regpolygon
 
 	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', color='k', lw=2, mplprops={}):
 		pixelSize=self.width
-		circle = Circle.Circle(xy, diameter, radius, label, fc, color, lw, mplprops, self)
+		circle = Circle.Circle([float(i) for i in xy], diameter, radius, label, fc, color, lw, mplprops, self)
 		self.drawOrder.append(circle)
 		return circle
 
 	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', color='k', angle=0.0, lw=2, mplprops={}):
 		if isinstance(r, int):
-			self.addCircle(xy=xy, radius=r, fc=fc, ec=ec, lw=lw, mplprops=mplprops)
+			self.addCircle(xy=[float(i) for i in xy], radius=[float(i) for i in r], fc=fc, ec=ec, lw=lw, mplprops=mplprops)
 		else:
 			pixelSize=self.width
-			ellipse = Ellipse.Ellipse(xy, r, fc, color, angle, lw, mplprops, self)
+			ellipse = Ellipse.Ellipse([float(i) for i in xy], [float(i) for i in r], fc, color, angle, lw, mplprops, self)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
@@ -376,7 +382,7 @@ class Figures:
 		theta1=math.degrees(theta1)
 		theta2=math.degrees(theta2)
 		pixelSize=self.width
-		arc = Arc.Arc(xy, width, height, fc, color, lw, angle, theta1, theta2, mplprops, self)
+		arc = Arc.Arc([float(i) for i in xy], width, height, fc, color, lw, float(angle), float(theta1), float(theta2), mplprops, self)
 		self.drawOrder.append(arc)
 		return arc
 
@@ -384,7 +390,7 @@ class Figures:
 		theta1=math.degrees(theta1)
 		theta2=math.degrees(theta2)
 		pixelSize=self.width
-		wedge = Wedge.Wedge(xy, r, theta1, theta2, fc, color, width, lw, mplprops, self)
+		wedge = Wedge.Wedge([float(i) for i in xy], float(r), float(theta1), float(theta2), fc, color, width, lw, mplprops, self)
 		self.drawOrder.append(wedge)
 		return wedge
 
@@ -396,17 +402,17 @@ class Figures:
 			)
 
 		else:
-			return Arrow.Arrow(start, end, color, headWidth, headLength, lw, mplprops, clip, add, self)
+			return Arrow.Arrow([float(i) for i in start], [float(i) for i in end], color, headWidth, headLength, lw, mplprops, clip, add, self)
 
 	def addFancyArrow(self, posA, posB, path=None, color='k', lw=2, arrowstyle=None, connectionstyle='bar', mutation_scale=3, mplprops={}):
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)
 		self.drawOrder.append(fancyArrow)
 		return fancyArrow
 
-	def addRectangle(self, ll_point, ur_point, r=0, fc='None', ec='black', mplprops={}):
+	def addRectangle(self, ll_point, ur_point, r=0, fc='None', color='black', mplprops={}):
 		if r!=0:
-			return self.addRectangle_rounded(ll_point, ur_point, r=r, fc=fc, ec=ec, mplprops=mplprops)
-		FancyBBox = FancyBox.FancyBox(ll_point, ur_point, fc, ec, "square,pad=0", mplprops, self)
+			return self.addRectangle_rounded(float(ll_point), float(ur_point), r=float(r), fc=fc, color=color, mplprops=mplprops)
+		FancyBBox = FancyBox.FancyBox(float(ll_point), float(ur_point), fc, color, "square,pad=0", mplprops, self)
 		self.drawOrder.append(FancyBBox)
 		return FancyBBox
 
@@ -468,18 +474,18 @@ class Figures:
 			lines.append(self.addLine(point, points[i+1], lw=lw, color=color, mplprops=mplprops))
 		return lines
 
-	def addRectangle_rounded(self, ll_point, ur_point, r=0, fc='None', ec='black', mplprops={}):
+	def addRectangle_rounded(self, ll_point, ur_point, r=0, fc='None', color='black', mplprops={}):
 
-		self.addLine([ll_point[0]+r, ll_point[1]], [ur_point[0]-r, ll_point[1]], color=ec)
-		self.addLine([ll_point[0], ll_point[1]+r], [ll_point[0], ur_point[1]-r], color=ec)
-		self.addLine([ll_point[0]+r, ur_point[1]], [ur_point[0]-r, ur_point[1]], color=ec)
-		self.addLine([ur_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], color=ec)
+		self.addLine([ll_point[0]+r, ll_point[1]], [ur_point[0]-r, ll_point[1]], color=color)
+		self.addLine([ll_point[0], ll_point[1]+r], [ll_point[0], ur_point[1]-r], color=color)
+		self.addLine([ll_point[0]+r, ur_point[1]], [ur_point[0]-r, ur_point[1]], color=color)
+		self.addLine([ur_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], color=color)
 
 		if r != 0:
-			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], width=2*r, height=2*r, theta1=180, theta2=270, mplprops={'color': ec})
-			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], width=2*r, height=2*r, theta1=-90, theta2=0, mplprops={'color': ec})
-			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], width=2*r, height=2*r, theta1=0, theta2=90, mplprops={'color': ec})
-			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], width=2*r, height=2*r, theta1=90, theta2=180, mplprops={'color': ec})
+			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], width=2*r, height=2*r, theta1=180, theta2=270, mplprops={'color': color})
+			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], width=2*r, height=2*r, theta1=-90, theta2=0, mplprops={'color': color})
+			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], width=2*r, height=2*r, theta1=0, theta2=90, mplprops={'color': color})
+			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], width=2*r, height=2*r, theta1=90, theta2=180, mplprops={'color': color})
 
 		#Coloring:
 		ul_point = [ll_point[0], ur_point[1]]

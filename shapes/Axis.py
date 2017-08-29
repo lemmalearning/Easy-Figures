@@ -146,13 +146,13 @@ class Axis:
 			arrow_x = self.figure.addArrow(
 				(xmin if xmin>0 else 0,ymin if ymin>0 else 0), (xmax+(self.figure.px2unit(5, 'x')), ymin if ymin>0 else 0),
 				lw=self.lw, head_width=head_width_y, head_length=head_len_x, color=self.color, length_includes_head=True, clip_on=False,
-				mplprops={'zorder':1}, clip=False, add=False
+				clip=False, add=False
 			)
 			arrow_x.__draw__(zorder=zorder)
 			arrow_y = self.figure.addArrow(
 				(xmin if xmin>0 else 0,ymin if ymin>0 else 0), (xmin if xmin>0 else 0, ymax+(self.figure.px2unit(5, 'y'))),
 				lw=self.lw,	head_width=head_width_x, head_length=head_len_y, color=self.color, length_includes_head=True, clip_on=False,
-				mplprops={'zorder':1}, clip=False, add=False
+				clip=False, add=False
 			)
 			arrow_y.__draw__(zorder=zorder)
 
