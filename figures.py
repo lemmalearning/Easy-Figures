@@ -27,6 +27,15 @@ class Figures:
 		Object to hold multiple shapes and objects.
 	"""
 
+	def cust_float(self, i):
+		"""
+		Check if i is iterable, if so apply float to everything, else just call normal float
+		"""
+		if hasattr(obj, '__contains__'):
+			return [float(j) for j in i]
+		else:
+			return float(i)
+
 	head_len = 14.0
 	head_width = 5.0
 	def _BG_COLOR():
@@ -411,8 +420,8 @@ class Figures:
 
 	def addRectangle(self, ll_point, ur_point, r=0, fc='None', color='black', mplprops={}):
 		if r!=0:
-			return self.addRectangle_rounded(float(ll_point), float(ur_point), r=float(r), fc=fc, color=color, mplprops=mplprops)
-		FancyBBox = FancyBox.FancyBox(float(ll_point), float(ur_point), fc, color, "square,pad=0", mplprops, self)
+			return self.addRectangle_rounded(self.cust_float(ll_point), self.cust_float(ur_point), r=float(r), fc=fc, color=color, mplprops=mplprops)
+		FancyBBox = FancyBox.FancyBox(self.cust_float(ll_point), self.cust_float(ur_point), fc, color, "square,pad=0", mplprops, self)
 		self.drawOrder.append(FancyBBox)
 		return FancyBBox
 
@@ -475,9 +484,9 @@ class Figures:
 		return lines
 
 	def addRectangle_rounded(self, ll_point, ur_point, r=0, fc='None', color='black', mplprops={}):
-		ll_point=float(ll_point)
-		ur_point=float(ur_point)
-		r=float(r)
+		ll_point=self.cust_float(ll_point)
+		ur_point=self.cust_float(ur_point)
+		r=self.cust_float(r)
 		self.addLine([ll_point[0]+r, ll_point[1]], [ur_point[0]-r, ll_point[1]], color=color)
 		self.addLine([ll_point[0], ll_point[1]+r], [ll_point[0], ur_point[1]-r], color=color)
 		self.addLine([ll_point[0]+r, ur_point[1]], [ur_point[0]-r, ur_point[1]], color=color)
