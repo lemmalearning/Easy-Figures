@@ -309,10 +309,10 @@ class Figures:
 			Returns:
 				Point.Point object
 		"""
-		if isinstance(xys, list):
-			xys = [float(xy) for xy in xys]
+		if isinstance(xys[0], list) or isinstance(xys[0], tuple):
+			xys = [[float(i) for i in xy] for xy in xys]
 		else:
-			xys=float(xys)
+			xys=[float(i) for i in xys]
 		p = Point.Point(xys, texts, pointsize if not lw else lw, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
 		return p
