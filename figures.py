@@ -294,7 +294,7 @@ class Figures:
 		self.drawOrder.append(axis)
 		return axis
 
-	def addPoint(self, xys, texts='\ ', pointsize=6, fontsize=12, color='black', latex=True, mplprops={}):
+	def addPoint(self, xys, texts='\ ', pointsize=6, fontsize=12, lw=None, color='black', latex=True, mplprops={}):
 		"""
 			addPoint - Adds a point 'shape' to the Figures.
 			Args:
@@ -308,7 +308,7 @@ class Figures:
 			Returns:
 				Point.Point object
 		"""
-		p = Point.Point(xys, texts, pointsize, fontsize, color, latex, mplprops, self)
+		p = Point.Point(xys, texts, pointsize if not lw else lw, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
 		return p
 
@@ -372,19 +372,19 @@ class Figures:
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addArc(self, xy=(0,0), width=0, height=0, fc='None', color='k', lw=2, angle=0.0, theta1=0.0, theta2=360.0, mplprops={}):
-		theta1=math.radians(theta1)
-		theta2=math.radians(theta2)
+	def addArc(self, xy=(0,0), width=0, height=0, fc='None', color='k', lw=2, angle=0.0, theta1=0.0, theta2=(2*math.pi), mplprops={}):
+		theta1=math.degrees(theta1)
+		theta2=math.degrees(theta2)
 		pixelSize=self.width
 		arc = Arc.Arc(xy, width, height, fc, color, lw, angle, theta1, theta2, mplprops, self)
 		self.drawOrder.append(arc)
 		return arc
 
-	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, fc='None', color='k', width=None, mplprops={}):
-		theta1=math.radians(theta1)
-		theta2=math.radians(theta2)
+	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, fc='None', color='k', width=None, lw=2, mplprops={}):
+		theta1=math.degrees(theta1)
+		theta2=math.degrees(theta2)
 		pixelSize=self.width
-		wedge = Wedge.Wedge(xy, r, theta1, theta2, fc, color, width, mplprops, self)
+		wedge = Wedge.Wedge(xy, r, theta1, theta2, fc, color, width, lw, mplprops, self)
 		self.drawOrder.append(wedge)
 		return wedge
 
