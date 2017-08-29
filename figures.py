@@ -20,6 +20,8 @@ from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 from fractions import Fraction
 from six import string_types
 
+px2pt = lambda p: (p * 0.75)
+pt2in = lambda p: (p / 72.0)
 px2in = lambda p: (p * 0.75 / 72.0)
 
 class Figures:
@@ -178,11 +180,12 @@ class Figures:
 		# https://stackoverflow.com/questions/22667224/matplotlib-get-text-bounding-box-independent-of-backend/22689498
 		# https://stackoverflow.com/questions/28692981/matplotlib-get-resulting-bounding-box-of-bbox-inches-tight
 		#print(self.ax.get_position().bounds) # This gives you percentage wise the xmin, ymin, width, height up to the very edge of the grid lines
+		pad_pt = px2pt(self.padding)
 		if self.height == 'auto':
 			bb = self.ax.get_tightbbox(self.fig._cachedRenderer) #get_renderer()))
 
-			minY = math.floor(bb.y0)
-			maxY = math.ceil(bb.y1)
+			minY = math.floor(bb.y0 - pad_pt)
+			maxY = math.ceil(bb.y1 + pad_pt)
 
 			s = re.sub(r'height="[0-9]+pt"', 'height="%dpt"' % (maxY - minY), s)
 
@@ -195,8 +198,8 @@ class Figures:
 		if self.width == 'auto':
 			bb = self.ax.get_tightbbox(self.fig._cachedRenderer) #get_renderer()))
 
-			minX = math.floor(bb.x0)
-			maxX = math.ceil(bb.x1)
+			minX = math.floor(bb.x0 - pad_pt)
+			maxX = math.ceil(bb.x1 + pad_pt)
 
 			s = re.sub(r'width="[0-9]+pt"', 'width="%dpt"' % (maxX - minX), s)
 
