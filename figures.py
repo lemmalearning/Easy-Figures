@@ -99,7 +99,6 @@ class Figures:
 		self.abs_range_x = xyrange[0][1]- xyrange[0][0]
 		self.abs_range_y = xyrange[1][1]- xyrange[1][0]
 		self.fig, self.ax = plt.subplots()
-		self.ax.margins(0.5)
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
 		self.padding = padding
