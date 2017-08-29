@@ -498,6 +498,13 @@ class Figures:
 		self.addRectangle([ll_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], fc=fc, ec='none')
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
+		xy = [float(i) for i in xy]
+		a = float(a)
+		b = float(b)
+		c = float(c)
+		angle = float(angle)
+		rotation = float(rotation)
+		length = float(length)
 		if isSide:
 			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
 			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
