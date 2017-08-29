@@ -391,6 +391,8 @@ class Figures:
 			return ellipse
 
 	def addArc(self, xy=(0,0), width=0, height=0, fc='None', color='k', lw=2, angle=0.0, theta1=0.0, theta2=(2*math.pi), mplprops={}):
+		width=float(width)
+		height=float(height)
 		theta1=math.degrees(theta1)
 		theta2=math.degrees(theta2)
 		pixelSize=self.width
@@ -399,6 +401,7 @@ class Figures:
 		return arc
 
 	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, fc='None', color='k', width=None, lw=2, mplprops={}):
+		width=float(width)
 		theta1=math.degrees(theta1)
 		theta2=math.degrees(theta2)
 		pixelSize=self.width
