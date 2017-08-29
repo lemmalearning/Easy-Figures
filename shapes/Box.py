@@ -19,11 +19,10 @@ class Box:
 		self.mplprops   = mplprops
 		self.fontsize = fontsize
 
-	def __draw__(self, zorder=1):
-		for x, y, xlabel, ylabel, title in zip(self.x, self.y, self.xlabel, self.ylabel, self.title):
-			plt.axis('on')
-			plt.axis([self.x[0], self.x[1], self.y[0], self.y[1]])
-			plt.tick_params(labelsize=12)
-			plt.title(self.title, fontsize=self.fontsize)
-			plt.xlabel(self.xlabel, fontsize=self.fontsize)
-			plt.ylabel(self.ylabel, fontsize=self.fontsize)
+	def __draw__(self, zorder=None):
+		plt.axis('on')
+		plt.axis([self.x[0], self.x[1], self.y[0], self.y[1]])
+		plt.tick_params(labelsize=self.fontsize/2.0)
+		plt.title(self.title, fontsize=self.fontsize)
+		plt.xlabel(self.xlabel, fontsize=self.fontsize)
+		plt.ylabel(self.ylabel, fontsize=self.fontsize)

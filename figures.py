@@ -496,10 +496,10 @@ class Figures:
 		self.addLine([ur_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], color=color)
 
 		if r != 0:
-			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], width=2*r, height=2*r, theta1=180, theta2=270, mplprops={'color': color})
-			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], width=2*r, height=2*r, theta1=-90, theta2=0, mplprops={'color': color})
-			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], width=2*r, height=2*r, theta1=0, theta2=90, mplprops={'color': color})
-			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], width=2*r, height=2*r, theta1=90, theta2=180, mplprops={'color': color})
+			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], width=2*r, height=2*r, theta1=math.radians(180), theta2=math.radians(270), color=color)
+			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], width=2*r, height=2*r, theta1=math.radians(-90), theta2=math.radians(0), color=color)
+			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], width=2*r, height=2*r, theta1=math.radians(0), theta2=math.radians(90), color=color)
+			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], width=2*r, height=2*r, theta1=math.radians(90), theta2=math.radians(180), color=color)
 
 		#Coloring:
 		ul_point = [ll_point[0], ur_point[1]]
