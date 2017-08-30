@@ -345,8 +345,8 @@ class Figures:
 		if add: self.drawOrder.append(l)
 		return l
 
-	def addText(self, xy, text, color="black", fontsize=12, halignment='center', valignment='center', bbox={}, mplprops={}, latex=True, pixel=False, add=True):
-		t = Text.Text([float(i) for i in xy], text, color, fontsize, halignment, valignment, bbox, latex, pixel, mplprops, self)
+	def addText(self, xy, text, color="black", fontsize=12, offset=[0,0], halignment='center', valignment='center', bbox={}, mplprops={}, latex=True, pixel=False, add=True):
+		t = Text.Text([float(i) for i in xy], text, color, fontsize, offset, halignment, valignment, bbox, latex, pixel, mplprops, self)
 		if add: self.drawOrder.append(t)
 		return t
 
