@@ -73,12 +73,17 @@ class Figures:
 				unconstrained += 1
 			else:
 				raise ValueError('Unknown value for height: ' + height)
+		else:
+			height = float(height)
+
 		if isinstance(width, string_types):
 			width = width.lower()
 			if width == 'auto':
 				unconstrained += 1
 			else:
 				raise ValueError('Unknown value for width: ' + width)
+		else:
+			width = float(width)
 
 		if unconstrained > 1:
 			raise ValueError('Underconstrained dimensions of figure')
@@ -93,6 +98,9 @@ class Figures:
 			height_temp = width * float(aspectRatio_temp)
 		else:
 			height_temp = height
+
+		xyrange[0] = [ float(x) for x in xyrange[0] ]
+		xyrange[1] = [ float(x) for x in xyrange[1] ]
 
 		# self.xPad = xPad if xPad != None else padding
 		# self.yPad = yPad if yPad != None else padding
@@ -370,13 +378,21 @@ class Figures:
 		return polygon
 
 	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fc='None', color='k', lw=2, orientation=0.0, mplprops={}):
-		pixelSize=self.width
+		if radius != None:
+			radius = float(radius)
+
+		orientation = float(orientation)
+
 		regpolygon = RegularPolygon.RegularPolygon([float(i) for i in xy], numVertices, radius, True if fc!='None' else False, fc, color, lw, orientation, mplprops, self)
 		self.drawOrder.append(regpolygon)
 		return regpolygon
 
 	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', color='k', lw=2, mplprops={}):
-		pixelSize=self.width
+		if diameter != None:
+			diameter = float(diameter)
+		if radius != None:
+			radius = float(radius)
+
 		circle = Circle.Circle([float(i) for i in xy], diameter, radius, label, fc, color, lw, mplprops, self)
 		self.drawOrder.append(circle)
 		return circle
@@ -401,7 +417,8 @@ class Figures:
 		return arc
 
 	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, fc='None', color='k', width=None, lw=2, mplprops={}):
-		width=float(width)
+		if width != None:
+			width=float(width)
 		theta1=math.degrees(theta1)
 		theta2=math.degrees(theta2)
 		pixelSize=self.width
@@ -499,10 +516,10 @@ class Figures:
 		self.addLine([ur_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], color=color)
 
 		if r != 0:
-			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], width=2*r, height=2*r, theta1=180, theta2=270, mplprops={'color': color})
-			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], width=2*r, height=2*r, theta1=-90, theta2=0, mplprops={'color': color})
-			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], width=2*r, height=2*r, theta1=0, theta2=90, mplprops={'color': color})
-			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], width=2*r, height=2*r, theta1=90, theta2=180, mplprops={'color': color})
+			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], width=2*r, height=2*r, theta1=math.radians(180), theta2=math.radians(270), color=color)
+			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], width=2*r, height=2*r, theta1=math.radians(-90), theta2=math.radians(0), color=color)
+			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], width=2*r, height=2*r, theta1=math.radians(0), theta2=math.radians(90), color=color)
+			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], width=2*r, height=2*r, theta1=math.radians(90), theta2=math.radians(180), color=color)
 
 		#Coloring:
 		ul_point = [ll_point[0], ur_point[1]]
