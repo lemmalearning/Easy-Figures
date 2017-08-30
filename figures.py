@@ -38,7 +38,7 @@ class Figures:
 				i in float
 		"""
 		if hasattr(i, '__contains__'):
-			return [a(j) for j in i]
+			return [self.cust_float(j) for j in i]
 		else:
 			return float(i)
 
