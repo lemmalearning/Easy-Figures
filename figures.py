@@ -406,9 +406,14 @@ class Figures:
 			self.drawOrder.append(ellipse)
 			return ellipse
 
-	def addArc(self, xy=(0,0), width=0, height=0, fc='None', color='k', lw=2, angle=0.0, theta1=0.0, theta2=(2*math.pi), mplprops={}):
-		width=float(width)
-		height=float(height)
+	def addArc(self, xy=(0,0), r=1, fc='None', color='k', lw=2, angle=0.0, theta1=0.0, theta2=(2*math.pi), mplprops={}):
+		if isinstance(r, (list, tuple)):
+			width, height = r
+			width = float(2*width)
+			height = float(2*height)
+		else:
+			width = height = float(2*r)
+
 		theta1=math.degrees(theta1)
 		theta2=math.degrees(theta2)
 		pixelSize=self.width
@@ -516,10 +521,10 @@ class Figures:
 		self.addLine([ur_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], color=color)
 
 		if r != 0:
-			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], width=2*r, height=2*r, theta1=math.radians(180), theta2=math.radians(270), color=color)
-			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], width=2*r, height=2*r, theta1=math.radians(-90), theta2=math.radians(0), color=color)
-			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], width=2*r, height=2*r, theta1=math.radians(0), theta2=math.radians(90), color=color)
-			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], width=2*r, height=2*r, theta1=math.radians(90), theta2=math.radians(180), color=color)
+			self.addArc(xy=[ll_point[0]+r,ll_point[1]+r], r=r, theta1=math.radians(180), theta2=math.radians(270), color=color)
+			self.addArc(xy=[ur_point[0]-r, ll_point[1]+r], r=r, theta1=math.radians(-90), theta2=math.radians(0), color=color)
+			self.addArc(xy=[ur_point[0]-r, ur_point[1]-r], r=r, theta1=math.radians(0), theta2=math.radians(90), color=color)
+			self.addArc(xy=[ll_point[0]+r, ur_point[1]-r], r=r, theta1=math.radians(90), theta2=math.radians(180), color=color)
 
 		#Coloring:
 		ul_point = [ll_point[0], ur_point[1]]
