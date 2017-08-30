@@ -315,7 +315,7 @@ class Figures:
 		self.drawOrder.append(axis)
 		return axis
 
-	def addPoint(self, xys, texts='\ ', pointsize=6, fontsize=12, lw=None, color='black', latex=True, mplprops={}):
+	def addPoint(self, xys, texts='\ ', pointsize=6, style='o', fontsize=12, lw=None, color='black', latex=True, mplprops={}):
 		"""
 			addPoint - Adds a point 'shape' to the Figures.
 			Args:
@@ -333,7 +333,7 @@ class Figures:
 			xys = [[float(i) for i in xy] for xy in xys]
 		else:
 			xys=[float(i) for i in xys]
-		p = Point.Point(xys, texts, pointsize if not lw else lw, fontsize, color, latex, mplprops, self)
+		p = Point.Point(xys, texts, pointsize if not lw else lw, style, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
 		return p
 
