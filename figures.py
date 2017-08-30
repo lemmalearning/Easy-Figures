@@ -31,10 +31,14 @@ class Figures:
 
 	def cust_float(self, i):
 		"""
-		Check if i is iterable, if so apply float to everything, else just call normal float
+		Converts elements in lists to floats, and atoms to list
+			Args:
+				i (List or Atom): item to convert
+			Returns:
+				i in float
 		"""
 		if hasattr(i, '__contains__'):
-			return [float(j) for j in i]
+			return [a(j) for j in i]
 		else:
 			return float(i)
 
@@ -74,7 +78,7 @@ class Figures:
 			else:
 				raise ValueError('Unknown value for height: ' + height)
 		else:
-			height = float(height)
+			height = self.cust_float(height)
 
 		if isinstance(width, string_types):
 			width = width.lower()
@@ -83,24 +87,23 @@ class Figures:
 			else:
 				raise ValueError('Unknown value for width: ' + width)
 		else:
-			width = float(width)
+			width = self.cust_float(width)
 
 		if unconstrained > 1:
 			raise ValueError('Underconstrained dimensions of figure')
 
 		if width == 'auto':
 			aspectRatio_temp = 1 if not aspectRatio else aspectRatio
-			width_temp = height * 1.0/float(aspectRatio_temp)
+			width_temp = height * 1.0/self.cust_float(aspectRatio_temp)
 		else:
 			width_temp = width
 		if height == 'auto':
 			aspectRatio_temp = 1 if not aspectRatio else aspectRatio
-			height_temp = width * float(aspectRatio_temp)
+			height_temp = width * self.cust_float(aspectRatio_temp)
 		else:
 			height_temp = height
 
-		xyrange[0] = [ float(x) for x in xyrange[0] ]
-		xyrange[1] = [ float(x) for x in xyrange[1] ]
+		xyrange = self.cust_float(xyrange)
 
 		# self.xPad = xPad if xPad != None else padding
 		# self.yPad = yPad if yPad != None else padding
@@ -113,9 +116,9 @@ class Figures:
 		self.true_pad = (0.75 * self.padding)/10.0
 		self.tight_fit = True
 		if width!='auto' and height!='auto':
-			self.aspectRatio=(float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x) if not aspectRatio else aspectRatio
+			self.aspectRatio=(self.cust_float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (self.cust_float(self.abs_range_y)/self.abs_range_x) if not aspectRatio else aspectRatio
 		elif width=='auto' or height=='auto':
-			self.aspectRatio = 1 if not aspectRatio else (float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (float(self.abs_range_y)/self.abs_range_x)
+			self.aspectRatio = 1 if not aspectRatio else (self.cust_float(height_temp-2*self.true_pad)/(width_temp-2*self.true_pad)) / (self.cust_float(self.abs_range_y)/self.abs_range_x)
 		self.xyrange = xyrange
 		self.drawOrder = []
 		self.width = width
@@ -137,8 +140,8 @@ class Figures:
 			num, den = (den, num)
 
 		# if aspect > 1, multiply width
-		self.UNITS_PER_PIXEL_x = self.abs_range_x / float(width_temp-2*self.true_pad)
-		self.UNITS_PER_PIXEL_y = self.abs_range_y / float(height_temp-2*self.true_pad)
+		self.UNITS_PER_PIXEL_x = self.abs_range_x / self.cust_float(width_temp-2*self.true_pad)
+		self.UNITS_PER_PIXEL_y = self.abs_range_y / self.cust_float(height_temp-2*self.true_pad)
 		self.UNITS_PER_PT_x = self.UNITS_PER_PIXEL_x / 0.75
 		self.UNITS_PER_PT_y = self.UNITS_PER_PIXEL_y / 0.75
 
@@ -329,10 +332,8 @@ class Figures:
 			Returns:
 				Point.Point object
 		"""
-		if isinstance(xys[0], list) or isinstance(xys[0], tuple):
-			xys = [[float(i) for i in xy] for xy in xys]
-		else:
-			xys=[float(i) for i in xys]
+		xys = self.cust_float(xys)
+
 		p = Point.Point(xys, texts, pointsize if not lw else lw, style, fontsize, color, latex, mplprops, self)
 		self.drawOrder.append(p)
 		return p
@@ -349,12 +350,12 @@ class Figures:
 			Returns:
 				Line.Line object
 		"""
-		l = Line.Line([float(a) for a in pointA], [float(b) for b in pointB], lw, color, clip, mplprops, self)
+		l = Line.Line(self.cust_float(pointA), self.cust_float(pointB), lw, color, clip, mplprops, self)
 		if add: self.drawOrder.append(l)
 		return l
 
 	def addText(self, xy, text, color="black", fontsize=12, offset=[0,0], halignment='center', valignment='center', bbox={}, mplprops={}, latex=True, pixel=False, add=True):
-		t = Text.Text([float(i) for i in xy], text, color, fontsize, offset, halignment, valignment, bbox, latex, pixel, mplprops, self)
+		t = Text.Text(self.cust_float(xy), text, color, fontsize, offset, halignment, valignment, bbox, latex, pixel, mplprops, self)
 		if add: self.drawOrder.append(t)
 		return t
 
@@ -379,55 +380,55 @@ class Figures:
 
 	def addRegularPolygon(self, xy=(0,0), numVertices=0, radius=None, fc='None', color='k', lw=2, orientation=0.0, mplprops={}):
 		if radius != None:
-			radius = float(radius)
+			radius = self.cust_float(radius)
 
-		orientation = float(orientation)
+		orientation = self.cust_float(orientation)
 
-		regpolygon = RegularPolygon.RegularPolygon([float(i) for i in xy], numVertices, radius, True if fc!='None' else False, fc, color, lw, orientation, mplprops, self)
+		regpolygon = RegularPolygon.RegularPolygon(self.cust_float(xy), numVertices, radius, True if fc!='None' else False, fc, color, lw, orientation, mplprops, self)
 		self.drawOrder.append(regpolygon)
 		return regpolygon
 
 	def addCircle(self, xy=(0,0), diameter=None, radius=None, label="", fc='none', color='k', lw=2, mplprops={}):
 		if diameter != None:
-			diameter = float(diameter)
+			diameter = self.cust_float(diameter)
 		if radius != None:
-			radius = float(radius)
+			radius = self.cust_float(radius)
 
-		circle = Circle.Circle([float(i) for i in xy], diameter, radius, label, fc, color, lw, mplprops, self)
+		circle = Circle.Circle(self.cust_float(xy), diameter, radius, label, fc, color, lw, mplprops, self)
 		self.drawOrder.append(circle)
 		return circle
 
 	def addEllipse(self, xy=[0,0], r=(1,1), fc='none', color='k', angle=0.0, lw=2, mplprops={}):
 		if isinstance(r, int):
-			self.addCircle(xy=[float(i) for i in xy], radius=[float(i) for i in r], fc=fc, ec=ec, lw=lw, mplprops=mplprops)
+			self.addCircle(xy=self.cust_float(xy), radius=self.cust_float(r), fc=fc, ec=ec, lw=lw, mplprops=mplprops)
 		else:
 			pixelSize=self.width
-			ellipse = Ellipse.Ellipse([float(i) for i in xy], [float(i) for i in r], fc, color, angle, lw, mplprops, self)
+			ellipse = Ellipse.Ellipse(self.cust_float(xy), self.cust_float(r), fc, color, angle, lw, mplprops, self)
 			self.drawOrder.append(ellipse)
 			return ellipse
 
 	def addArc(self, xy=(0,0), r=1, fc='None', color='k', lw=2, angle=0.0, theta1=0.0, theta2=(2*math.pi), mplprops={}):
 		if isinstance(r, (list, tuple)):
 			width, height = r
-			width = float(2*width)
-			height = float(2*height)
+			width = self.cust_float(2*width)
+			height = self.cust_float(2*height)
 		else:
-			width = height = float(2*r)
+			width = height = self.cust_float(2*r)
 
 		theta1=math.degrees(theta1)
 		theta2=math.degrees(theta2)
 		pixelSize=self.width
-		arc = Arc.Arc([float(i) for i in xy], width, height, fc, color, lw, float(angle), float(theta1), float(theta2), mplprops, self)
+		arc = Arc.Arc(self.cust_float(xy), width, height, fc, color, lw, self.cust_float(angle), self.cust_float(theta1), self.cust_float(theta2), mplprops, self)
 		self.drawOrder.append(arc)
 		return arc
 
 	def addWedge(self, xy=(0,0), r=0, theta1=0, theta2=0, fc='None', color='k', width=None, lw=2, mplprops={}):
 		if width != None:
-			width=float(width)
+			width=self.cust_float(width)
 		theta1=math.degrees(theta1)
 		theta2=math.degrees(theta2)
 		pixelSize=self.width
-		wedge = Wedge.Wedge([float(i) for i in xy], float(r), float(theta1), float(theta2), fc, color, width, lw, mplprops, self)
+		wedge = Wedge.Wedge(self.cust_float(xy), self.cust_float(r), self.cust_float(theta1), self.cust_float(theta2), fc, color, width, lw, mplprops, self)
 		self.drawOrder.append(wedge)
 		return wedge
 
@@ -439,7 +440,7 @@ class Figures:
 			)
 
 		else:
-			return Arrow.Arrow([float(i) for i in start], [float(i) for i in end], color, headWidth, headLength, lw, mplprops, clip, add, self)
+			return Arrow.Arrow(self.cust_float(start), self.cust_float(end), color, headWidth, headLength, lw, mplprops, clip, add, self)
 
 	def addFancyArrow(self, posA, posB, path=None, color='k', lw=2, arrowstyle=None, connectionstyle='bar', mutation_scale=3, mplprops={}):
 		fancyArrow = FancyArrowPatch.FancyArrowPatch(posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, self)
@@ -448,7 +449,7 @@ class Figures:
 
 	def addRectangle(self, ll_point, ur_point, r=0, fc='None', color='black', mplprops={}):
 		if r!=0:
-			return self.addRectangle_rounded(self.cust_float(ll_point), self.cust_float(ur_point), r=float(r), fc=fc, color=color, mplprops=mplprops)
+			return self.addRectangle_rounded(self.cust_float(ll_point), self.cust_float(ur_point), r=self.cust_float(r), fc=fc, color=color, mplprops=mplprops)
 		FancyBBox = FancyBox.FancyBox(self.cust_float(ll_point), self.cust_float(ur_point), fc, color, "square,pad=0", mplprops, self)
 		self.drawOrder.append(FancyBBox)
 		return FancyBBox
@@ -498,7 +499,6 @@ class Figures:
 				p (Tuple[float]): x and y coord in pixel
 			Returns:
 				(Tuple[float]) x and y coorfd in units
-
 		"""
 		return np.matrix([p[0,0]*(1.0/self.UNITS_PER_PIXEL_x), p[0,1]*(1.0/self.UNITS_PER_PIXEL_y)])
 
@@ -537,13 +537,13 @@ class Figures:
 		self.addRectangle([ll_point[0], ll_point[1]+r], [ur_point[0], ur_point[1]-r], fc=fc, color='none')
 
 	def addTriangle(self, xy=(0,0), a=0, b=0, c=0, isSide=True, angle=0.0, rotation=0.0, length=1, lw=2, mplprops={}):
-		xy = [float(i) for i in xy]
-		a = float(a)
-		b = float(b)
-		c = float(c)
-		angle = float(angle)
-		rotation = float(rotation)
-		length = float(length)
+		xy = self.cust_float(xy)
+		a = self.cust_float(a)
+		b = self.cust_float(b)
+		c = self.cust_float(c)
+		angle = self.cust_float(angle)
+		rotation = self.cust_float(rotation)
+		length = self.cust_float(length)
 		if isSide:
 			alpha = np.arccos((b**2+c**2-a**2) /(2.0*b*c))
 			beta = np.arccos((-b**2+c**2+a**2) /(2.0*a*c))
