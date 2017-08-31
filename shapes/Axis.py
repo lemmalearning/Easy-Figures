@@ -109,8 +109,6 @@ class Axis:
 				# no xaxis ticks
 				ax.xaxis.set_ticks([])
 
-
-		plt.autoscale(enable=True, axis='y', tight=None)
 		self.figure.ax.set_xlim(left=self.figure.xyrange[0][0], right=self.figure.xyrange[0][1], **self.mplprops)
 		self.figure.ax.set_ylim(bottom=self.figure.xyrange[1][0], top=self.figure.xyrange[1][1], **self.mplprops)
 
@@ -127,8 +125,15 @@ class Axis:
 		else:
 			self.figure.ax.spines['bottom'].set_position(('data', 0))
 
-
-
+		# Parse the grid color:
+		gridColor = self.figure.GRID[:-2]
+		gridAlpha = int(self.figure.GRID[-2:], 16) / 256.0
+		if self.grid is not False:
+			self.figure.ax.grid(which='major', color=gridColor if self.grid == True else self.grid,
+			                    linestyle='dashed', linewidth=.5, alpha=gridAlpha)
+		if self.minorGrid is not False:
+			self.figure.ax.grid(which='minor', color=gridColor if self.minorGrid == True else self.minorGrid,
+			                    linestyle='dashed', linewidth=.3, alpha=gridAlpha)
 
 		[i.set_linewidth(self.lw) for i in self.figure.ax.spines.itervalues()]
 
@@ -142,6 +147,7 @@ class Axis:
 
 			head_width_x = self.figure.px2unit(5, 'x')
 			head_width_y = self.figure.px2unit(5, 'y')
+
 
 			arrow_x = self.figure.addArrow(
 				(xmin if xmin>0 else 0,ymin if ymin>0 else 0), (xmax+(self.figure.px2unit(5, 'x')), ymin if ymin>0 else 0),
@@ -278,14 +284,6 @@ class Axis:
 
 		if self.top:
 			self.figure.ax.xaxis.set_label_position('top')
-
-		# Parse the grid color:
-		gridColor=self.figure.GRID[:-2]
-		gridAlpha=int(self.figure.GRID[-2:],16)/256.0
-		if self.grid is not False:
-			self.figure.ax.grid(which='major', color=gridColor if self.grid == True else self.grid, linestyle='dashed', linewidth=.5, alpha=gridAlpha)
-		if self.minorGrid is not False:
-			self.figure.ax.grid(which='minor', color=gridColor if self.minorGrid == True else self.minorGrid, linestyle='dashed', linewidth=.3, alpha=gridAlpha)
 
 
 		####### END DRAW LABELS #######
