@@ -318,7 +318,7 @@ class Figures:
 		"""
 
 		pixelSize = self.width
-		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, self)
+		axis = Axis.Axis(hideAxis, arrows, color, lw, label, xlabel, ylabel, mplprops, self)
 		self.drawOrder.append(axis)
 		return axis
 
