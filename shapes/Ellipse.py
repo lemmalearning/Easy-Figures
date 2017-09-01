@@ -1,9 +1,5 @@
-import matplotlib
-#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import math
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Ellipse:

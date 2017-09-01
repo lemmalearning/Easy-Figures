@@ -1,11 +1,6 @@
-import matplotlib
-#matplotlib.rcParams['axes.unicode_minus'] = True
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from random import randint, choice
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-import numpy as np
 import math
+
 class Ticks:
 	"""
 	Creates an Axis object which contains ticks, spine arrows, and grids.

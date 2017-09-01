@@ -1,8 +1,4 @@
 import math
-import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 
 class Arrow:

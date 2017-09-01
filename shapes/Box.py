@@ -1,9 +1,4 @@
-import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from random import randint, choice
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-import numpy as np
 
 class Box:
 	matplotlib_obj = None

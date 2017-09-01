@@ -1,10 +1,5 @@
-import math
-import matplotlib
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 import matplotlib.transforms as mtransforms
-import numpy as np
 
 class FancyBox:
 	matplotlib_obj = None

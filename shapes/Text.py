@@ -1,10 +1,3 @@
-import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from random import randint, choice
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-import numpy as np
-
 class Text:
 	matplotlib_obj = None
 	def __init__(self, xy, text, color, fontsize, offset, halignment, valignment, bbox, latex, pixel, mplprops, figure):

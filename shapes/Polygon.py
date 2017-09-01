@@ -1,9 +1,6 @@
-import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 import numpy as np
 import itertools
-
 from matplotlib.patches import Arc
 
 

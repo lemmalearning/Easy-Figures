@@ -1,7 +1,4 @@
-import matplotlib
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import numpy as np
 
 class Wedge:
     def __init__(self, xy, r, theta1, theta2, fc, ec, width, lw, mplprops, figure):

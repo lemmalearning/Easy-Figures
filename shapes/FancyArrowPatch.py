@@ -1,7 +1,4 @@
-import matplotlib
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import numpy as np
 
 class FancyArrowPatch:
 	def __init__(self, posA, posB, path, color, lw, arrowstyle, connectionstyle, mutation_scale, mplprops, figure):

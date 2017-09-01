@@ -1,7 +1,4 @@
-import matplotlib
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import numpy as np
 
 class Arc:
 	def __init__(self, xy, width, height, fc, ec, lw, angle, theta1, theta2, mplprops, figure):
