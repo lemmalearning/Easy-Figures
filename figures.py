@@ -7,7 +7,7 @@ matplotlib.rcParams["font.size"] = 72
 matplotlib.use('Svg')
 
 import matplotlib.pyplot as plt
-from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line, Box, FancyBox
+from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line, Box, FancyBox, Ticks
 import numpy as np
 try:
 	from StringIO import StringIO
@@ -250,8 +250,12 @@ class Figures:
 		if not any([isinstance(obj, Axis.Axis) for obj in local_order]) and not any([isinstance(obj, Box.Box) for obj in local_order]):
 			axis = self.addAxis(hideAxis=True, label=False, arrows=False, grid=False, minorGrid=False, lw=0)
 
+		box = any([isinstance(obj, Box.Box) for obj in local_order])
 		for i, shape in enumerate(local_order):
-			shape.__draw__(zorder=i*10+1)
+			if isinstance(shape, Ticks.Ticks):
+				shape.__draw__(zorder=i*10+1, box=box)
+			else:
+				shape.__draw__(zorder=i*10+1)
 
 	def setPixelSize(self, width, height):
 		"""Sets the pixel size of the figure.
@@ -295,7 +299,7 @@ class Figures:
 	############################################################################
 
 
-	def addAxis(self, hideAxis=False, grid=True, arrows=True, color='black', lw=1, minorGrid=False, label=True, xlabel='x', ylabel='y', mplprops={}):
+	def addAxis(self, hideAxis=False, arrows=True, color='black', lw=1, label=True, xlabel='x', ylabel='y', mplprops={}):
 		"""
 			addAxis - Adds the axis 'shape' to the Figures.
 			Args:
@@ -317,6 +321,11 @@ class Figures:
 		axis = Axis.Axis(hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, self)
 		self.drawOrder.append(axis)
 		return axis
+
+	def addTicks(self, grid=True, minorGrid=False, ticks=False, xticks=False, yticks=False, minorticks=False, xminorticks=False, yminorticks=False, fontsize=12, origin=False, top=False, customLabels=None):
+		ticks = Ticks.Ticks(grid, minorGrid, ticks, xticks, yticks, minorticks, xminorticks, yminorticks, fontsize, origin, top, customLabels, self)
+		self.drawOrder.append(ticks)
+		return ticks
 
 	def addPoint(self, xys, texts='\ ', pointsize=6, style='o', fontsize=12, lw=None, color='black', latex=True, mplprops={}):
 		"""

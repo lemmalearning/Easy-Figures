@@ -23,6 +23,7 @@ class Box:
 		plt.axis('on')
 		plt.axis([self.x[0], self.x[1], self.y[0], self.y[1]])
 		plt.tick_params(labelsize=self.fontsize/2.0)
-		plt.title(self.title, fontsize=self.fontsize)
 		plt.xlabel(self.xlabel, fontsize=self.fontsize)
 		plt.ylabel(self.ylabel, fontsize=self.fontsize)
+		plt.title(self.title, fontsize=self.fontsize)
+

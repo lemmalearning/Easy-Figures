@@ -14,22 +14,18 @@ class Axis:
 	Ticks - Creates the class variables required for drawing tick marks
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
-	def __init__(self, hideAxis, grid, arrows, color, lw, minorGrid, label, xlabel, ylabel, mplprops, figure):
+	def __init__(self, hideAxis, arrows, color, lw, label, xlabel, ylabel, mplprops, figure):
 		"""
 		fig - fig object from matplotlib
 		ax - ax object from matplotlib
 		hideAxis=False - By default show the axis, but have an option to hide the spines
 		xyrange=None - By default inherit the xyrange of the axis from the Figures definition, but take a custom one if a custom spine range is required
-		grid=False - By default do not show the grid,
 		arrows=True -
 		color='black' -
-		minorGrid=False -
 		"""
 		self.hideAxis 	= hideAxis
-		self.grid 		= grid
 		self.arrows 	= arrows
 		self.color 		= color
-		self.minorGrid 	= minorGrid
 		self.label		= label
 		if not self.label:
 			figure.padding=0
@@ -39,29 +35,6 @@ class Axis:
 		self.lw			= lw if not self.hideAxis else 0
 		self.mplprops 	= mplprops
 		self.ticks 		= None
-		self.tickRan	= False
-
-	def Ticks(self, ticks=False, xticks=False, yticks=False, minorticks=False, xminorticks=False, yminorticks=False, fontsize=12, origin=False, top=True, customLabels=None):
-		self.minorticks = minorticks
-		self.xminorticks = xminorticks
-		self.yminorticks = yminorticks
-		self.xticks = xticks
-		self.yticks = yticks
-		self.ticks = ticks
-		self.customLabels = customLabels
-
-		if self.ticks:
-			self.xticks = self.yticks = self.ticks
-		if self.minorticks:
-			self.xminorticks = self.yminorticks = self.minorticks
-
-		if not self.minorticks and self.ticks:
-			self.minorticks = self.xminorticks = self.yminorticks = self.ticks/2.0
-
-		self.fontsize = fontsize
-		self.origin = origin
-		self.top = top
-		self.tickRan = True
 
 	def check_MAXTICK(self):
 		"""
@@ -125,15 +98,6 @@ class Axis:
 		else:
 			self.figure.ax.spines['bottom'].set_position(('data', 0))
 
-		# Parse the grid color:
-		gridColor = self.figure.GRID[:-2]
-		gridAlpha = int(self.figure.GRID[-2:], 16) / 256.0
-		if self.grid is not False:
-			self.figure.ax.grid(which='major', color=gridColor if self.grid == True else self.grid,
-			                    linestyle='dashed', linewidth=.5, alpha=gridAlpha)
-		if self.minorGrid is not False:
-			self.figure.ax.grid(which='minor', color=gridColor if self.minorGrid == True else self.minorGrid,
-			                    linestyle='dashed', linewidth=.3, alpha=gridAlpha)
 
 		[i.set_linewidth(self.lw) for i in self.figure.ax.spines.itervalues()]
 
@@ -184,109 +148,6 @@ class Axis:
 		self.figure.ax.spines['bottom'].set_color(self.color)
 		self.figure.ax.spines['left'].set_color(self.color)
 
-		####### DRAW LABELS #######
-		# Control ticks
-		if self.tickRan == False:
-			self.ticks = self.xticks = self.yticks = 1
-			self.minorticks = self.xminorticks = self.yminorticks = 1
-			self.origin=False
-			self.top=True
-			self.fontsize=12
-			self.customLabels = False
-		if isinstance(self.ticks, int) and isinstance(self.minorticks, int) and self.ticks > self.minorticks:
-			self.minorGrid = True
-
-
-		self.check_MAXTICK() # check to make sure there aren't too many ticks
-
-		plt.gca().xaxis.set_major_locator(plt.MultipleLocator(self.xticks) if self.xticks is not False else plt.NullLocator())
-		plt.gca().xaxis.set_minor_locator(plt.MultipleLocator(self.xminorticks) if self.xminorticks is not False else plt.NullLocator())
-		plt.gca().yaxis.set_major_locator(plt.MultipleLocator(self.yticks) if self.yticks is not False else plt.NullLocator())
-		plt.gca().yaxis.set_minor_locator(plt.MultipleLocator(self.yminorticks) if self.yminorticks is not False else plt.NullLocator())
-
-
-
-		self.figure.ax.tick_params(axis='both', which='major', labelsize=self.fontsize)
-
-		ylabels = []
-		for item in self.figure.ax.get_yticks():
-			if float(item) == 0:
-				ylabels.append("")
-			elif math.floor(float(item)) == float(item):  # it's an int
-				ylabels.append(int(item))
-			else:
-				ylabels.append(float(item))
-
-		xlabels = []
-		for item in self.figure.ax.get_xticks():
-			if float(item) == 0:
-				xlabels.append("        (0,0)" if self.origin else "")
-			elif math.floor(float(item)) == float(item):  # it's an int
-				xlabels.append(int(item))
-			else:
-				xlabels.append(float(item))
-
-		if self.customLabels:
-			for i,label in enumerate(xlabels):
-				if label == '':
-					continue
-				key = None
-				if int(label) in self.customLabels[0]:
-					key = int(label)
-				if float(label) in self.customLabels[0]:
-					key = float(label)
-				if str(label) in self.customLabels[0]:
-					key = str(label)
-
-				if key != None:
-					if self.customLabels[0][key] == 'auto':
-						continue
-					else:
-						xlabels[i] = self.customLabels[0][key]
-				else:
-					xlabels[i] = ''
-
-			for i, label in enumerate(ylabels):
-				if label == '':
-					continue
-				key = None
-				if int(label) in self.customLabels[1]:
-					key = int(label)
-				if float(label) in self.customLabels[1]:
-					key = float(label)
-				if str(label) in self.customLabels[1]:
-					key = str(label)
-
-				if key != None:
-					if self.customLabels[1][key] == 'auto':
-						continue
-					else:
-						ylabels[i] = self.customLabels[1][key]
-				else:
-					ylabels[i] = ''
-		else:
-			xlabels=xlabels[:-1]
-			ylabels=ylabels[:-1]
-
-
-		self.figure.ax.set_yticklabels([str(label).replace("-", "$-$") for label in ylabels])
-		self.figure.ax.set_xticklabels([str(label).replace("-", "$-$") for label in xlabels])
-
-		for label in self.figure.ax.xaxis.get_ticklabels():
-			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
-			if '$' not in label.get_text():
-				label.set_horizontalalignment('left')
-
-		for label in self.figure.ax.yaxis.get_ticklabels():
-			label.set_bbox(dict(boxstyle='round', facecolor=self.figure.bgcolor, edgecolor='none', pad=0.1))
-			if '$' not in label.get_text():
-				label.set_verticalalignment('bottom')
-
-		if self.top:
-			self.figure.ax.xaxis.set_label_position('top')
-
-
-		####### END DRAW LABELS #######
 
 		if self.hideAxis:
 			self.figure.ax.spines['bottom'].set_color(self.figure._BG)
