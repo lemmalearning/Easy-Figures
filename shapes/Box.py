@@ -13,7 +13,6 @@ class Box:
 
 	def __draw__(self, zorder=None):
 		plt.axis('on')
-		print self.figure.xyrange
 		plt.axis([self.figure.xyrange[0][0], self.figure.xyrange[0][1], self.figure.xyrange[1][0], self.figure.xyrange[1][1]])
 		plt.tick_params(labelsize=self.fontsize/2.0)
 		plt.xlabel(self.xlabel, fontsize=self.fontsize)

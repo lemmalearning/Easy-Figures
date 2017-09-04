@@ -327,8 +327,8 @@ class Figures:
 		self.drawOrder.append(axis)
 		return axis
 
-	def addTicks(self, grid=True, minorGrid=False, ticks=False, xticks=False, yticks=False, minorticks=False, xminorticks=False, yminorticks=False, fontsize=12, origin=False, top=False, customLabels=None):
-		ticks = Ticks.Ticks(grid, minorGrid, ticks, xticks, yticks, minorticks, xminorticks, yminorticks, fontsize, origin, top, customLabels, self)
+	def addTicks(self, grid=True, minorGrid=False, ticks=False, xticks=False, yticks=False, minorticks=False, xminorticks=False, yminorticks=False, fontsize=12, boxOrigin=False, origin=False, top=False, customLabels=None):
+		ticks = Ticks.Ticks(grid, minorGrid, ticks, xticks, yticks, minorticks, xminorticks, yminorticks, fontsize, boxOrigin, origin, top, customLabels, self)
 		self.drawOrder.append(ticks)
 		return ticks
 
@@ -352,7 +352,7 @@ class Figures:
 		self.drawOrder.append(p)
 		return p
 
-	def addLine(self, pointA, pointB, lw=2, color='k', ls='sogitlid', clip=True, add=True, mplprops={}):
+	def addLine(self, pointA, pointB, lw=2, color='k', ls='solid', clip=True, add=True, mplprops={}):
 		"""
 			addLine - Adds a line 'shape' to the Figures.
 			Args:

@@ -10,7 +10,7 @@ class Ticks:
 	__draw__ - Draws the axis and tick marks according to class variables
 	"""
 
-	def __init__(self, grid, minorGrid, ticks, xticks, yticks, minorticks, xminorticks, yminorticks, fontsize, origin, top, customLabels, figure):
+	def __init__(self, grid, minorGrid, ticks, xticks, yticks, minorticks, xminorticks, yminorticks, fontsize, boxOrigin, origin, top, customLabels, figure):
 		self.grid = grid
 		self.minorGrid = minorGrid
 		self.minorticks = minorticks
@@ -19,6 +19,7 @@ class Ticks:
 		self.xticks = xticks
 		self.yticks = yticks
 		self.ticks = ticks
+		self.boxOrigin = boxOrigin
 		self.customLabels = customLabels
 
 		if self.ticks:
@@ -83,7 +84,7 @@ class Ticks:
 
 		ylabels = []
 		for item in self.figure.ax.get_yticks():
-			if float(item) == 0:
+			if float(item) == 0 and not self.boxOrigin:
 				ylabels.append("")
 			elif math.floor(float(item)) == float(item):  # it's an int
 				ylabels.append(int(item))
@@ -92,7 +93,7 @@ class Ticks:
 
 		xlabels = []
 		for item in self.figure.ax.get_xticks():
-			if float(item) == 0:
+			if float(item) == 0 and not self.boxOrigin:
 				xlabels.append("        (0,0)" if self.origin else "")
 			elif math.floor(float(item)) == float(item):  # it's an int
 				xlabels.append(int(item))
