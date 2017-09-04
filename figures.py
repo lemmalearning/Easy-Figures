@@ -352,7 +352,7 @@ class Figures:
 		self.drawOrder.append(p)
 		return p
 
-	def addLine(self, pointA, pointB, lw=2, color='k', clip=True, add=True, mplprops={}):
+	def addLine(self, pointA, pointB, lw=2, color='k', ls='sogitlid', clip=True, add=True, mplprops={}):
 		"""
 			addLine - Adds a line 'shape' to the Figures.
 			Args:
@@ -364,7 +364,8 @@ class Figures:
 			Returns:
 				Line.Line object
 		"""
-		l = Line.Line(self.cust_float(pointA), self.cust_float(pointB), lw, color, clip, mplprops, self)
+
+		l = Line.Line(self.cust_float(pointA), self.cust_float(pointB), lw, ls, color, clip, mplprops, self)
 		if add: self.drawOrder.append(l)
 		return l
 
