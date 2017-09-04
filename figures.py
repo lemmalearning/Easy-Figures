@@ -252,15 +252,15 @@ class Figures:
 
 	def __draw_shapes__(self, order=None):
 		local_order = self.drawOrder if order is None else order
+
 		if not any([isinstance(obj, Axis.Axis) for obj in local_order]) and not any([isinstance(obj, Box.Box) for obj in local_order]):
 			axis = self.addAxis(hideAxis=True, label=False, arrows=False, lw=0)
 
-		box = any([isinstance(obj, Box.Box) for obj in local_order])
+		if not any([isinstance(obj, Ticks.Ticks) for obj in local_order]):
+			ticks = self.addTicks()
+
 		for i, shape in enumerate(local_order):
-			if isinstance(shape, Ticks.Ticks):
-				shape.__draw__(zorder=i*10+1, box=box)
-			else:
-				shape.__draw__(zorder=i*10+1)
+			shape.__draw__(zorder=i*10+1)
 
 	def setPixelSize(self, width, height):
 		"""Sets the pixel size of the figure.
