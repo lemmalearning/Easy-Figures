@@ -162,6 +162,9 @@ class Figures:
 
 	def __export__(self):
 
+		if self.renderer == None:
+				self.__init_canvas__()
+
 		self.fig._cachedRenderer = self.renderer
 
 		# draw
@@ -219,6 +222,8 @@ class Figures:
 			viewBox[0] = viewBox[2] - maxX
 			viewBox[2] = (maxX - minX)
 			s = re.sub(viewBoxReg, 'viewBox="' + ' '.join([str(x) for x in viewBox]) + '"', s)
+
+		self.renderer = None
 
 		return s
 
