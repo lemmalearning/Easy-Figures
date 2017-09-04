@@ -2,10 +2,7 @@ import matplotlib.pyplot as plt
 
 class Box:
 	matplotlib_obj = None
-	def __init__(self, x, y, xlabel, ylabel, title, lw, fontsize, mplprops, figure):
-		self.x          = x
-		self.y			= y
-		#self.data 		= data
+	def __init__(self, xlabel, ylabel, title, lw, fontsize, mplprops, figure):
 		self.xlabel		= xlabel
 		self.ylabel		= ylabel
 		self.figure     = figure
@@ -16,7 +13,8 @@ class Box:
 
 	def __draw__(self, zorder=None):
 		plt.axis('on')
-		plt.axis([self.x[0], self.x[1], self.y[0], self.y[1]])
+		print self.figure.xyrange
+		plt.axis([self.figure.xyrange[0][0], self.figure.xyrange[0][1], self.figure.xyrange[1][0], self.figure.xyrange[1][1]])
 		plt.tick_params(labelsize=self.fontsize/2.0)
 		plt.xlabel(self.xlabel, fontsize=self.fontsize)
 		plt.ylabel(self.ylabel, fontsize=self.fontsize)

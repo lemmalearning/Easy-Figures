@@ -374,9 +374,9 @@ class Figures:
 		self.drawOrder.append(f)
 		return f
 
-	def addBox(self, x, y, xlabel='  ', ylabel='  ', title="  ", lw=2, fontsize=24, mplprops={}):
+	def addBox(self, xlabel='  ', ylabel='  ', title="  ", lw=2, fontsize=24, mplprops={}):
 		pixelSize=self.width
-		b = Box.Box(x, y, xlabel, ylabel, title, lw, fontsize, mplprops, self)
+		b = Box.Box(xlabel, ylabel, title, lw, fontsize, mplprops, self)
 		self.drawOrder.append(b)
 		return b
 

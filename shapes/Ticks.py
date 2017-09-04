@@ -99,7 +99,7 @@ class Ticks:
 			else:
 				xlabels.append(float(item))
 
-		if self.customLabels and self.customLabels[0]:
+		if self.customLabels and (self.customLabels[0] or self.customLabels[0] == {}):
 			for i,label in enumerate(xlabels):
 				if label == '':
 					continue
@@ -118,7 +118,7 @@ class Ticks:
 						xlabels[i] = self.customLabels[0][key]
 				else:
 					xlabels[i] = ''
-		if self.customLabels and self.customLabels[1]:
+		if self.customLabels and (self.customLabels[1] or self.customLabels[1] == {}):
 			for i, label in enumerate(ylabels):
 				if label == '':
 					continue
