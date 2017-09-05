@@ -19,14 +19,27 @@ class Ticks:
 		self.xticks = xticks
 		self.yticks = yticks
 		self.ticks = ticks
-		if boxOrigin:
-			self.boxOrigin = boxOrigin
-		if (isinstance(customLabels, list) and customLabels!=[] and customLabels != [[],[]]) and \
-		((isinstance(customLabels[0], dict) and len(set(['0', 0, 0.0, '0.0']).intersection(customLabels[0].keys()))>0) or
-	    (isinstance(customLabels[1], dict) and len(set(['0', 0, 0.0, '0.0']).intersection(customLabels[1].keys()))>0)):
-			self.boxOrigin = True
 
-		self.boxOrigin = boxOrigin
+		x_isdict = isinstance(customLabels, list) and customLabels != [] and isinstance(customLabels[0], dict)
+		if x_isdict:
+			x_0 =  len(set(['0', 0, 0.0, '0.0']).intersection(customLabels[0].keys())) > 0 # 0 in the x axis exists
+		else:
+			x_0 = False
+
+		y_isdict = isinstance(customLabels, list) and customLabels != [] and isinstance(customLabels[1], dict)
+		if y_isdict:
+			y_0 = len(set(['0', 0, 0.0, '0.0']).intersection(customLabels[1].keys())) > 0  # 0 in the y axis exists
+		else:
+			y_0 = False
+
+		if boxOrigin == True:
+			self.boxOrigin = True
+		elif (x_0 or y_0) and not boxOrigin:
+			self.boxOrigin = [x_0, y_0]
+		else:
+			self.boxOrigin = boxOrigin
+
+
 		self.customLabels = customLabels
 
 		if self.ticks:
@@ -91,7 +104,7 @@ class Ticks:
 
 		ylabels = []
 		for item in self.figure.ax.get_yticks():
-			if float(item) == 0 and not self.boxOrigin:
+			if float(item) == 0 and not self.boxOrigin==True and not (isinstance(self.boxOrigin, list) and self.boxOrigin[1]):
 				ylabels.append("")
 			elif math.floor(float(item)) == float(item):  # it's an int
 				ylabels.append(int(item))
@@ -100,7 +113,7 @@ class Ticks:
 
 		xlabels = []
 		for item in self.figure.ax.get_xticks():
-			if float(item) == 0 and not self.boxOrigin:
+			if float(item) == 0 and not self.boxOrigin==True and not (isinstance(self.boxOrigin, list) and self.boxOrigin[0]):
 				xlabels.append("        (0,0)" if self.origin else "")
 			elif math.floor(float(item)) == float(item):  # it's an int
 				xlabels.append(int(item))
