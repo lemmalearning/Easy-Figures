@@ -19,6 +19,13 @@ class Ticks:
 		self.xticks = xticks
 		self.yticks = yticks
 		self.ticks = ticks
+		if boxOrigin:
+			self.boxOrigin = boxOrigin
+		if (isinstance(customLabels, list) and customLabels!=[] and customLabels != [[],[]]) and \
+		((isinstance(customLabels[0], dict) and len(set(['0', 0, 0.0, '0.0']).intersection(customLabels[0].keys()))>0) or
+	    (isinstance(customLabels[1], dict) and len(set(['0', 0, 0.0, '0.0']).intersection(customLabels[1].keys()))>0)):
+			self.boxOrigin = True
+
 		self.boxOrigin = boxOrigin
 		self.customLabels = customLabels
 

@@ -12,6 +12,7 @@ class Line:
 		self.mplprops = mplprops
 		self.figure = figure
 		self.clip = clip
+		self.xyrange=self.figure.xyrange
 		if 'solid_capstyle' not in self.mplprops:
 			self.mplprops['solid_capstyle'] = 'butt'
 
