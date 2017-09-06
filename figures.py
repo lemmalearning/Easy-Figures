@@ -70,6 +70,11 @@ class Figures:
 		if xyrange == None:
 			raise ValueError('xyrange must be specified explictly for figures')
 
+		xyrange = self.cust_float(xyrange)
+		
+		self.abs_range_x = xyrange[0][1]- xyrange[0][0]
+		self.abs_range_y = xyrange[1][1]- xyrange[1][0]
+
 		unconstrained = 0
 		if isinstance(height, string_types):
 			height = height.lower()
@@ -94,21 +99,19 @@ class Figures:
 
 		if width == 'auto':
 			aspectRatio_temp = 1 if not aspectRatio else aspectRatio
-			width_temp = height * 1.0/self.cust_float(aspectRatio_temp)
+			width_temp = (self.abs_range_x / self.abs_range_y) * height * 1.0/self.cust_float(aspectRatio_temp)
 		else:
 			width_temp = width
 		if height == 'auto':
 			aspectRatio_temp = 1 if not aspectRatio else aspectRatio
-			height_temp = width * self.cust_float(aspectRatio_temp)
+			height_temp = (self.abs_range_y / self.abs_range_x) *  width * self.cust_float(aspectRatio_temp)
 		else:
 			height_temp = height
 
-		xyrange = self.cust_float(xyrange)
 
 		# self.xPad = xPad if xPad != None else padding
 		# self.yPad = yPad if yPad != None else padding
-		self.abs_range_x = xyrange[0][1]- xyrange[0][0]
-		self.abs_range_y = xyrange[1][1]- xyrange[1][0]
+
 		self.fig, self.ax = plt.subplots()
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1

@@ -31,7 +31,7 @@ class Text:
 		for xy, text, color, offset, valignment, halignment, bbox, latex, pixel in zip(self.xy, self.text, self.color, self.offset, self.valignment, self.halignment, self.bbox, self.latex, self.pixel):
 			if pixel:
 				x=self.figure.px2unit(xy[0], 'x')+self.figure.px2unit(offset[0], 'x')
-				y=self.figure.px2unit(xy[0], 'y')+self.figure.px2unit(offset[1], 'y')
+				y=self.figure.px2unit(xy[1], 'y')+self.figure.px2unit(offset[1], 'y')
 			else:
 				x=xy[0]+self.figure.px2unit(offset[0], 'x')
 				y=xy[1]+self.figure.px2unit(offset[1], 'y')
