@@ -135,13 +135,6 @@ class Figures:
 		aspect ratio is one by default, if 'auto' then do what you were doing where image fills box. If it's one and the width/height != 1 then the x or y needs to be shorter than the actual image
 		"""
 
-		# TODO: Move to __export__
-		num, den = Fraction(str(self.aspectRatio)).numerator, Fraction(str(self.aspectRatio)).denominator
-		val = self.width
-		if self.width == 'auto':
-			val = self.height
-			num, den = (den, num)
-
 		# if aspect > 1, multiply width
 		self.UNITS_PER_PIXEL_x = self.abs_range_x / self.cust_float(width_temp-2*self.true_pad)
 		self.UNITS_PER_PIXEL_y = self.abs_range_y / self.cust_float(height_temp-2*self.true_pad)

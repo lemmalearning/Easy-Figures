@@ -1,3 +1,5 @@
+import sympy
+
 class Text:
 	matplotlib_obj = None
 	def __init__(self, xy, text, color, fontsize, offset, halignment, valignment, bbox, latex, pixel, mplprops, figure):
@@ -36,10 +38,9 @@ class Text:
 				x=xy[0]+self.figure.px2unit(offset[0], 'x')
 				y=xy[1]+self.figure.px2unit(offset[1], 'y')
 			obj = self.figure.ax.text(x,y,
-			                          "$" + text + "$" if latex else text, fontsize=self.fontsize,
+			                          "$" + sympy.latex(text) + "$" if latex else text, fontsize=self.fontsize,
 			                          horizontalalignment=halignment, verticalalignment=valignment, bbox=bbox,
 			                          color=color, zorder=zorder, clip_on=False, **self.mplprops
 			                          )
 			obj.set_clip_on(False)
 			self.matplotlib_obj.append(obj)
-
