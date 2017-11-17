@@ -3,6 +3,8 @@ import matplotlib
 matplotlib.rcParams['font.family'] = 'cmr10'; matplotlib.rcParams['mathtext.fontset'] = 'cm'
 #matplotlib.rcParams['axes.unicode_minus'] = False
 matplotlib.rcParams["font.size"] = 72
+matplotlib.rcParams['patch.edgecolor'] = 'none'
+matplotlib.rcParams['patch.facecolor'] = 'none'
  # Change renderer so it doesn't use the GUI
 matplotlib.use('Svg')
 
