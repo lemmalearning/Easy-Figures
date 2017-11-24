@@ -9,12 +9,34 @@ class Polygon:
 	def __init__(self, vertices, lw, fill, fc, ec, clip, mplprops, figure):
 		self.vertices = np.matrix(vertices)
 		self.lw = lw
+		self.fc = fc
+		self.fill = fill
+		self.ec = ec
 		self.mplprops = mplprops
 
 		# Define the polygon
 		self.matplotlib_obj = plt.Polygon(vertices, fc=fc, ec=ec, fill=fill, lw=lw, **self.mplprops)
 		self.matplotlib_obj.set_clip_on(clip)
 		self.figure = figure
+
+		self.verticesLabels = None
+		self.angleMarks = None
+		self.angleLabels = None
+		self.sideMarks = None
+		self.sideLabels = None
+
+	def serialize(self):
+		return {
+			"type": "Polygon",
+			"points": [ [float(self.vertices.item(i, 0)), float(self.vertices.item(i, 1))] for i in range(0, self.vertices.shape[0]) ],
+			"faceColor": self.fc if self.fill else None,
+			"lineWidth": self.matplotlib_obj.get_linewidth(),
+			"vertexLabels": self.verticesLabels,
+			"angleMarks": self.angleMarks,
+			"angleLabels": self.angleLabels,
+			"sideMarks": self.sideMarks,
+			"sideLabels": self.sideLabels
+		}
 
 	def labelOppositeSides(self, labelList, **kwargs):
 		# Number of sides - 1/2  + current index mod number of sides = new index
@@ -71,6 +93,7 @@ class Polygon:
 		# The side that's mentioned first is horizontal
 		if inner:
 			self.angleLabels = labelList
+			self.angleMarks = arcs
 		else:
 			self.verticesLabels = labelList
 

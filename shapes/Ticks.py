@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import math
+import numpy as np
 
 class Ticks:
 	"""
@@ -54,6 +55,29 @@ class Ticks:
 		self.origin = origin
 		self.top = top
 		self.figure = figure
+
+	def serialize(self):
+		# The customLabels will be of the form [ { xValue: 'xLabel', ...}, { .. same for y ... } ]
+
+		xticks = self.xticks
+		yticks = self.yticks
+
+		if self.customLabels:
+			# The 0.001 is so that it includes the ending as well
+			major_x = np.arange(self.figure.xyrange[0][0], self.figure.xyrange[0][1] + 0.001, xticks)
+			major_y = np.arange(self.figure.xyrange[1][0], self.figure.xyrange[1][1] + 0.001, yticks)
+
+			xticks = [ { "value": v, "label": (self.customLabels[0][v] if v in self.customLabels[0] else None), "type": "major", "line": True } for v in major_x ]
+			yticks = [ { "value": v, "label": (self.customLabels[1][v] if v in self.customLabels[1] else None), "type": "major", "line": True } for v in major_y ]
+
+
+
+		return {
+			# TODO: This assumes that a floating point tick interval was given
+			"xticks": xticks,
+			"yticks": yticks,
+			"showOrigin": self.origin
+		}
 
 	def check_MAXTICK(self):
 		"""

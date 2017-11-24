@@ -19,3 +19,7 @@ class FancyArrowPatch:
 	def __draw__(self, zorder=1):
 		p = self.figure.ax.add_patch(self.matplotlib_obj)
 		p.set(zorder=zorder)
+
+	def serialize():
+		# NOTE: We will not try to serialize this
+		pass

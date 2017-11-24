@@ -23,7 +23,8 @@ class Circle:
 
 
 		else:
-			circle = patches.Circle(xy, radius=diameter/2, fc=fc, ec=ec, lw=2, **self.mplprops)
+			radius = diameter / 2
+			circle = patches.Circle(xy, radius=radius, fc=fc, ec=ec, lw=2, **self.mplprops)
 			self.matplotlib_obj = circle
 			if label != "":
 				p1 = (xy[0]-diameter/2, xy[1])
@@ -32,7 +33,23 @@ class Circle:
 
 				textobj = self.figure.ax.text(xy[0], xy[1]*1.015, '$'+label+'$', fontsize=.0625*self.figure.width, horizontalalignment='center')
 
+		self.xy = xy
+		self.radius = radius
+		self.fc = fc
+		self.lw = lw
+
 
 	def __draw__(self, zorder=1):
 		c = self.figure.ax.add_patch(self.matplotlib_obj)
 		c.set(zorder=zorder)
+
+	def serialize(self):
+		return {
+			"type": "Arc",
+			"center": [ self.xy[0], self.xy[1] ],
+			"radius": self.radius,
+			"theta1": 0,
+			"theta2": 2*np.pi,
+			"faceColor": self.fc,
+			"lineWidth": self.matplotlib_obj.get_linewidth()
+		}

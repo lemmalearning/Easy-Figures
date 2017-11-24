@@ -16,8 +16,6 @@ class Axis:
 	"""
 	def __init__(self, hideAxis, arrows, color, lw, label, xlabel, ylabel, mplprops, figure):
 		"""
-		fig - fig object from matplotlib
-		ax - ax object from matplotlib
 		hideAxis=False - By default show the axis, but have an option to hide the spines
 		xyrange=None - By default inherit the xyrange of the axis from the Figures definition, but take a custom one if a custom spine range is required
 		arrows=True -
@@ -36,25 +34,14 @@ class Axis:
 		self.mplprops 	= mplprops
 		self.ticks 		= None
 
-	def check_MAXTICK(self):
-		"""
-		Checks the tick amounts to ensure they aren't generating greater than MAXTICKS
-		:return: NONE
-		"""
-		MAXTICKS = 10000 # Matplotlib specified
-
-		if self.ticks and (self.figure.abs_range_x / self.ticks > MAXTICKS or self.figure.abs_range_y / self.ticks > MAXTICKS):
-			raise "Tick count too high"
-		if self.minorticks and (self.figure.abs_range_x / self.minorticks > MAXTICKS or self.figure.abs_range_y / self.minorticks > MAXTICKS):
-			raise "Tick count too high"
-		if self.xticks and self.figure.abs_range_x / self.xticks > MAXTICKS:
-			raise "Tick count too high"
-		if self.xminorticks and self.figure.abs_range_x / self.xminorticks > MAXTICKS:
-			raise "Tick count too high"
-		if self.yticks and self.figure.abs_range_y / self.yticks > MAXTICKS:
-			raise "Tick count too high"
-		if self.yminorticks and self.figure.abs_range_y / self.yminorticks > MAXTICKS:
-			raise "Tick count too high"
+	def serialize(self):
+		return {
+			"showXAxis": (not self.hideAxis),
+			"showYAxis": (not self.hideAxis),
+			"showLabels": self.label,
+			"showArrows": self.arrows
+			# TODO: color, lw, label, xlabel, ylabel
+		}
 
 	def __draw__(self, zorder=1):
 		# set the aspect ratio

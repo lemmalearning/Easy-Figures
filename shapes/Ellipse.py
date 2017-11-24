@@ -124,3 +124,6 @@ class Ellipse:
 	def __draw__(self, zorder=1):
 		e = self.figure.ax.add_patch(self.matplotlib_obj)
 		e.set(zorder=zorder)
+
+	def serialize(self):
+		pass

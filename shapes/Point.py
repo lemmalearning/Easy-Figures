@@ -25,3 +25,16 @@ class Point:
 			self.figure.addText(xy, text, latex=self.latex, color='black',
 			                    fontsize=self.fontsize, offset=[self.pointsize+5, self.pointsize+5]
 			                    )
+
+	def serialize(self):
+		arr = []
+		for i in range(0, len(self.xys)):
+			arr.append({
+				"type": "Point",
+				"position": self.xys[i],
+				"size": self.pointsize * 0.75,
+				"label": self.texts[i],
+				"color": self.color
+				# TODO
+			})
+		return arr

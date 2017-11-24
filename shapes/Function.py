@@ -33,3 +33,14 @@ class Function:
 			x = np.linspace(xyrange[0][0], xyrange[0][1], 350)
 			y = function(x)
 			plt.plot(x, y, color, lw=lw, zorder=zorder, **self.mplprops)
+
+	def serialize(self):
+		arr = []
+		for i in range(0, len(self.functions)):
+			arr.append({
+				"type": "Function",
+				"lineWidth": self.lw[i],
+				"": ""
+			})
+
+		return arr

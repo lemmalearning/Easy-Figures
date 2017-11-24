@@ -44,3 +44,17 @@ class Text:
 			                          )
 			obj.set_clip_on(False)
 			self.matplotlib_obj.append(obj)
+
+	def serialize(self):
+		arr = []
+		for i in range(0, len(self.xy)):
+			arr.append({
+				"type": "Text",
+				"text": self.text[i], #("$" + sympy.latex(self.text[i]) + "$" if self.latex[i] else self.text[i]),
+				"position": self.xy[i],
+				"xAlign": {"left": -1, "center": 0, "right": 1}[self.halignment[i]],
+				"yAlign": {"bottom": -1, "center": 0, "top": 1}[self.valignment[i]],
+				"fontSize": str(self.fontsize) + "pt",
+				"color": self.color[i]
+			})
+		return arr

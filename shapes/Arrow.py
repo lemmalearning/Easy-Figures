@@ -38,3 +38,9 @@ class Arrow:
 	def __draw__(self, zorder=1):
 		self.line.__draw__(zorder=zorder)
 		self.head.__draw__(zorder=zorder)
+
+	def serialize(self):
+		return [
+			self.line.serialize(),
+			self.head.serialize()
+		]

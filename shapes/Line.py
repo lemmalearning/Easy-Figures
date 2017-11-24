@@ -22,3 +22,13 @@ class Line:
 		self.matplotlib_obj = plt.plot(x, y, ls=self.ls, linewidth=self.lw, color=self.color, **self.mplprops)[0]
 		self.matplotlib_obj.set_clip_on(self.clip)
 		self.matplotlib_obj.set_zorder(zorder)
+
+	def serialize(self):
+		return {
+			"type": "Line",
+			"start": self.pointA,
+			"end": self.pointB,
+			"lineWidth": self.lw
+
+			# TODO: What about the clipping, linestyle
+		}

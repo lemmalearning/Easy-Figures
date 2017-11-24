@@ -73,7 +73,7 @@ class Figures:
 			raise ValueError('xyrange must be specified explictly for figures')
 
 		xyrange = self.cust_float(xyrange)
-		
+
 		self.abs_range_x = xyrange[0][1]- xyrange[0][0]
 		self.abs_range_y = xyrange[1][1]- xyrange[1][0]
 
@@ -84,8 +84,11 @@ class Figures:
 				unconstrained += 1
 			else:
 				raise ValueError('Unknown value for height: ' + height)
+
+			self.original_height = None
 		else:
 			height = self.cust_float(height)
+			self.original_height = height
 
 		if isinstance(width, string_types):
 			width = width.lower()
@@ -93,12 +96,16 @@ class Figures:
 				unconstrained += 1
 			else:
 				raise ValueError('Unknown value for width: ' + width)
+
+			self.original_width = None
 		else:
 			width = self.cust_float(width)
+			self.original_width = width
 
 		if unconstrained > 1:
 			raise ValueError('Underconstrained dimensions of figure')
 
+		self.original_aspectRatio = self.cust_float(aspectRatio) if aspectRatio else None
 		if width == 'auto':
 			aspectRatio_temp = 1 if not aspectRatio else aspectRatio
 			width_temp = (self.abs_range_x / self.abs_range_y) * height * 1.0/self.cust_float(aspectRatio_temp)
@@ -146,6 +153,39 @@ class Figures:
 		self.setPixelSize(width, height)
 
 		self.__init_canvas__()
+
+	def serialize(self):
+
+		axes_opts = {}
+
+		arr = []
+		for x in self.drawOrder:
+			i = x.serialize()
+
+			if isinstance(x, Axis.Axis) or isinstance(x, Ticks.Ticks):
+				axes_opts.update(i)
+				continue
+
+			if isinstance(i, list):
+				arr = arr + i
+			else:
+				arr.append(i)
+
+		axes_opts.update({
+			"xlim": self.xyrange[0],
+			"ylim": self.xyrange[1],
+			"objects": arr
+		})
+
+		return {
+			"type": "Figure",
+			"width": self.original_width,
+			"height": self.original_height,
+			"aspectRatio": self.original_aspectRatio,
+			"backgroundColor": self.bgcolor,
+			"axes": axes_opts,
+			"padding": self.padding
+		}
 
 	def __init_canvas__(self):
 		# Adapted from https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/backends/backend_svg.py : print_svg
@@ -307,11 +347,9 @@ class Figures:
 			addAxis - Adds the axis 'shape' to the Figures.
 			Args:
 				hideAxis (Optional[bool]): Whether or not to hide the axis; takes either True which sets it to the color of the axis, or a color which defines it as its own color. Default is False.
-				grid (Optional[bool]): Whether or not to display grids on major ticks. Default is False.
 				arrows (Optional[bool]): Whether or not to display dimension arrows. Default is True.
 				color (Optional[str]): Color of the axis. Default is 'black'.
 				lw (Optional[float]): Lineweight of the axis. Default is 1.5.
-				minorGrid (Optional[bool]): Whether or not to display axis on minor ticks; takes either True which sets it to the color of the axis, or a color which defines it as its own color. Default is False.
 				label (Optional[bool]): Whether or not to label the dimensions. Default is True.
 				xlabel (Optional[str]): Label for the x-dimension. Default is 'x'.
 				ylabel (Optional[str]): Label for the y-dimension. Default is 'y'.
@@ -326,6 +364,11 @@ class Figures:
 		return axis
 
 	def addTicks(self, grid=True, minorGrid=False, ticks=False, xticks=False, yticks=False, minorticks=False, xminorticks=False, yminorticks=False, fontsize=12, boxOrigin=False, origin=False, top=False, customLabels=None):
+		"""
+			Args:
+				grid (Optional[bool]): Whether or not to display grids on major ticks. Default is False.
+				minorGrid (Optional[bool]): Whether or not to display axis on minor ticks; takes either True which sets it to the color of the axis, or a color which defines it as its own color. Default is False.
+		"""
 		ticks = Ticks.Ticks(grid, minorGrid, ticks, xticks, yticks, minorticks, xminorticks, yminorticks, fontsize, boxOrigin, origin, top, customLabels, self)
 		self.drawOrder.append(ticks)
 		return ticks

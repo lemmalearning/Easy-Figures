@@ -19,3 +19,7 @@ class Box:
 		plt.ylabel(self.ylabel, fontsize=self.fontsize)
 		plt.title(self.title, fontsize=self.fontsize)
 
+
+	def serialize(self):
+		# TODO: These are just modifiers on the axes?
+		pass
