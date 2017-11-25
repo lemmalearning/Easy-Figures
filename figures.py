@@ -162,8 +162,15 @@ class Figures:
 		for x in self.drawOrder:
 			i = x.serialize()
 
-			if isinstance(x, Axis.Axis) or isinstance(x, Ticks.Ticks):
+			if isinstance(x, Axis.Axis) or isinstance(x, Ticks.Ticks) or isinstance(x, Box.Box):
 				axes_opts.update(i)
+
+				if isinstance(x, Axis.Axis):
+					arr.append("axis")
+
+				if isinstance(x, Ticks.Ticks):
+					arr.append("ticks")
+
 				continue
 
 			if isinstance(i, list):

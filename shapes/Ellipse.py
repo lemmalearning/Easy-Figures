@@ -126,4 +126,16 @@ class Ellipse:
 		e.set(zorder=zorder)
 
 	def serialize(self):
-		pass
+		def convert_color(c):
+			return "rgba(" + ", ".join([ str(int(255*x)) for x in c[0:3] ]) + ", " + str(c[-1]) + ")"
+
+		return {
+			"type": "Arc",
+			"center": self.xy,
+			"theta1": 0,
+			"theta2": 2.0*np.pi,
+			"radius": self.r,
+			"edgeColor": convert_color(self.matplotlib_obj.get_edgecolor()),
+			"faceColor": convert_color(self.matplotlib_obj.get_facecolor()),
+			"lineWidth": self.matplotlib_obj.get_linewidth()
+		}

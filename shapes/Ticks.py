@@ -59,17 +59,44 @@ class Ticks:
 	def serialize(self):
 		# The customLabels will be of the form [ { xValue: 'xLabel', ...}, { .. same for y ... } ]
 
-		xticks = self.xticks
-		yticks = self.yticks
 
-		if self.customLabels:
-			# The 0.001 is so that it includes the ending as well
-			major_x = np.arange(self.figure.xyrange[0][0], self.figure.xyrange[0][1] + 0.001, xticks)
-			major_y = np.arange(self.figure.xyrange[1][0], self.figure.xyrange[1][1] + 0.001, yticks)
+		# The 0.001 is so that it includes the ending as well
+		major_x = np.arange(self.figure.xyrange[0][0], self.figure.xyrange[0][1] + 0.001, self.xticks)
+		major_y = np.arange(self.figure.xyrange[1][0], self.figure.xyrange[1][1] + 0.001, self.yticks)
 
-			xticks = [ { "value": v, "label": (self.customLabels[0][v] if v in self.customLabels[0] else None), "type": "major", "line": True } for v in major_x ]
-			yticks = [ { "value": v, "label": (self.customLabels[1][v] if v in self.customLabels[1] else None), "type": "major", "line": True } for v in major_y ]
+		minor_x = []
+		minor_y = []
+		if self.xminorticks:
+			minor_x = np.arange(self.figure.xyrange[0][0], self.figure.xyrange[0][1] + 0.001, self.xminorticks)
+		if self.yminorticks:
+			minor_y = np.arange(self.figure.xyrange[1][0], self.figure.xyrange[1][1] + 0.001, self.yminorticks)
 
+
+		xticks = [ { "value": v, "label": str(v), "type": "major", "line": self.grid } for v in major_x ]
+		yticks = [ { "value": v, "label": str(v), "type": "major", "line": self.grid } for v in major_y ]
+
+		for v in minor_x:
+			if v in major_x:
+				continue
+
+			xticks.append({ "value": v, "label": None, "type": "minor", "line": self.minorGrid })
+
+		for v in minor_y:
+			if v in major_y:
+				continue
+
+			yticks.append({ "value": v, "label": None, "type": "minor", "line": self.minorGrid })
+
+
+		customLabels = self.customLabels
+		if customLabels != None:
+			for i in range(0, len(xticks)):
+				v = xticks[i]["value"]
+				xticks[i]["label"] = customLabels[0][v] if v in self.customLabels[0] else None
+
+			for i in range(0, len(yticks)):
+				v = yticks[i]["value"]
+				yticks[i]["label"] = customLabels[1][v] if v in self.customLabels[1] else None
 
 
 		return {

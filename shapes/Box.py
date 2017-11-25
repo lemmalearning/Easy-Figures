@@ -21,5 +21,10 @@ class Box:
 
 
 	def serialize(self):
-		# TODO: These are just modifiers on the axes?
-		pass
+		return {
+			"xlabel": self.xlabel,
+			"ylabel": self.ylabel,
+			"title": self.title,
+			"box": True
+			# TODO: Should also show right and top box lines
+		}
