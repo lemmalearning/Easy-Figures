@@ -61,19 +61,39 @@ class Ticks:
 
 
 		# The 0.001 is so that it includes the ending as well
-		major_x = np.arange(self.figure.xyrange[0][0], self.figure.xyrange[0][1] + 0.001, self.xticks)
-		major_y = np.arange(self.figure.xyrange[1][0], self.figure.xyrange[1][1] + 0.001, self.yticks)
+		major_x = []
+		major_y = []
+		if self.xticks:
+			major_x = np.arange(
+				math.ceil(self.figure.xyrange[0][0] / self.xticks) * self.xticks,
+				self.figure.xyrange[0][1] + 0.001,
+				self.xticks
+			)
+		if self.yticks:
+			major_y = np.arange(
+				math.ceil(self.figure.xyrange[1][0] / self.yticks) * self.yticks,
+				self.figure.xyrange[1][1] + 0.001,
+				self.yticks
+			)
 
 		minor_x = []
 		minor_y = []
 		if self.xminorticks:
-			minor_x = np.arange(self.figure.xyrange[0][0], self.figure.xyrange[0][1] + 0.001, self.xminorticks)
+			minor_x = np.arange(
+				math.ceil(self.figure.xyrange[0][0] / self.xminorticks) * self.xminorticks,
+				self.figure.xyrange[0][1] + 0.001,
+				self.xminorticks
+			)
 		if self.yminorticks:
-			minor_y = np.arange(self.figure.xyrange[1][0], self.figure.xyrange[1][1] + 0.001, self.yminorticks)
+			minor_y = np.arange(
+				math.ceil(self.figure.xyrange[1][0] / self.yminorticks) * self.yminorticks,
+				self.figure.xyrange[1][1] + 0.001,
+				self.yminorticks
+			)
 
 
-		xticks = [ { "value": v, "label": str(v), "type": "major", "line": self.grid } for v in major_x ]
-		yticks = [ { "value": v, "label": str(v), "type": "major", "line": self.grid } for v in major_y ]
+		xticks = [ { "value": v, "label": str(v).rstrip('0').rstrip('.') if (v != 0 or self.origin) else None, "type": "major", "line": self.grid } for v in major_x ]
+		yticks = [ { "value": v, "label": str(v).rstrip('0').rstrip('.') if v != 0 else None, "type": "major", "line": self.grid } for v in major_y ]
 
 		for v in minor_x:
 			if v in major_x:

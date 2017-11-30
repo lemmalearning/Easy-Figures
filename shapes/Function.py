@@ -17,6 +17,10 @@ class Function:
 			xyranges = list([xyranges]) * len(functions)
 			color = [color] * len(functions)
 
+		# For sympy functions, if the variable is not included, pick the first one
+		if variable is None and len(functions) > 0 and isinstance(functions[0], Expr):
+			variable = [ list(e.free_symbols)[0] for e in functions ]
+			
 		if variable is not None:
 			if not isinstance(variable, list):
 				variable = [variable] * len(functions)
@@ -44,7 +48,7 @@ class Function:
 		for i in range(0, len(self.functions)):
 			f = self.functions[i]
 			if not isinstance(f, Expr):
-				raise Error("Must only use sympy expressions when serializing")
+				raise Exception("Must only use sympy expressions when serializing")
 
 			arr.append({
 				"type": "Function",
