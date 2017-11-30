@@ -19,12 +19,13 @@ class Function:
 
 		# For sympy functions, if the variable is not included, pick the first one
 		if variable is None and len(functions) > 0 and isinstance(functions[0], Expr):
-			variable = [ list(e.free_symbols)[0] for e in functions ]
+			variable = [ (list(e.free_symbols)[0] if len(e.free_symbols) > 0 else None) for e in functions ]
 			
 		if variable is not None:
 			if not isinstance(variable, list):
 				variable = [variable] * len(functions)
-			function_lam = [lambdify(v, f, "numpy") for f, v in zip(functions, variable)]
+			function_lam = [lambdify(v, f, "numpy") if v != None else np.vectorize(lambdify("x", f, "numpy")) for f, v in zip(functions, variable)]
+			
 
 		self.functions = functions
 		self.function_lam = function_lam if variable is not None else None
@@ -55,7 +56,7 @@ class Function:
 				"lineWidth": self.lw[i], # TODO: We need to convert from pt to px
 				"edgeColor": self.color[i],
 				"value": jscode(f),
-				"variable": str(self.variable[i]),
+				"variable": str(self.variable[i]) if self.variable[i] != None else None,
 				"range": self.xyranges[i][0] if self.xyranges[i] else None
 			})
 
