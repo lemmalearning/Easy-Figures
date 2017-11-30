@@ -50,8 +50,8 @@ class Text:
 		for i in range(0, len(self.xy)):
 			arr.append({
 				"type": "Text",
-				"text": self.text[i], #("$" + sympy.latex(self.text[i]) + "$" if self.latex[i] else self.text[i]),
-				"position": self.xy[i],
+				"text": ("$" + sympy.latex(self.text[i]) + "$" if self.latex[i] else self.text[i]),
+				"position": [float(x) for x in self.xy[i]],
 				"xAlign": {"left": -1, "center": 0, "right": 1}[self.halignment[i]],
 				"yAlign": {"bottom": -1, "center": 0, "top": 1}[self.valignment[i]],
 				"fontSize": str(self.fontsize) + "pt",

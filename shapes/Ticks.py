@@ -110,13 +110,15 @@ class Ticks:
 
 		customLabels = self.customLabels
 		if customLabels != None:
-			for i in range(0, len(xticks)):
-				v = xticks[i]["value"]
-				xticks[i]["label"] = customLabels[0][v] if v in self.customLabels[0] else None
+			if customLabels[0]:
+				for i in range(0, len(xticks)):
+					v = xticks[i]["value"]
+					xticks[i]["label"] = customLabels[0][v] if v in self.customLabels[0] else None
 
-			for i in range(0, len(yticks)):
-				v = yticks[i]["value"]
-				yticks[i]["label"] = customLabels[1][v] if v in self.customLabels[1] else None
+			if customLabels[1]:
+				for i in range(0, len(yticks)):
+					v = yticks[i]["value"]
+					yticks[i]["label"] = customLabels[1][v] if v in self.customLabels[1] else None
 
 
 		return {

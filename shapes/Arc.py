@@ -22,10 +22,10 @@ class Arc:
 	def serialize(self):
 		return {
 			"type": "Arc",
-			"center": [ self.xy[0], self.xy[1] ],
+			"center": [ float(x) for x in self.xy ],
 			"radius": self.width / 2.0, #[ self.width / 2.0, self.height / 2.0 ],
-			"theta1": self.theta1 * (math.pi / 180.0),
-			"theta2": self.theta2 * (math.pi / 180.0),
+			"theta1": float(self.theta1) * (math.pi / 180.0),
+			"theta2": float(self.theta2) * (math.pi / 180.0),
 			"lineWidth": self.matplotlib_obj.get_linewidth()
 			# TODO:
 

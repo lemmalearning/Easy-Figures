@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import itertools
 from matplotlib.patches import Arc
-
+from .serial_utils import *
 
 class Polygon:
 	matplotlib_obj = None
@@ -29,7 +29,8 @@ class Polygon:
 		return {
 			"type": "Polygon",
 			"points": [ [float(self.vertices.item(i, 0)), float(self.vertices.item(i, 1))] for i in range(0, self.vertices.shape[0]) ],
-			"faceColor": self.fc if self.fill else None,
+			"edgeColor": convert_color(self.matplotlib_obj.get_edgecolor()),
+			"faceColor": convert_color(self.matplotlib_obj.get_facecolor()),
 			"lineWidth": self.matplotlib_obj.get_linewidth(),
 			"vertexLabels": self.verticesLabels,
 			"angleMarks": self.angleMarks,

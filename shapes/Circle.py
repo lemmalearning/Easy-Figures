@@ -46,8 +46,8 @@ class Circle:
 	def serialize(self):
 		return {
 			"type": "Arc",
-			"center": [ self.xy[0], self.xy[1] ],
-			"radius": self.radius,
+			"center": [ float(self.xy[0]), float(self.xy[1]) ],
+			"radius": float(self.radius),
 			"theta1": 0,
 			"theta2": 2*np.pi,
 			"faceColor": self.fc,

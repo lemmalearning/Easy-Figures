@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from .serial_utils import *
 
 class Line:
 	matplotlib_obj = None
@@ -15,20 +16,23 @@ class Line:
 		self.xyrange=self.figure.xyrange
 		if 'solid_capstyle' not in self.mplprops:
 			self.mplprops['solid_capstyle'] = 'butt'
-
-	def __draw__(self, zorder=1):
+		
 		x = [self.pointA[0], self.pointB[0]]
 		y = [self.pointA[1], self.pointB[1]]
 		self.matplotlib_obj = plt.plot(x, y, ls=self.ls, linewidth=self.lw, color=self.color, **self.mplprops)[0]
+
+	def __draw__(self, zorder=1):
 		self.matplotlib_obj.set_clip_on(self.clip)
 		self.matplotlib_obj.set_zorder(zorder)
 
 	def serialize(self):
 		return {
 			"type": "Line",
-			"start": self.pointA,
-			"end": self.pointB,
-			"lineWidth": self.lw
+			"start": [float(x) for x in self.pointA],
+			"end": [float(x) for x in self.pointB],
+			"lineWidth": self.lw,
+			"edgeColor": convert_color(self.matplotlib_obj.get_color()),
+			"lineStyle": self.matplotlib_obj.get_linestyle()
 
-			# TODO: What about the clipping, linestyle
+			# TODO: What about the clipping
 		}

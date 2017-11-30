@@ -55,9 +55,10 @@ class Function:
 				"type": "Function",
 				"lineWidth": self.lw[i], # TODO: We need to convert from pt to px
 				"edgeColor": self.color[i],
+				"lineStyle": self.mplprops["ls"] if self.mplprops != None and "ls" in self.mplprops else None,
 				"value": jscode(f),
 				"variable": str(self.variable[i]) if self.variable[i] != None else None,
-				"range": self.xyranges[i][0] if self.xyranges[i] else None
+				"domain": self.xyranges[i][0] if self.xyranges[i] else None
 			})
 
 		return arr
