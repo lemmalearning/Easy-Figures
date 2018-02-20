@@ -51,5 +51,5 @@ class Circle:
 			"theta1": 0,
 			"theta2": 2*np.pi,
 			"faceColor": self.fc,
-			"lineWidth": self.matplotlib_obj.get_linewidth()
+			"lineWidth": self.figure.raw2px(self.matplotlib_obj.get_linewidth())
 		}

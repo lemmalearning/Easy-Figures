@@ -137,5 +137,5 @@ class Ellipse:
 			"radius": self.r,
 			"edgeColor": convert_color(self.matplotlib_obj.get_edgecolor()),
 			"faceColor": convert_color(self.matplotlib_obj.get_facecolor()),
-			"lineWidth": self.matplotlib_obj.get_linewidth()
+			"lineWidth": self.figure.raw2px(self.matplotlib_obj.get_linewidth())
 		}

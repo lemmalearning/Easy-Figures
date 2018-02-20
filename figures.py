@@ -26,10 +26,19 @@ px2pt = lambda p: (p * 0.75)
 pt2in = lambda p: (p / 72.0)
 px2in = lambda p: (p * 0.75 / 72.0)
 
+__pool__ = []
+__pool_index__ = [0]
+
 class Figures:
 	"""
 		Object to hold multiple shapes and objects.
 	"""
+
+	@staticmethod
+	def preload(n):
+		"""Preloads n empty canvases for use in future figures"""
+		for x in range(0, n):
+			__pool__.append(plt.subplots())
 
 	def cust_float(self, i):
 		"""
@@ -120,8 +129,15 @@ class Figures:
 
 		# self.xPad = xPad if xPad != None else padding
 		# self.yPad = yPad if yPad != None else padding
-
-		self.fig, self.ax = plt.subplots()
+		
+		subplots = None
+		if __pool_index__[0] < len(__pool__):
+			subplots = __pool__[__pool_index__[0]]
+			__pool_index__[0] += 1
+		else:
+			subplots = plt.subplots()
+		
+		self.fig, self.ax = subplots	
 		self.fig.set_dpi(72)
 		self.tickLabelInterval = 1
 		self.padding = padding
@@ -281,6 +297,12 @@ class Figures:
 
 	def __display__(self):
 		plt.show()
+
+	def raw2px(self, u):
+		if self.width == 'auto':
+			return (u / px2pt(self.height)) * self.height
+			
+		return (u / px2pt(self.width)) * self.width
 
 	def measureText(self, text, units=False):
 		"""Given a matplotlib Text object, returns a tuple of its width and height (in pts)"""

@@ -30,7 +30,7 @@ class Line:
 			"type": "Line",
 			"start": [float(x) for x in self.pointA],
 			"end": [float(x) for x in self.pointB],
-			"lineWidth": self.lw,
+			"lineWidth": self.figure.raw2px(self.lw),
 			"edgeColor": convert_color(self.matplotlib_obj.get_color()),
 			"lineStyle": self.matplotlib_obj.get_linestyle()
 

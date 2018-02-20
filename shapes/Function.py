@@ -34,6 +34,7 @@ class Function:
 		self.lw = lw
 		self.variable = variable
 		self.mplprops = mplprops
+		self.figure = figure
 
 	def __draw__(self, zorder=1):
 		for function, xyrange, color, lw in zip(self.function_lam if self.variable is not None else self.functions, self.xyranges, self.color, self.lw):
@@ -53,7 +54,7 @@ class Function:
 
 			arr.append({
 				"type": "Function",
-				"lineWidth": self.lw[i], # TODO: We need to convert from pt to px
+				"lineWidth": self.figure.raw2px(self.lw[i]), # TODO: We need to convert from pt to px
 				"edgeColor": self.color[i],
 				"lineStyle": self.mplprops["ls"] if self.mplprops != None and "ls" in self.mplprops else None,
 				"value": jscode(f),

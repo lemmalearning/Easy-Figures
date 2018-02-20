@@ -32,6 +32,6 @@ class RegularPolygon:
 			"points": [ [ verts.item(i, 0), verts.item(i, 1) ]  for i in range(0, verts.shape[0]) ],
 			"edgeColor": convert_color(self.matplotlib_obj.get_edgecolor()),
 			"faceColor": convert_color(self.matplotlib_obj.get_facecolor()),
-			"lineWidth": self.matplotlib_obj.get_linewidth(),
+			"lineWidth": self.figure.raw2px(self.matplotlib_obj.get_linewidth()),
 			"lineStyle": self.matplotlib_obj.get_linestyle()
 		}
