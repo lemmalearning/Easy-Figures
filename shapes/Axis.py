@@ -5,6 +5,7 @@ from random import randint, choice
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 import numpy as np
 import math
+import six
 
 class Axis:
 	"""
@@ -86,7 +87,7 @@ class Axis:
 			self.figure.ax.spines['bottom'].set_position(('data', 0))
 
 
-		[i.set_linewidth(self.lw) for i in self.figure.ax.spines.itervalues()]
+		[i.set_linewidth(self.lw) for i in six.itervalues(self.figure.ax.spines)]
 
 
 		if self.arrows and not self.hideAxis:

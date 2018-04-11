@@ -11,16 +11,13 @@ matplotlib.use('Svg')
 import matplotlib.pyplot as plt
 from shapes import Polygon, Arc, Wedge, FancyArrowPatch, RegularPolygon, Circle, Ellipse, Arrow, Axis, Point, Text, Function, Line, Box, FancyBox, Ticks
 import numpy as np
-try:
-	from StringIO import StringIO
-except ImportError:
-	from io import StringIO
+
 import math
 import re
 from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 from fractions import Fraction
-from six import string_types
+from six import string_types, StringIO
 
 px2pt = lambda p: (p * 0.75)
 pt2in = lambda p: (p / 72.0)
@@ -249,7 +246,7 @@ class Figures:
 
 		#self.__writeFile__(self.export_str, format='svg')
 		self.export_str.seek(0)  # rewind the data
-		s = self.export_str.buf  # this is svg data
+		s = self.export_str.read()  # this is svg data
 
 		# Clipping height to the used area after rendering
 		# https://stackoverflow.com/questions/22667224/matplotlib-get-text-bounding-box-independent-of-backend/22689498

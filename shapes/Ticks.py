@@ -136,17 +136,17 @@ class Ticks:
 		MAXTICKS = 10000 # Matplotlib specified
 
 		if self.ticks and (self.figure.abs_range_x / self.ticks > MAXTICKS or self.figure.abs_range_y / self.ticks > MAXTICKS):
-			raise "Tick count too high"
+			raise Exception("Tick count too high")
 		if self.minorticks and (self.figure.abs_range_x / self.minorticks > MAXTICKS or self.figure.abs_range_y / self.minorticks > MAXTICKS):
-			raise "Tick count too high"
+			raise Exception("Tick count too high")
 		if self.xticks and self.figure.abs_range_x / self.xticks > MAXTICKS:
-			raise "Tick count too high"
+			raise Exception("Tick count too high")
 		if self.xminorticks and self.figure.abs_range_x / self.xminorticks > MAXTICKS:
-			raise "Tick count too high"
+			raise Exception("Tick count too high")
 		if self.yticks and self.figure.abs_range_y / self.yticks > MAXTICKS:
-			raise "Tick count too high"
+			raise Exception("Tick count too high")
 		if self.yminorticks and self.figure.abs_range_y / self.yminorticks > MAXTICKS:
-			raise "Tick count too high"
+			raise Exception("Tick count too high")
 
 	def __draw__(self, zorder=1, box=False):
 		# Parse the grid color:
