@@ -261,8 +261,8 @@ class Figures:
 
 			s = re.sub(r'height="[0-9]+pt"', 'height="%dpt"' % (maxY - minY), s)
 
-			viewBoxReg = r'viewBox="([0-9]+ [0-9]+ [0-9]+ [0-9]+)"';
-			viewBox = [int(x) for x in re.search(viewBoxReg, s).group(1).split(' ')]
+			viewBoxReg = r'viewBox="([0-9]+(\.[0-9]+)? [0-9]+(\.[0-9]+)? [0-9]+(\.[0-9]+)? [0-9]+(\.[0-9]+)?)"';
+			viewBox = [float(x) for x in re.search(viewBoxReg, s).group(1).split(' ')]
 			viewBox[1] = viewBox[3] - maxY
 			viewBox[3] = (maxY - minY)
 			s = re.sub(viewBoxReg, 'viewBox="' + ' '.join([str(x) for x in viewBox]) + '"', s)
@@ -275,8 +275,8 @@ class Figures:
 
 			s = re.sub(r'width="[0-9]+pt"', 'width="%dpt"' % (maxX - minX), s)
 
-			viewBoxReg = r'viewBox="([0-9]+ [0-9]+ [0-9]+ [0-9]+)"';
-			viewBox = [int(x) for x in re.search(viewBoxReg, s).group(1).split(' ')]
+			viewBoxReg = r'viewBox="([0-9]+(\.[0-9]+)? [0-9]+(\.[0-9]+)? [0-9]+(\.[0-9]+)? [0-9]+(\.[0-9]+)?)"';
+			viewBox = [float(x) for x in re.search(viewBoxReg, s).group(1).split(' ')]
 			viewBox[0] = viewBox[2] - maxX
 			viewBox[2] = (maxX - minX)
 			s = re.sub(viewBoxReg, 'viewBox="' + ' '.join([str(x) for x in viewBox]) + '"', s)
