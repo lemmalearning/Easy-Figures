@@ -14,10 +14,10 @@ class Wedge:
 
 		wedge = patches.Wedge(xy, r, theta1, theta2, width, fc=fc, ec=ec, lw=lw, **self.mplprops)
 		self.matplotlib_obj = wedge
+		self.patch = self.figure.ax.add_patch(self.matplotlib_obj)
 
 	def __draw__(self, zorder=1):
-		p = self.figure.ax.add_patch(self.matplotlib_obj)
-		p.set(zorder=zorder)
+		self.patch.set(zorder=zorder)
 	
 	def serialize(self):
 		def convert_color(c):

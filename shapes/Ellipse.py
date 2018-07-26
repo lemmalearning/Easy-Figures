@@ -17,6 +17,7 @@ class Ellipse:
 
 		ellipse = patches.Ellipse(xy, semimajor, semiminor, linewidth=3, fc=fc, ec=ec, angle=angle, lw=lw, **self.mplprops)
 		self.matplotlib_obj = ellipse
+		self.patch = self.figure.ax.add_patch(self.matplotlib_obj)
 
 	def ellipseLabels(self, xlabel=None, ylabel=None, isRadius=True):
 		semimajor = self.r[0]
@@ -38,8 +39,8 @@ class Ellipse:
 			r = (h_p[0]*np.cos(self.angle*(np.pi/180))) - (h_p[1]*np.sin(self.angle*(np.pi/180)))
 			s = (h_p[1]*np.cos(self.angle*(np.pi/180))) + (h_p[0]*np.sin(self.angle*(np.pi/180)))
 
-			plt.plot([self.xy[0]+temp_x,p+temp_x], [self.xy[1]+temp_y,q+temp_y], linewidth=2, ls='dashed', color='black')
-			plt.plot([self.xy[0]+temp_x,r+temp_x], [self.xy[1]+temp_y,s+temp_y], linewidth=2, ls='dashed', color='black')
+			self.figure.ax.plot([self.xy[0]+temp_x,p+temp_x], [self.xy[1]+temp_y,q+temp_y], linewidth=2, ls='dashed', color='black')
+			self.figure.ax.plot([self.xy[0]+temp_x,r+temp_x], [self.xy[1]+temp_y,s+temp_y], linewidth=2, ls='dashed', color='black')
 
 			self.xy[0] = temp_x + self.xy[0]
 			self.xy[1] = temp_y + self.xy[1]
@@ -91,8 +92,8 @@ class Ellipse:
 			v = (h_p2[0]*np.cos(self.angle*(np.pi/180))) - (h_p2[1]*np.sin(self.angle*(np.pi/180)))
 			w = (h_p2[1]*np.cos(self.angle*(np.pi/180))) + (h_p2[0]*np.sin(self.angle*(np.pi/180)))
 
-			plt.plot([p+temp_x, t+temp_x], [q+temp_y, u+temp_y], lw=2, ls='dashed', color='black')
-			plt.plot([r+temp_x, v+temp_x], [s+temp_y, w+temp_y], lw=2, ls='dashed', color='black')
+			self.figure.ax.plot([p+temp_x, t+temp_x], [q+temp_y, u+temp_y], lw=2, ls='dashed', color='black')
+			self.figure.ax.plot([r+temp_x, v+temp_x], [s+temp_y, w+temp_y], lw=2, ls='dashed', color='black')
 
 			self.xy[0] = temp_x + self.xy[0]
 			self.xy[1] = temp_y + self.xy[1]
@@ -122,8 +123,7 @@ class Ellipse:
 			"""
 
 	def __draw__(self, zorder=1):
-		e = self.figure.ax.add_patch(self.matplotlib_obj)
-		e.set(zorder=zorder)
+		self.patch.set(zorder=zorder)
 
 	def serialize(self):
 		def convert_color(c):

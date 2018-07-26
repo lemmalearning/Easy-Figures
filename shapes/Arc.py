@@ -14,10 +14,10 @@ class Arc:
 		self.figure = figure
 		arc = patches.Arc(xy, width, height, angle, theta1, theta2, fc=fc, ec=ec, lw=lw, **self.mplprops)
 		self.matplotlib_obj = arc
+		self.patch = self.figure.ax.add_patch(self.matplotlib_obj)
 
 	def __draw__(self, zorder=1):
-		p = self.figure.ax.add_patch(self.matplotlib_obj)
-		p.set(zorder=zorder)
+		self.patch.set(zorder=zorder)
 
 	def serialize(self):
 		return {

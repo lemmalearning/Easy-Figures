@@ -25,6 +25,8 @@ class Polygon:
 		self.sideMarks = None
 		self.sideLabels = None
 
+		self.patch = self.figure.ax.add_patch(self.matplotlib_obj)
+
 	def serialize(self):
 		return {
 			"type": "Polygon",
@@ -236,5 +238,4 @@ class Polygon:
 		self.labelVertices(labelList, True, **kwargs)
 
 	def __draw__(self, zorder=1):
-		p = self.figure.ax.add_patch(self.matplotlib_obj)
-		p.set(zorder=zorder)
+		self.patch.set(zorder=zorder)

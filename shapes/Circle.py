@@ -38,10 +38,11 @@ class Circle:
 		self.fc = fc
 		self.lw = lw
 
+		self.patch = self.figure.ax.add_patch(self.matplotlib_obj)
+
 
 	def __draw__(self, zorder=1):
-		c = self.figure.ax.add_patch(self.matplotlib_obj)
-		c.set(zorder=zorder)
+		self.patch.set(zorder=zorder)
 
 	def serialize(self):
 		return {

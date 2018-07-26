@@ -28,7 +28,7 @@ class FancyBox:
                             	boxstyle=boxstyle, fc=fc, ec=ec,
 								**mplprops
 							)
+		self.patch = self.figure.ax.add_patch(self.matplotlib_obj)
 
 	def __draw__(self, zorder=1):
-		p = self.figure.ax.add_patch(self.matplotlib_obj)
-		p.set(zorder=zorder)
+		self.patch.set(zorder=zorder)
