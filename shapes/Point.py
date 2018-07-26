@@ -21,7 +21,7 @@ class Point:
 
 	def __draw__(self, zorder=1):
 		for xy, text, color, style in zip(self.xys, self.texts, self.color, self.style):
-			plt.plot(xy[0], xy[1], style, color=color, ms=self.pointsize, zorder=zorder)
+			self.figure.ax.plot(xy[0], xy[1], style, color=color, ms=self.pointsize, zorder=zorder)
 			self.figure.addText(xy, text, latex=self.latex, color='black',
 			                    fontsize=self.fontsize, offset=[self.pointsize+5, self.pointsize+5]
 			                    )
