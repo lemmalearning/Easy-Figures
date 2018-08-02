@@ -14,6 +14,7 @@ import numpy as np
 
 import math
 import re
+from sympy import Matrix
 from sympy.utilities.lambdify import lambdify
 from matplotlib.backends.backend_svg import FigureCanvas, RendererSVG
 from fractions import Fraction
@@ -45,7 +46,10 @@ class Figures:
 			Returns:
 				i in float
 		"""
-		if hasattr(i, '__contains__'):
+
+		if isinstance(i, Matrix):
+			return Matrix(i.shape[0], i.shape[1], lambda r,c: float(i[r, c]))
+		elif hasattr(i, '__contains__'):
 			return [self.cust_float(j) for j in i]
 		else:
 			return float(i)
@@ -437,7 +441,7 @@ class Figures:
 		return l
 
 	def addText(self, xy, text, color="black", fontsize=12, offset=[0,0], halignment='center', valignment='center', bbox={}, mplprops={}, latex=True, pixel=False, add=True):
-		t = Text.Text(self.cust_float(xy), text, color, fontsize, offset, halignment, valignment, bbox, latex, pixel, mplprops, self)
+		t = Text.Text(self.cust_float(xy), text, color, self.cust_float(fontsize), self.cust_float(offset), halignment, valignment, bbox, latex, pixel, mplprops, self)
 		if add: self.drawOrder.append(t)
 		return t
 
@@ -456,7 +460,7 @@ class Figures:
 	def addPolygon(self, vertices, lw=2, fc='None', color='k', clip=True, add=True, mplprops={}):
 		pixelSize=self.width
 		# for vertix in v
-		polygon = Polygon.Polygon(vertices, lw, True if fc!='None' else False, fc, color, clip, mplprops, self)
+		polygon = Polygon.Polygon(self.cust_float(vertices), lw, True if fc!='None' else False, fc, color, clip, mplprops, self)
 		if add: self.drawOrder.append(polygon)
 		return polygon
 
